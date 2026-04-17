@@ -97,18 +97,13 @@ export default function Login() {
           <div className="kd-auth-divider-line" />
         </div>
 
-        <button type="button" className="kd-google-btn">
-          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/leaflets/google.svg" alt="Google" className="kd-google-icon" />
-          {t('auth.google_login') || 'Sign in with Google'}
+        <button 
+          type="button" 
+          className="kd-google-btn"
+        >
+          <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" className="kd-google-icon" />
+          {t('auth.google_login')}
         </button>
-
-        {/* Demo accounts */}
-        <div style={{ marginTop: 20, padding: '14px 16px', background: 'var(--cream)', borderRadius: 12, fontSize: 12, color: 'var(--muted)' }}>
-          <p style={{ fontWeight: 700, color: 'var(--ink)', marginBottom: 8 }}>Demo accounts:</p>
-          <p>👑 Admin: <span style={{ fontFamily: 'monospace' }}>admin@servicesmarket.com / admin123</span></p>
-          <p>👤 Seeker: <span style={{ fontFamily: 'monospace' }}>sara@example.com / user123</span></p>
-          <p>🔧 Provider: any provider email / <span style={{ fontFamily: 'monospace' }}>provider123</span></p>
-        </div>
 
         <p className="kd-auth-footer">
           {t('auth.no_account')}

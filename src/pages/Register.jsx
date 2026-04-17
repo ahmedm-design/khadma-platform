@@ -123,9 +123,12 @@ export default function Register() {
           <div className="kd-auth-divider-line" />
         </div>
 
-        <button type="button" className="kd-google-btn">
-          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/leaflets/google.svg" alt="Google" className="kd-google-icon" />
-          {t('auth.google_signup') || 'Sign up with Google'}
+        <button 
+          type="button" 
+          className="kd-google-btn"
+        >
+          <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" className="kd-google-icon" />
+          {t('auth.google_signup')}
         </button>
 
         <p className="kd-auth-footer">

@@ -82,6 +82,8 @@ export const translations = {
       have_account: 'Already have an account?',
       forgot: 'Forgot password?',
       or: 'or',
+      google_login: 'Sign in with Google',
+      google_signup: 'Sign up with Google',
     },
     dashboard: {
       welcome: 'Welcome back',
@@ -220,6 +222,8 @@ export const translations = {
       have_account: 'لديك حساب بالفعل؟',
       forgot: 'نسيت كلمة المرور؟',
       or: 'أو',
+      google_login: 'تسجيل الدخول بواسطة جوجل',
+      google_signup: 'إنشاء حساب بواسطة جوجل',
     },
     dashboard: {
       welcome: 'مرحباً بعودتك',
