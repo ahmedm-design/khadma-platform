@@ -46,10 +46,14 @@ export function AuthProvider({ children }) {
     toast.success('Logged out');
   };
 
+  const loginWithGoogle = () => {
+    toast.loading('Connecting to Secure Google Gateway...', { duration: 2000 });
+  };
+
   const updateUser = (updates) => setUser((prev) => ({ ...prev, ...updates }));
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout, updateUser }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout, loginWithGoogle, updateUser }}>
       {children}
     </AuthContext.Provider>
   );

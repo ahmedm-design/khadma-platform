@@ -3,8 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {
   MapPin, Phone, MessageCircle, Globe, Instagram, Facebook,
-  Clock, Languages, Star, Shield, Zap, ChevronLeft, Lock,
+  Clock, Languages, Star, Shield, Zap, ChevronLeft, Lock, FileText
 } from 'lucide-react';
+import clsx from 'clsx';
 import { useLang } from '../context/LangContext';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/axios';
@@ -84,222 +85,222 @@ export default function ProviderProfile() {
   ];
 
   return (
-    <div className="py-12">
-      <div className="container-app max-w-4xl mx-auto">
-        {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-sm text-slate-400 mb-6">
-          <Link to="/" className="hover:text-primary-500">{t('nav.home')}</Link>
-          <ChevronLeft className="w-4 h-4 rotate-180" />
-          <Link to="/providers" className="hover:text-primary-500">{t('nav.providers')}</Link>
-          <ChevronLeft className="w-4 h-4 rotate-180" />
-          <span className="text-slate-700 dark:text-slate-200 font-medium truncate max-w-[200px]">{name}</span>
+    <div className="relative overflow-hidden min-h-screen mesh-bg py-12">
+      {/* Atmosphere blobs */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--teal)] opacity-[0.05] rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-indigo-500 opacity-[0.02] rounded-full blur-[100px] pointer-events-none" />
+
+      <div className="max-w-4xl mx-auto px-6 relative z-10">
+        {/* Cinematic Breadcrumb */}
+        <nav className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-10 bg-white/40 dark:bg-white/5 w-fit px-6 py-2 rounded-full border border-white/10 backdrop-blur-md">
+          <Link to="/" className="hover:text-[var(--teal)] transition-colors">{t('nav.home')}</Link>
+          <span className="opacity-30">/</span>
+          <Link to="/providers" className="hover:text-[var(--teal)] transition-colors">{t('nav.providers')}</Link>
+          <span className="opacity-30">/</span>
+          <span className="text-slate-900 dark:text-white truncate max-w-[150px]">{name}</span>
         </nav>
 
-        {/* Hero card */}
-        <div className="card p-6 md:p-8 mb-5">
-          <div className="flex flex-col sm:flex-row gap-6 items-start">
-            {/* Avatar */}
-            <div className="relative flex-shrink-0">
-              <div className="w-24 h-24 rounded-2xl overflow-hidden bg-primary-50 dark:bg-primary-900/30 border-2 border-primary-100 dark:border-primary-800">
+        {/* Premium Profile Header */}
+        <div className="bg-white/40 dark:bg-white/5 border border-slate-200 dark:border-white/10 backdrop-blur-3xl rounded-[48px] p-8 md:p-12 mb-8 shadow-2xl shadow-indigo-500/5 animate-fade-up">
+          <div className="flex flex-col md:flex-row gap-10 items-center md:items-start text-center md:text-left">
+            {/* Avatar - High End */}
+            <div className="relative group">
+              <div className="w-32 h-32 rounded-[32px] overflow-hidden bg-slate-100 dark:bg-white/5 border-2 border-white/20 shadow-xl group-hover:scale-105 transition-transform duration-500">
                 {provider.avatar
                   ? <img src={provider.avatar} alt={name} className="w-full h-full object-cover" />
-                  : <div className="w-full h-full flex items-center justify-center text-4xl">{provider.category?.icon || '👤'}</div>
+                  : <div className="w-full h-full flex items-center justify-center text-5xl bg-gradient-to-br from-[var(--teal)]/20 to-indigo-500/20">{provider.category?.icon || '👤'}</div>
                 }
               </div>
               {provider.isVerified && (
-                <div className="absolute -bottom-2 -end-2 w-7 h-7 rounded-full bg-emerald-500 flex items-center justify-center">
-                  <Shield className="w-4 h-4 text-white" />
+                <div className="absolute -bottom-2 -right-2 w-10 h-10 rounded-2xl bg-[var(--teal)] flex items-center justify-center text-slate-900 shadow-lg border-4 border-white dark:border-[#0e0e11]">
+                  <Shield className="w-5 h-5" />
                 </div>
               )}
             </div>
 
-            {/* Info */}
+            {/* Info Hub */}
             <div className="flex-1 min-w-0">
-              <div className="flex flex-wrap items-start justify-between gap-3">
+              <div className="flex flex-wrap items-center justify-center md:justify-between gap-4 mb-4">
                 <div>
-                  <h1 className="text-2xl font-bold text-slate-900 dark:text-white">{name}</h1>
-                  {catName && (
-                    <span className="inline-flex items-center gap-1 text-sm text-primary-500 font-medium mt-1">
-                      {provider.category?.icon} {catName}
-                    </span>
-                  )}
+                  <h1 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tighter mb-2">{name}</h1>
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[var(--teal)]/10 text-[var(--teal)] rounded-full text-[10px] font-black uppercase tracking-widest border border-[var(--teal)]/20">
+                    {provider.category?.icon} {catName}
+                  </div>
                 </div>
                 {provider.isFeatured && (
-                  <span className="badge bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400">
+                  <span className="bg-amber-500 text-slate-900 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center gap-2 animate-pulse">
                     <Zap className="w-3 h-3" /> {t('providers.featured')}
                   </span>
                 )}
               </div>
 
-              {/* Rating */}
-              {provider.ratingCount > 0 && (
-                <div className="flex items-center gap-2 mt-3">
-                  <StarRating value={Math.round(provider.ratingAvg)} size="md" />
-                  <span className="font-bold text-slate-800 dark:text-white">{provider.ratingAvg.toFixed(1)}</span>
-                  <span className="text-slate-400 text-sm">({provider.ratingCount} {t('providers.reviews')})</span>
+              {/* Stats Strip */}
+              <div className="flex flex-wrap justify-center md:justify-start gap-8 mb-8 pb-8 border-b border-slate-200 dark:border-white/5 mt-6">
+                {provider.ratingCount > 0 && (
+                  <div className="text-center md:text-left">
+                    <div className="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2 justify-center md:justify-start">
+                      <Star className="w-5 h-5 text-amber-500 fill-amber-500" />
+                      {provider.ratingAvg.toFixed(1)}
+                    </div>
+                    <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">({provider.ratingCount} {t('providers.reviews')})</div>
+                  </div>
+                )}
+                <div className="text-center md:text-left">
+                  <div className="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2 justify-center md:justify-start">
+                    <Clock className="w-5 h-5 text-indigo-500" />
+                    {provider.yearsOfExperience || 0}
+                  </div>
+                  <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{t('profile.experience')}</div>
                 </div>
-              )}
-
-              {/* Meta */}
-              <div className="flex flex-wrap gap-4 mt-3 text-sm text-slate-500 dark:text-slate-400">
                 {provider.city && (
-                  <span className="flex items-center gap-1"><MapPin className="w-4 h-4" />{provider.city}</span>
+                  <div className="text-center md:text-left">
+                    <div className="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2 justify-center md:justify-start">
+                      <MapPin className="w-5 h-5 text-rose-500" />
+                      {provider.city}
+                    </div>
+                    <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Location</div>
+                  </div>
                 )}
-                {provider.yearsOfExperience > 0 && (
-                  <span className="flex items-center gap-1"><Clock className="w-4 h-4" />{provider.yearsOfExperience} {t('profile.experience')}</span>
-                )}
-                {provider.languages?.length > 0 && (
-                  <span className="flex items-center gap-1"><Languages className="w-4 h-4" />{provider.languages.join(', ')}</span>
+              </div>
+
+              {/* Contact Hub */}
+              <div className="flex flex-wrap justify-center md:justify-start gap-4">
+                {user ? (
+                  <>
+                    {provider.phone && (
+                      <a href={`tel:${provider.phone}`} className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-transform flex items-center gap-3">
+                        <Phone className="w-4 h-4" /> {provider.phone}
+                      </a>
+                    )}
+                    {provider.whatsapp && (
+                      <a
+                        href={`https://wa.me/${provider.whatsapp.replace(/\D/g, '')}`}
+                        target="_blank" rel="noreferrer"
+                        className="bg-emerald-500 text-white px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-transform flex items-center gap-3"
+                      >
+                        <MessageCircle className="w-4 h-4" /> WhatsApp
+                      </a>
+                    )}
+                  </>
+                ) : (
+                  <Link to="/login" className="bg-white/40 dark:bg-white/5 border border-white/20 px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-[var(--teal)] transition-all flex items-center gap-3 backdrop-blur-xl">
+                    <Lock className="w-4 text-[var(--teal)]" />
+                    {t('profile.login_to_contact')}
+                  </Link>
                 )}
               </div>
             </div>
           </div>
-
-          {/* Contact section */}
-          <div className="mt-6 pt-6 border-t border-slate-100 dark:border-slate-700">
-            {user ? (
-              <div className="flex flex-wrap gap-3">
-                {provider.phone && (
-                  <a href={`tel:${provider.phone}`} className="btn-primary text-sm">
-                    <Phone className="w-4 h-4" /> {provider.phone}
-                  </a>
-                )}
-                {provider.whatsapp && (
-                  <a
-                    href={`https://wa.me/${provider.whatsapp.replace(/\D/g, '')}`}
-                    target="_blank" rel="noreferrer"
-                    className="btn-secondary text-sm bg-emerald-50 border-emerald-200 text-emerald-700 hover:bg-emerald-100"
-                  >
-                    <MessageCircle className="w-4 h-4" /> WhatsApp
-                  </a>
-                )}
-                {provider.website && (
-                  <a href={provider.website} target="_blank" rel="noreferrer" className="btn-ghost text-sm">
-                    <Globe className="w-4 h-4" /> Website
-                  </a>
-                )}
-              </div>
-            ) : (
-              <Link to="/login" className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800 px-4 py-3 rounded-xl w-fit hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
-                <Lock className="w-4 h-4 text-primary-400" />
-                {t('profile.login_to_contact')}
-              </Link>
-            )}
-          </div>
         </div>
 
-        {/* Tabs */}
-        <div className="flex gap-1 mb-5 bg-slate-100 dark:bg-slate-800 p-1 rounded-2xl">
+        {/* Minimalist Tabs */}
+        <div className="flex gap-2 mb-8 bg-white/40 dark:bg-white/5 p-2 rounded-[24px] border border-white/10 backdrop-blur-xl">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 py-2.5 px-4 rounded-xl text-sm font-semibold transition-colors ${
+              className={clsx(
+                "flex-1 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all",
                 activeTab === tab.id
-                  ? 'bg-white dark:bg-slate-700 text-primary-600 dark:text-primary-400 shadow-sm'
-                  : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-200'
-              }`}
+                  ? "bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-xl scale-105"
+                  : "text-slate-400 hover:text-slate-800 dark:hover:text-white"
+              )}
             >
               {tab.label}
             </button>
           ))}
         </div>
 
-        {/* Tab Content */}
-        {activeTab === 'about' && (
-          <div className="card p-6 animate-fade-in">
-            <h2 className="font-bold text-lg mb-4 text-slate-900 dark:text-white">{t('profile.about')}</h2>
-            <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-sm">{desc || 'No description provided.'}</p>
-            {provider.address && (
-              <div className="mt-4 flex items-start gap-2 text-sm text-slate-500">
-                <MapPin className="w-4 h-4 mt-0.5 text-primary-400 flex-shrink-0" />
-                <span>{provider.address}</span>
-              </div>
-            )}
-          </div>
-        )}
+        {/* Clean Content Sections */}
+        <div className="space-y-8 min-h-[400px]">
+          {activeTab === 'about' && (
+            <div className="bg-white/40 dark:bg-white/5 border border-white/10 p-10 rounded-[48px] backdrop-blur-3xl animate-fade-in">
+              <h2 className="text-2xl font-black text-slate-800 dark:text-white mb-6 flex items-center gap-3">
+                <FileText className="w-5 h-5 text-[var(--teal)]" />
+                {t('profile.about')}
+              </h2>
+              <p className="text-slate-500 font-medium leading-loose text-lg">{desc || 'Professional has not provided a description yet.'}</p>
+            </div>
+          )}
 
-        {activeTab === 'services' && (
-          <div className="space-y-3 animate-fade-in">
-            {provider.services?.length > 0 ? (provider.services || []).map((svc, i) => (
-              <div key={i} className="card p-5">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <h3 className="font-bold text-slate-900 dark:text-white">
-                      {lang === 'ar' && svc.titleAr ? svc.titleAr : svc.title}
-                    </h3>
-                    {svc.description && (
-                      <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">{svc.description}</p>
+          {activeTab === 'services' && (
+            <div className="grid gap-6 animate-fade-in">
+              {provider.services?.length > 0 ? (provider.services || []).map((svc, i) => (
+                <div key={i} className="bg-white/40 dark:bg-white/5 border border-white/10 p-8 rounded-[40px] backdrop-blur-3xl group hover:border-[var(--teal)]/50 transition-all">
+                  <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
+                    <div>
+                      <h3 className="text-2xl font-black text-slate-800 dark:text-white mb-2">
+                        {lang === 'ar' && svc.titleAr ? svc.titleAr : svc.title}
+                      </h3>
+                      {svc.description && (
+                        <p className="text-slate-500 font-medium text-sm leading-relaxed">{svc.description}</p>
+                      )}
+                    </div>
+                    {svc.price && (
+                      <div className="bg-slate-900 dark:bg-white px-6 py-3 rounded-2xl text-center shadow-lg">
+                        <div className="text-lg font-black text-[var(--teal)]">EGP {svc.price}</div>
+                        <div className="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 leading-none mt-1">{t('common.per')} {svc.priceUnit}</div>
+                      </div>
                     )}
                   </div>
-                  {svc.price && (
-                    <div className="text-end flex-shrink-0">
-                      <div className="text-lg font-bold text-primary-500">EGP {svc.price}</div>
-                      <div className="text-xs text-slate-400">{t('common.per')} {svc.priceUnit}</div>
-                    </div>
-                  )}
                 </div>
-              </div>
-            )) : (
-              <div className="card p-8 text-center text-slate-400">
-                <p>{t('common.no_data')}</p>
-              </div>
-            )}
-          </div>
-        )}
+              )) : (
+                <div className="py-20 text-center opacity-30 text-slate-400 italic">No specific services listed yet.</div>
+              )}
+            </div>
+          )}
 
-        {activeTab === 'ratings' && (
-          <div className="space-y-4 animate-fade-in">
-            {/* Write a review */}
-            {user && user.role === 'seeker' && (
-              <div className="card p-6">
-                <h3 className="font-bold text-slate-900 dark:text-white mb-4">{t('profile.write_review')}</h3>
-                <div className="mb-3">
-                  <p className="text-sm text-slate-500 mb-2">{t('profile.your_rating')}</p>
-                  <StarRating value={myRating} size="lg" interactive onChange={setMyRating} />
+          {activeTab === 'ratings' && (
+            <div className="space-y-8 animate-fade-in">
+              {user && user.role === 'seeker' && (
+                <div className="bg-white/60 dark:bg-white/5 border border-[var(--teal)]/20 p-10 rounded-[48px] backdrop-blur-3xl shadow-xl shadow-[var(--teal)]/5">
+                  <h3 className="text-2xl font-black text-slate-800 dark:text-white mb-8">{t('profile.write_review')}</h3>
+                  <div className="mb-8 p-6 bg-slate-100 dark:bg-white/5 rounded-3xl">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-4 pl-1">{t('profile.your_rating')}</p>
+                    <StarRating value={myRating} size="lg" interactive onChange={setMyRating} />
+                  </div>
+                  <textarea
+                    value={myComment}
+                    onChange={(e) => setMyComment(e.target.value)}
+                    placeholder={t('profile.comment')}
+                    className="w-full bg-white dark:bg-black/50 border border-slate-200 dark:border-white/10 rounded-3xl p-6 text-sm font-medium outline-none focus:ring-4 focus:ring-[var(--teal)]/10 focus:border-[var(--teal)] transition-all mb-6 min-h-[120px]"
+                  />
+                  <button
+                    onClick={submitRating}
+                    disabled={submitting || !myRating}
+                    className="w-full bg-[var(--teal)] text-slate-900 py-5 rounded-2xl text-[10px] font-black uppercase tracking-widest disabled:opacity-30 shadow-lg shadow-[var(--teal)]/10"
+                  >
+                    {submitting ? '...' : t('profile.submit_review')}
+                  </button>
                 </div>
-                <textarea
-                  value={myComment}
-                  onChange={(e) => setMyComment(e.target.value)}
-                  placeholder={t('profile.comment')}
-                  rows={3}
-                  className="input text-sm resize-none mb-3"
-                />
-                <button
-                  onClick={submitRating}
-                  disabled={submitting || !myRating}
-                  className="btn-primary text-sm"
-                >
-                  {submitting ? '...' : t('profile.submit_review')}
-                </button>
-              </div>
-            )}
+              )}
 
-            {/* Reviews list */}
-            {ratings.length === 0 ? (
-              <div className="card p-8 text-center text-slate-400">
-                <Star className="w-10 h-10 mx-auto mb-3 opacity-30" />
-                <p>{t('common.no_data')}</p>
-              </div>
-            ) : (ratings || []).map((r) => (
-              <div key={r._id} className="card p-5">
-                <div className="flex items-start gap-3">
-                  <div className="w-9 h-9 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center text-primary-600 font-bold text-sm flex-shrink-0">
-                    {r.user?.name?.charAt(0).toUpperCase()}
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="font-semibold text-sm text-slate-800 dark:text-slate-200">{r.user?.name}</span>
-                      <span className="text-xs text-slate-400">{new Date(r.createdAt).toLocaleDateString()}</span>
+              <div className="grid gap-6">
+                {ratings.length === 0 ? (
+                  <div className="py-20 text-center opacity-30 text-slate-400 italic">No reviews yet. Be the first to rate!</div>
+                ) : (ratings || []).map((r) => (
+                  <div key={r._id} className="bg-white/40 dark:bg-white/5 border border-white/10 p-8 rounded-[40px] backdrop-blur-3xl">
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[var(--teal)]/20 to-indigo-500/20 flex items-center justify-center text-[var(--teal)] font-black text-sm">
+                        {r.user?.name?.charAt(0).toUpperCase()}
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="font-black text-slate-800 dark:text-white text-lg tracking-tight">{r.user?.name}</span>
+                          <span className="text-[10px] font-bold text-slate-400 tracking-widest uppercase">{new Date(r.createdAt).toLocaleDateString()}</span>
+                        </div>
+                        <div className="mb-3">
+                          <StarRating value={r.stars} size="sm" />
+                        </div>
+                        {r.comment && <p className="text-slate-500 font-medium leading-relaxed">{r.comment}</p>}
+                      </div>
                     </div>
-                    <StarRating value={r.stars} size="sm" />
-                    {r.comment && <p className="text-sm text-slate-600 dark:text-slate-300 mt-1.5">{r.comment}</p>}
                   </div>
-                </div>
+                ))}
               </div>
-            ))}
-          </div>
-        )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

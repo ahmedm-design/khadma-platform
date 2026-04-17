@@ -14,6 +14,7 @@ const ProviderProfile = lazy(() => import('./pages/ProviderProfile'));
 const Login           = lazy(() => import('./pages/Login'));
 const Register        = lazy(() => import('./pages/Register'));
 const SearchResults   = lazy(() => import('./pages/SearchResults'));
+const Support         = lazy(() => import('./pages/Support'));
 const NotFound        = lazy(() => import('./pages/NotFound'));
 
 // Dashboards
@@ -46,6 +47,7 @@ export default function App() {
             <Route path="search" element={<SearchResults />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
+            <Route path="support" element={<Support />} />
 
             {/* Protected — Seeker */}
             <Route

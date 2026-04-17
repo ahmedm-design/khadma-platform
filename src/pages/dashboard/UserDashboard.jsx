@@ -34,26 +34,30 @@ export default function UserDashboard() {
   ];
 
   return (
-    <div className="py-12">
-      <div className="container-app max-w-3xl mx-auto">
+    <div className="py-12 relative overflow-hidden min-h-screen">
+      {/* Background Atmosphere */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-sky-500 opacity-[0.03] rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-1/4 left-0 w-[400px] h-[400px] bg-indigo-500 opacity-[0.02] rounded-full blur-[100px] pointer-events-none" />
+
+      <div className="container-app max-w-5xl mx-auto relative z-10">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="section-title">
+        <div className="mb-12 animate-fade-in">
+          <h1 className="kd-section-title text-4xl md:text-5xl mb-2">
             {t('dashboard.welcome')}, {user?.name?.split(' ')[0]} 👋
           </h1>
-          <p className="text-slate-400 text-sm mt-1">Manage your profile and activity</p>
+          <p className="text-slate-500 font-medium text-sm">Review your security settings and account notifications.</p>
         </div>
 
-        {/* Tabs */}
-        <div className="flex gap-1 mb-6 bg-slate-100 dark:bg-slate-800 p-1 rounded-2xl w-fit">
+        {/* Cinematic Segmented Control */}
+        <div className="flex p-1.5 mb-10 bg-slate-200/50 dark:bg-white/5 border border-white/20 dark:border-white/5 rounded-[24px] backdrop-blur-xl max-w-sm">
           {tabs.map(({ id, label, icon: Icon }) => (
             <button
               key={id}
               onClick={() => setActiveTab(id)}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors ${
+              className={`flex-1 flex items-center justify-center gap-2 py-3 px-6 rounded-[20px] text-sm font-bold transition-all duration-500 ${
                 activeTab === id
-                  ? 'bg-white dark:bg-slate-700 text-primary-600 dark:text-primary-400 shadow-sm'
-                  : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-200'
+                  ? 'bg-white dark:bg-white/10 text-[var(--teal)] shadow-sm'
+                  : 'text-slate-500 hover:text-slate-800 dark:hover:text-white'
               }`}
             >
               <Icon className="w-4 h-4" /> {label}
@@ -63,67 +67,72 @@ export default function UserDashboard() {
 
         {/* Profile Tab */}
         {activeTab === 'profile' && (
-          <div className="card p-6 animate-fade-in">
-            <div className="flex items-start justify-between mb-6">
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-400 to-accent-400 flex items-center justify-center text-white text-2xl font-bold">
+          <div className="bg-white/40 dark:bg-white/5 border border-white/20 dark:border-white/10 backdrop-blur-2xl rounded-[32px] p-10 animate-fade-in shadow-sm space-y-10">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-4">
+              <div className="flex items-center gap-6">
+                <div className="w-20 h-20 rounded-[28px] bg-[var(--teal)] flex items-center justify-center text-slate-900 text-3xl font-black shadow-xl shadow-[var(--teal)]/20">
                   {user?.name?.charAt(0).toUpperCase()}
                 </div>
                 <div>
-                  <h2 className="font-bold text-lg text-slate-900 dark:text-white">{user?.name}</h2>
-                  <span className="badge bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 capitalize">
-                    {user?.role}
-                  </span>
+                  <h2 className="font-black text-2xl text-slate-800 dark:text-white mb-1 group flex items-center gap-2">
+                    {user?.name}
+                    <div className="w-5 h-5 bg-[var(--teal)] rounded-full flex items-center justify-center">
+                      <svg className="w-3 h-3 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>
+                    </div>
+                  </h2>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-[var(--teal)] bg-[var(--teal)]/10 px-3 py-1 rounded-full border border-[var(--teal)]/20">
+                      {user?.role} Account
+                    </span>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Main User</span>
+                  </div>
                 </div>
               </div>
-              {!editing ? (
-                <button onClick={() => setEditing(true)} className="btn-secondary text-sm gap-2">
-                  <Edit3 className="w-4 h-4" /> {t('dashboard.edit_profile')}
-                </button>
-              ) : (
-                <div className="flex gap-2">
-                  <button onClick={() => setEditing(false)} className="btn-ghost text-sm gap-1">
-                    <X className="w-4 h-4" /> {t('common.cancel')}
+              
+              <div className="flex gap-3 w-full md:w-auto">
+                {!editing ? (
+                  <button onClick={() => setEditing(true)} className="btn-secondary flex-1 md:flex-none text-xs uppercase tracking-widest font-bold px-8 py-3.5 rounded-xl border-slate-200 gap-2">
+                    <Edit3 className="w-4 h-4" /> {t('dashboard.edit_profile')}
                   </button>
-                  <button onClick={handleSave} disabled={saving} className="btn-primary text-sm gap-1">
-                    <Save className="w-4 h-4" /> {saving ? '...' : t('dashboard.save')}
-                  </button>
-                </div>
-              )}
+                ) : (
+                  <>
+                    <button onClick={() => setEditing(false)} className="btn-ghost text-xs uppercase tracking-widest font-bold px-6 py-3.5 rounded-xl gap-1">
+                      <X className="w-4 h-4" /> {t('common.cancel')}
+                    </button>
+                    <button onClick={handleSave} disabled={saving} className="btn-primary shadow-lg shadow-indigo-500/20 flex-1 md:flex-none text-xs uppercase tracking-widest font-bold px-8 py-3.5 rounded-xl gap-1">
+                      <Save className="w-4 h-4" /> {saving ? '...' : t('dashboard.save')}
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-medium text-slate-500 mb-1.5">{t('auth.name')}</label>
-                {editing
-                  ? <input value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} className="input text-sm" />
-                  : <p className="text-sm font-medium text-slate-800 dark:text-slate-200 py-2">{user?.name}</p>
-                }
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-slate-500 mb-1.5">{t('auth.email')}</label>
-                <p className="text-sm font-medium text-slate-800 dark:text-slate-200 py-2">{user?.email}</p>
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-slate-500 mb-1.5">{t('auth.phone')}</label>
-                {editing
-                  ? <input value={form.phone} onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))} className="input text-sm" />
-                  : <p className="text-sm font-medium text-slate-800 dark:text-slate-200 py-2">{user?.phone || '—'}</p>
-                }
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-slate-500 mb-1.5">Member Since</label>
-                <p className="text-sm font-medium text-slate-800 dark:text-slate-200 py-2">
-                  {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : '—'}
-                </p>
-              </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8 pt-6 border-t border-slate-100 dark:border-white/5">
+              {[
+                { label: t('auth.name'), key: 'name', editable: true },
+                { label: t('auth.email'), key: 'email', editable: false },
+                { label: t('auth.phone'), key: 'phone', editable: true },
+                { label: 'Account Created', key: 'createdAt', editable: false, format: (val) => new Date(val).toLocaleDateString() },
+              ].map(({ label, key, editable, format }) => (
+                <div key={key} className="group flex flex-col">
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 transition-colors group-focus-within:text-indigo-500">{label}</label>
+                  {editing && editable
+                    ? <input value={form[key]} onChange={(e) => setForm((f) => ({ ...f, [key]: e.target.value }))} className="bg-slate-100/50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-5 py-4 text-sm focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none font-bold" />
+                    : <p className="text-sm font-bold text-slate-700 dark:text-slate-200 py-3 border-b border-slate-100 dark:border-white/5">
+                        {format ? format(user?.[key]) : user?.[key] || '—'}
+                      </p>
+                  }
+                </div>
+              ))}
             </div>
           </div>
         )}
 
         {/* Notifications Tab */}
         {activeTab === 'notifications' && (
-          <NotificationsPanel />
+          <div className="max-w-4xl animate-fade-in">
+            <NotificationsPanel />
+          </div>
         )}
       </div>
     </div>

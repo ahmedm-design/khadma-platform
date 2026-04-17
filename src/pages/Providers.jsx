@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Search, SlidersHorizontal, X } from 'lucide-react';
+import clsx from 'clsx';
 import { useLang } from '../context/LangContext';
 import api from '../api/axios';
 import ProviderCard from '../components/common/ProviderCard';
@@ -70,24 +71,42 @@ export default function Providers() {
   const selectStyle = { ...inputStyle, cursor: 'pointer', appearance: 'none' };
 
   return (
-    <div>
-      {/* Page hero strip */}
-      <div className="animate-fade-in" style={{ background: 'linear-gradient(135deg, var(--cream) 0%, var(--paper) 100%)', borderBottom: '1px solid var(--border)', padding: '52px 40px 40px' }}>
-        <div className="animate-fade-up" style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <span className="kd-section-label">{isAr ? 'المحترفون' : 'Professionals'}</span>
-          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16 }}>
-            <div>
-              <h1 className="kd-section-title" style={{ marginBottom: 4 }}>{t('providers.title')}</h1>
-              <p style={{ fontSize: 14, color: 'var(--muted)' }}>{providers.length} {isAr ? 'مقدم خدمة' : 'providers found'}</p>
+    <div className="relative overflow-hidden min-h-screen mesh-bg">
+      {/* Background Atmosphere - Simplified for Calm Mood */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--teal)] opacity-[0.02] rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-1/4 left-0 w-[400px] h-[400px] bg-indigo-500 opacity-[0.02] rounded-full blur-[100px] pointer-events-none" />
+
+      {/* Page Hero Strip */}
+      <div className="relative pt-24 pb-12 px-10 border-b border-slate-200/50 dark:border-white/5">
+        <div className="max-w-[1400px] mx-auto text-center md:text-left">
+          <div className="flex flex-col md:flex-row items-center md:items-end justify-between gap-10">
+            <div className="animate-fade-in flex-1">
+              <span className="kd-section-label uppercase tracking-[0.3em] text-[var(--teal)] mb-4 inline-block font-black text-[10px]">{isAr ? 'المحترفون' : 'Verified Professionals'}</span>
+              <h1 className="kd-section-title text-5xl md:text-7xl mb-6 tracking-tighter">{t('providers.title')}</h1>
+              <p className="text-slate-500 font-medium max-w-2xl leading-relaxed text-sm md:text-lg">
+                {isAr 
+                  ? 'اكتشف النخبة من مقدمي الخدمات في مصر. نضمن لك الجودة والاحترافية في كل مشروع.'
+                  : 'Connect with Egypt\'s elite service providers. We verify every professional to ensure quality and reliability for your home and business.'}
+              </p>
+              <div className="mt-8 inline-flex items-center gap-3 px-5 py-2 bg-white/40 dark:bg-white/5 backdrop-blur-md rounded-2xl text-[10px] font-black text-slate-400 border border-white/10 uppercase tracking-widest leading-none">
+                <span className="w-2 h-2 rounded-full bg-[var(--teal)] animate-pulse" />
+                {providers.length} {isAr ? 'مقدم خدمة متاح حالياً' : 'providers available now'}
+              </div>
             </div>
+
             <button
               onClick={() => setShowFilters((o) => !o)}
-              style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 20px', background: showFilters ? 'var(--ink)' : 'var(--kd-white, white)', color: showFilters ? 'var(--kd-white, white)' : 'var(--ink)', border: '1.5px solid var(--border)', borderRadius: 12, fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: 'Sora, sans-serif', transition: 'all 0.2s', whiteSpace: 'nowrap' }}
+              className={clsx(
+                "flex items-center gap-4 px-10 py-5 rounded-[24px] text-xs font-black transition-all duration-500 border uppercase tracking-widest",
+                showFilters 
+                  ? "bg-slate-900 dark:bg-white text-white dark:text-slate-900 border-slate-900" 
+                  : "bg-white/40 dark:bg-white/5 text-slate-700 dark:text-white border-slate-200 dark:border-white/10 backdrop-blur-2xl hover:bg-white/60"
+              )}
             >
-              <SlidersHorizontal style={{ width: 16, height: 16 }} />
+              <SlidersHorizontal className="w-4 h-4" />
               {t('common.filter')}
               {hasFilters && (
-                <span style={{ background: 'var(--teal)', color: '#0d0d0d', borderRadius: '50%', width: 20, height: 20, fontSize: 11, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span className="bg-[var(--teal)] text-slate-900 rounded-full w-5 h-5 text-[10px] font-black flex items-center justify-center translate-x-1">
                   {[city, catId, minRating, search].filter(Boolean).length}
                 </span>
               )}
@@ -96,102 +115,130 @@ export default function Providers() {
         </div>
       </div>
 
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '40px 40px' }}>
-        {/* Filter panel */}
+      <div className="max-w-[1400px] mx-auto px-10 py-8 relative z-10">
+        {/* Filter Panel - Glassmorphic */}
         {showFilters && (
-          <div style={{ background: 'var(--kd-white, white)', border: '1.5px solid var(--border)', borderRadius: 20, padding: '24px', marginBottom: 32, boxShadow: 'var(--kd-shadow)' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 16 }}>
+          <div className="bg-white/60 dark:bg-white/5 border border-white/40 dark:border-white/10 backdrop-blur-3xl rounded-[32px] p-8 mb-12 shadow-2xl shadow-indigo-500/5 animate-fade-in">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {/* Search */}
-              <div style={{ position: 'relative' }}>
-                <Search style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', width: 14, height: 14, color: 'var(--muted)' }} />
-                <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t('providers.search')} style={{ ...inputStyle, paddingLeft: 38 }} />
+              <div className="relative group">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 transition-colors group-focus-within:text-[var(--teal)]" />
+                <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t('providers.search')} className="bg-white/50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl pl-12 pr-5 py-4 text-sm w-full outline-none focus:ring-4 focus:ring-[var(--teal)]/10 focus:border-[var(--teal)] transition-all font-bold" />
               </div>
               {/* City */}
-              <select value={city} onChange={(e) => setCity(e.target.value)} style={selectStyle}>
-                <option value="">{t('providers.filter_city')}</option>
-                {CITIES.map((c) => <option key={c} value={c}>{c}</option>)}
-              </select>
+              <div>
+                <select value={city} onChange={(e) => setCity(e.target.value)} className="bg-white/50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl px-5 py-4 text-sm w-full outline-none focus:border-[var(--teal)] cursor-pointer font-bold appearance-none">
+                  <option value="">{t('providers.filter_city')}</option>
+                  {CITIES.map((c) => <option key={c} value={c}>{c}</option>)}
+                </select>
+              </div>
               {/* Category */}
-              <select value={catId} onChange={(e) => setCatId(e.target.value)} style={selectStyle}>
-                <option value="">All Categories</option>
-                {(categories || []).map((c) => (
-                  <option key={c._id} value={c._id}>{c.icon} {lang === 'ar' && c.nameAr ? c.nameAr : c.name}</option>
-                ))}
-              </select>
+              <div>
+                <select value={catId} onChange={(e) => setCatId(e.target.value)} className="bg-white/50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl px-5 py-4 text-sm w-full outline-none focus:border-[var(--teal)] cursor-pointer font-bold appearance-none">
+                  <option value="">All Categories</option>
+                  {(categories || []).map((c) => (
+                    <option key={c._id} value={c._id}>{c.icon} {lang === 'ar' && c.nameAr ? c.nameAr : c.name}</option>
+                  ))}
+                </select>
+              </div>
               {/* Sort */}
-              <select value={sort} onChange={(e) => setSort(e.target.value)} style={selectStyle}>
-                <option value="-ratingAvg">Top Rated</option>
-                <option value="-createdAt">Newest</option>
-                <option value="-isFeatured">Featured First</option>
-              </select>
+              <div>
+                <select value={sort} onChange={(e) => setSort(e.target.value)} className="bg-white/50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl px-5 py-4 text-sm w-full outline-none focus:border-[var(--teal)] cursor-pointer font-bold appearance-none">
+                  <option value="-ratingAvg">Top Rated First</option>
+                  <option value="-createdAt">Newest Joined</option>
+                  <option value="-isFeatured">Featured Spotlight</option>
+                </select>
+              </div>
             </div>
 
-            {/* Rating filter */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 16, flexWrap: 'wrap' }}>
-              <span style={{ fontSize: 13, color: 'var(--muted)', fontWeight: 600 }}>{t('providers.filter_rating')}:</span>
-              {[0, 3, 4, 4.5].map((r) => (
-                <button
-                  key={r}
-                  onClick={() => setMinRating(r ? String(r) : '')}
-                  style={{
-                    padding: '6px 14px', borderRadius: 20, fontSize: 13, fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s', fontFamily: 'Sora, sans-serif',
-                    background: (minRating === String(r) || (!minRating && r === 0)) ? 'var(--ink)' : 'transparent',
-                    color: (minRating === String(r) || (!minRating && r === 0)) ? 'var(--kd-white, white)' : 'var(--muted)',
-                    border: (minRating === String(r) || (!minRating && r === 0)) ? '2px solid var(--ink)' : '2px solid var(--border)',
-                  }}
-                >
-                  {r === 0 ? 'All' : `${r}+ ⭐`}
-                </button>
-              ))}
+            {/* Rating Filter Bar */}
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6 mt-8 pt-8 border-t border-slate-100 dark:border-white/5">
+              <div className="flex items-center gap-3">
+                <span className="text-[10px] uppercase font-black tracking-widest text-slate-400">{t('providers.filter_rating')}:</span>
+                <div className="flex p-1 bg-slate-100 dark:bg-white/5 rounded-xl">
+                  {[0, 3, 4, 4.5].map((r) => (
+                    <button
+                      key={r}
+                      onClick={() => setMinRating(r ? String(r) : '')}
+                      className={clsx(
+                        "px-5 py-2 rounded-lg text-xs font-black transition-all duration-300",
+                        (minRating === String(r) || (!minRating && r === 0))
+                          ? "bg-white dark:bg-white/10 text-[var(--teal-dark)] shadow-sm"
+                          : "text-slate-500 hover:text-slate-800 dark:hover:text-white"
+                      )}
+                    >
+                      {r === 0 ? 'All' : `${r}+ ⭐`}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              
               {hasFilters && (
-                <button onClick={clearFilters} style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: '#ef4444', background: 'transparent', border: 'none', cursor: 'pointer', fontFamily: 'Sora, sans-serif', fontWeight: 600 }}>
-                  <X style={{ width: 14, height: 14 }} /> Clear filters
+                <button onClick={clearFilters} className="text-xs font-black uppercase tracking-widest text-red-500 hover:bg-red-500/10 px-4 py-2 rounded-xl transition-all flex items-center gap-2">
+                  <X className="w-4 h-4" /> Reset Filters
                 </button>
               )}
             </div>
           </div>
         )}
 
-        {/* Results grid */}
+        {/* Results Grid - High End Cards */}
         {loading ? (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 24 }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {Array(12).fill(0).map((_, i) => <SkeletonProviderCard key={i} />)}
           </div>
         ) : providers.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '80px 0' }}>
-            <div style={{ fontSize: 48, marginBottom: 16 }}>😕</div>
-            <p style={{ fontSize: 20, fontWeight: 600, color: 'var(--ink)', marginBottom: 8 }}>{t('providers.no_results')}</p>
+          <div className="text-center py-40 animate-fade-in group">
+            <div className="text-8xl mb-8 group-hover:scale-110 transition-transform duration-500">🙁</div>
+            <h3 className="text-3xl font-black text-slate-800 dark:text-white mb-2">{t('providers.no_results')}</h3>
+            <p className="text-slate-400 font-medium mb-8">Try adjusting your filters or searching for something else.</p>
             {hasFilters && (
-              <button onClick={clearFilters} className="kd-btn-primary" style={{ marginTop: 16 }}>Clear Filters</button>
+              <button onClick={clearFilters} className="btn-primary px-12 py-4 rounded-2xl text-xs font-black uppercase tracking-widest">Clear Everything</button>
             )}
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 24 }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {(providers || []).map((p, i) => (
-              <div key={p._id} className="animate-fade-up hover-lift" style={{ animationDelay: `${(i % 12) * 0.05}s` }}>
+              <div key={p._id} className="animate-fade-up" style={{ animationDelay: `${(i % 12) * 0.05}s` }}>
                 <ProviderCard provider={p} />
               </div>
             ))}
           </div>
         )}
 
-        {/* Pagination */}
+        {/* Cinematic Pagination */}
         {totalPages > 1 && (
-          <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 48 }}>
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-              <button
-                key={p}
-                onClick={() => setPage(p)}
-                style={{
-                  width: 40, height: 40, borderRadius: 10, fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: 'Sora, sans-serif', transition: 'all 0.2s',
-                  background: page === p ? 'var(--ink)' : 'transparent',
-                  color: page === p ? 'var(--kd-white, white)' : 'var(--ink)',
-                  border: page === p ? '2px solid var(--ink)' : '2px solid var(--border)',
-                }}
-              >
-                {p}
-              </button>
-            ))}
+          <div className="flex justify-center items-center gap-3 mt-20">
+            <button 
+              disabled={page === 1}
+              onClick={() => setPage(page - 1)}
+              className="p-3 rounded-xl border border-slate-200 dark:border-white/10 hover:bg-slate-100 disabled:opacity-30 transition-all font-bold text-sm"
+            >
+              Previous
+            </button>
+            <div className="flex bg-slate-100 dark:bg-white/5 p-1.5 rounded-[20px] shadow-inner">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+                <button
+                  key={p}
+                  onClick={() => setPage(p)}
+                  className={clsx(
+                    "w-10 h-10 rounded-[14px] text-sm font-black transition-all duration-300",
+                    page === p 
+                      ? "bg-white dark:bg-white/10 text-[var(--teal-dark)] shadow-md" 
+                      : "text-slate-400 hover:text-slate-800"
+                  )}
+                >
+                  {p}
+                </button>
+              ))}
+            </div>
+            <button 
+              disabled={page === totalPages}
+              onClick={() => setPage(page + 1)}
+              className="p-3 rounded-xl border border-slate-200 dark:border-white/10 hover:bg-slate-100 disabled:opacity-30 transition-all font-bold text-sm"
+            >
+              Next
+            </button>
           </div>
         )}
       </div>

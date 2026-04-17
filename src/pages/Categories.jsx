@@ -27,61 +27,87 @@ export default function Categories() {
   const isAr = lang === 'ar';
 
   return (
-    <div>
-      {/* Page hero strip */}
-      <div className="animate-fade-in" style={{ background: 'linear-gradient(135deg, var(--cream) 0%, var(--paper) 100%)', borderBottom: '1px solid var(--border)', padding: '60px 40px 48px' }}>
-        <div className="animate-fade-up" style={{ maxWidth: 1200, margin: '0 auto', textAlign: 'center' }}>
-          <span className="kd-section-label" style={{ display: 'flex', justifyContent: 'center' }}>
-            {isAr ? 'تصفح الأقسام' : 'Browse Categories'}
-          </span>
-          <h1 className="kd-section-title">{t('categories.title')}</h1>
-          <p className="kd-section-sub" style={{ margin: '0 auto 32px' }}>{t('categories.subtitle')}</p>
+    <div className="relative overflow-hidden min-h-screen mesh-bg">
+      {/* Background Atmosphere - Simplified for Calm Mood */}
+      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-[var(--teal)] opacity-[0.02] rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-sky-500 opacity-[0.01] rounded-full blur-[130px] pointer-events-none" />
 
-          {/* Search */}
-          <div style={{ maxWidth: 440, margin: '0 auto', display: 'flex', background: 'var(--kd-white, white)', border: '1.5px solid var(--border)', borderRadius: 40, padding: '6px 6px 6px 20px', gap: 8, boxShadow: 'var(--kd-shadow)' }}>
-            <input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder={t('categories.search')}
-              style={{ border: 'none', background: 'transparent', outline: 'none', fontSize: 14, color: 'var(--ink)', flex: 1, fontFamily: 'Sora, sans-serif' }}
-            />
-            <button type="button" style={{ background: 'var(--teal)', border: 'none', borderRadius: 30, padding: '8px 18px', color: '#0d0d0d', fontSize: 13, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}>
-              <Search style={{ width: 13, height: 13 }} />
-              {isAr ? 'بحث' : 'Search'}
-            </button>
+      {/* Page Hero - Cinematic */}
+      <div className="relative pt-32 pb-16 px-10">
+        <div className="max-w-[1400px] mx-auto text-center animate-fade-in">
+          <span className="kd-section-label uppercase tracking-[0.3em] text-[var(--teal)] font-black text-[10px] mb-6 inline-block bg-white/40 dark:bg-white/5 px-6 py-2 rounded-full border border-white/10 backdrop-blur-md">
+            {isAr ? 'عالم من الخدمات' : 'World of Services'}
+          </span>
+          <h1 className="kd-section-title text-6xl md:text-8xl mb-8 tracking-tighter">{t('categories.title')}</h1>
+          <p className="text-slate-500 font-medium max-w-2xl mx-auto leading-relaxed text-sm md:text-lg mb-16">
+            {t('categories.subtitle')}
+          </p>
+
+          {/* Luxury Search Integration */}
+          <div className="relative max-w-2xl mx-auto group">
+            <div className="absolute inset-0 bg-[var(--teal)] opacity-[0.03] rounded-[30px] blur-3xl group-focus-within:opacity-[0.1] transition-opacity" />
+            <div className="relative flex items-center bg-white/60 dark:bg-white/5 border border-slate-200 dark:border-white/10 backdrop-blur-3xl rounded-[32px] p-2 pr-3 shadow-sm transition-all focus-within:ring-8 focus-within:ring-[var(--teal)]/5 focus-within:border-[var(--teal)]">
+              <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder={t('categories.search')}
+                className="bg-transparent border-none outline-none text-sm font-bold w-full px-8 text-slate-700 dark:text-white"
+              />
+              <button className="bg-[var(--teal)] text-slate-900 rounded-[24px] px-10 py-4.5 text-[11px] font-black uppercase tracking-widest flex items-center gap-3 hover:bg-[var(--teal-dark)] transition-all shadow-lg shadow-[var(--teal)]/20">
+                <Search className="w-4 h-4" />
+                {isAr ? 'بحث' : 'Search'}
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Grid */}
-      <div className="kd-section-wrap">
+      {/* Categories Grid - High End */}
+      <div className="max-w-[1400px] mx-auto px-10 pb-16">
         {loading ? (
-          <div className="kd-cats-grid">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {Array(8).fill(0).map((_, i) => (
-              <div key={i} style={{ background: 'var(--cream)', borderRadius: 14, aspectRatio: '4/3', animation: 'skeleton 1.5s ease-in-out infinite' }} />
+              <div key={i} className="bg-slate-100 dark:bg-white/5 rounded-[32px] aspect-[4/5] animate-pulse" />
             ))}
           </div>
         ) : filtered.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '80px 0' }}>
-            <div style={{ fontSize: 48, marginBottom: 16 }}>🔍</div>
-            <p style={{ fontSize: 18, fontWeight: 600, color: 'var(--ink)' }}>{t('common.no_data')}</p>
+          <div className="text-center py-40 animate-fade-in group">
+            <div className="text-8xl mb-8 group-hover:rotate-12 transition-transform duration-500">🔍</div>
+            <h3 className="text-3xl font-black text-slate-800 dark:text-white mb-2">{t('common.no_data')}</h3>
+            <button onClick={() => setSearch('')} className="text-[10px] uppercase font-black tracking-widest text-[var(--teal-dark)] hover:underline mt-4">Clear search query</button>
           </div>
         ) : (
-          <div className="kd-cats-grid">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {filtered.map((cat, i) => {
               const name = lang === 'ar' && cat.nameAr ? cat.nameAr : cat.name;
               const desc = lang === 'ar' && cat.descriptionAr ? cat.descriptionAr : cat.description;
               return (
-                <Link key={cat._id} to={`/categories/${cat.slug}`} className="kd-cat-card hover-lift animate-fade-up" style={{ animationDelay: `${i * 0.05}s` }}>
-                  <div className="kd-cat-icon-wrap">{cat.icon}</div>
-                  <div className="kd-cat-body">
-                    <div className="kd-cat-name">{name}</div>
-                    <div className="kd-cat-desc">{desc}</div>
+                <Link 
+                  key={cat._id} 
+                  to={`/categories/${cat.slug}`} 
+                  className="group bg-white/40 dark:bg-white/5 border border-white/20 dark:border-white/10 backdrop-blur-xl rounded-[32px] p-8 transition-all duration-500 hover:bg-white hover:shadow-2xl hover:shadow-[var(--teal)]/10 hover:-translate-y-2 animate-fade-up flex flex-col items-center text-center relative overflow-hidden" 
+                  style={{ animationDelay: `${i * 0.05}s` }}
+                >
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-[var(--teal)] opacity-[0.02] rounded-full blur-3xl group-hover:opacity-[0.08] transition-opacity" />
+                  
+                  <div className="w-20 h-20 rounded-[24px] bg-slate-50 dark:bg-white/5 flex items-center justify-center text-4xl mb-6 shadow-sm group-hover:scale-110 transition-transform duration-500 group-hover:rotate-6">
+                    {cat.icon}
+                  </div>
+                  
+                  <div className="flex-1">
+                    <h3 className="text-xl font-black text-slate-800 dark:text-white mb-2 tracking-tight">{name}</h3>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed line-clamp-2 px-4">{desc}</p>
+                  </div>
+
+                  <div className="mt-8 flex items-center justify-center gap-6 border-t border-slate-100 dark:border-white/5 pt-6 w-full">
                     {cat.subcategories?.length > 0 && (
-                      <div style={{ fontSize: 11, color: 'var(--teal-dark)', fontWeight: 600, marginTop: 6 }}>
+                      <div className="text-[10px] font-black uppercase tracking-widest text-[var(--teal-dark)]">
                         {cat.subcategories.length} {t('categories.subcategories')}
                       </div>
                     )}
+                    <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-white/10 flex items-center justify-center text-slate-400 group-hover:bg-[var(--teal)] group-hover:text-slate-900 transition-all">
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M9 5l7 7-7 7" /></svg>
+                    </div>
                   </div>
                 </Link>
               );

@@ -61,180 +61,143 @@ export default function Navbar() {
   return (
     <>
       <header className={clsx(
-        'sticky top-0 z-50 bg-[var(--paper)] backdrop-blur-md transition-shadow duration-200',
-        scrolled && 'shadow-md',
-      )} style={{ borderBottom: '1px solid var(--border)' }}>
-        <div className="kd-nav-inner" style={{ maxWidth: '100%' }}>
-          <div className="flex items-center gap-4" style={{ height: 'var(--nav-h, 80px)' }}>
+        'fixed top-0 left-0 right-0 z-[100] transition-all duration-500 py-4 px-6 md:px-10',
+        scrolled ? 'mt-2' : 'mt-0'
+      )}>
+        <div className={clsx(
+          'mx-auto transition-all duration-700 relative overflow-hidden',
+          scrolled 
+            ? 'max-w-[1200px] bg-white/70 dark:bg-[#0b0c10]/70 backdrop-blur-2xl rounded-[30px] border border-white/20 shadow-2xl px-6 py-2' 
+            : 'max-w-[1400px] bg-transparent backdrop-blur-none border-none py-4'
+        )}>
+          {/* Subtle line glow inside capsule */}
+          {scrolled && <div className="absolute top-0 left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-[var(--teal)]/20 to-transparent pointer-events-none" />}
 
-            {/* Mobile menu button — now on the left for balance */}
-            <button
-              onClick={() => setMenuOpen((o) => !o)}
-              className="md:hidden kd-menu-btn"
-              style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: 8, color: 'var(--ink)', zIndex: 60 }}
-            >
-              {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-8">
+              {/* Logo */}
+              <Link to="/" className="kd-nav-logo flex-shrink-0 text-3xl font-black tracking-tighter hover:scale-105 transition-transform">
+                {lang === 'ar' ? 'خدمة' : 'khedma'}<span className="text-[var(--teal)]">.</span>
+              </Link>
 
-            {/* Logo */}
-            <Link to="/" className="kd-nav-logo flex-shrink-0">
-              {lang === 'ar' ? 'خدمة' : 'khedma'}<span className="dot">.</span>
-            </Link>
+              {/* Desktop Nav Links */}
+              <nav className="hidden lg:flex items-center gap-1">
+                {navLinks.map((l) => (
+                  <Link
+                    key={l.to}
+                    to={l.to}
+                    className={clsx(
+                      'px-4 py-2 rounded-xl text-sm font-bold tracking-tight transition-all duration-300 relative group',
+                      location.pathname === l.to ? 'text-[var(--teal-dark)]' : 'text-slate-500 uppercase'
+                    )}
+                  >
+                    {l.label}
+                    {location.pathname === l.to && (
+                      <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[var(--teal)] rounded-full animate-pulse" />
+                    )}
+                    <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-[var(--teal)] rounded-full transition-all group-hover:w-4" />
+                  </Link>
+                ))}
+              </nav>
+            </div>
 
-            {/* Desktop search — hidden on home */}
+            {/* Middle Search - Professional Layout */}
             {!isHome && (
-              <form onSubmit={handleSearch} className="hidden md:flex" style={{ flex: 1, maxWidth: 440, margin: '0 40px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', background: 'var(--kd-white, #fff)', border: '1.5px solid var(--border)', borderRadius: 40, padding: '6px 6px 6px 18px', gap: 8, width: '100%', transition: 'border-color 0.2s, box-shadow 0.2s' }}
-                  onFocus={(e) => e.currentTarget.style.borderColor = 'var(--teal)'}
-                  onBlur={(e) => e.currentTarget.style.borderColor = 'var(--border)'}
-                >
+              <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-md mx-8 group">
+                <div className="flex items-center w-full bg-white/40 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-full pl-5 pr-2 py-1.5 focus-within:ring-4 focus-within:ring-[var(--teal)]/10 focus-within:border-[var(--teal)] transition-all">
                   <input
                     value={searchVal}
                     onChange={(e) => setSearchVal(e.target.value)}
                     placeholder={t('nav.search')}
-                    style={{ border: 'none', background: 'transparent', outline: 'none', fontFamily: 'Sora, sans-serif', fontSize: 16, color: 'var(--ink)', flex: 1 }}
+                    className="bg-transparent border-none outline-none text-sm font-medium w-full text-slate-700 dark:text-white"
                   />
-                  <button type="submit" style={{ background: 'var(--teal)', border: 'none', borderRadius: 30, padding: '8px 20px', color: '#0d0d0d', fontFamily: 'Sora, sans-serif', fontSize: 14, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6, whiteSpace: 'nowrap' }}>
-                    <svg width="15" height="15" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" strokeWidth="2"/><path d="M10.5 10.5L13 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
-                    {lang === 'ar' ? 'ابحث' : 'Search'}
+                  <button type="submit" className="bg-[var(--teal)] text-slate-900 rounded-full p-2.5 hover:bg-[var(--teal-dark)] transition-all transform hover:scale-110 active:scale-95">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" strokeWidth="2.5"/><path d="M10.5 10.5L13 13" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/></svg>
                   </button>
                 </div>
               </form>
             )}
 
-            {/* Spacer */}
-            <div style={{ flex: 1 }} />
+            {/* Right Controls */}
+            <div className="flex items-center gap-3">
+              <div className="hidden sm:flex items-center bg-slate-100/30 dark:bg-white/5 rounded-full px-2 py-1 gap-1 border border-white/5 backdrop-blur-md">
+                <button onClick={toggle} className="p-2 text-slate-500 hover:text-[var(--teal)] transition-colors rounded-full" aria-label="Toggle theme">
+                  {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                </button>
+                <div className="w-[1px] h-4 bg-slate-300 dark:bg-white/10 mx-1" />
+                <button onClick={() => setLang(lang === 'en' ? 'ar' : 'en')} className="px-2 text-[11px] font-black uppercase tracking-widest text-slate-500 hover:text-[var(--teal)] transition-colors">
+                  {lang === 'en' ? 'Ar' : 'En'}
+                </button>
+              </div>
 
-            {/* Nav links — desktop */}
-            <nav className="hidden md:flex items-center" style={{ gap: 4 }}>
-              {navLinks.map((l) => (
-                <Link
-                  key={l.to}
-                  to={l.to}
-                  style={{
-                    fontSize: 16, fontWeight: 500, padding: '10px 16px', borderRadius: 8,
-                    textDecoration: 'none', transition: 'color 0.2s, background 0.2s',
-                    color: location.pathname === l.to ? 'var(--teal-dark)' : 'var(--muted)',
-                    background: location.pathname === l.to ? 'rgba(0,201,167,0.08)' : 'transparent',
-                  }}
-                >
-                  {l.label}
-                </Link>
-              ))}
-            </nav>
-
-            {/* Right controls */}
-            <div className="flex items-center kd-nav-controls" style={{ gap: 6 }}>
-              {/* Theme toggle */}
-              <button onClick={toggle} style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: 8, borderRadius: 8, color: 'var(--muted)', fontSize: 16 }} aria-label="Toggle theme">
-                {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-              </button>
-
-              {/* Language toggle */}
-              <button
-                onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
-                className="flex items-center"
-                style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: '6px 10px', borderRadius: 8, color: 'var(--muted)', fontSize: 15, fontWeight: 600, gap: 4 }}
-              >
-                <Globe className="w-5 h-5" />
-                <span className="hidden xs:block" style={{ minWidth: 20 }}>{lang === 'en' ? 'ع' : 'EN'}</span>
-              </button>
-
-              {/* Auth / user menu */}
               {user ? (
                 <div className="relative" ref={dropRef}>
-                  <button
-                    onClick={() => setDropOpen((o) => !o)}
-                    className="flex items-center"
-                    style={{ gap: 10, padding: '8px 16px', borderRadius: 12, border: '1.5px solid var(--border)', background: 'transparent', cursor: 'pointer', color: 'var(--ink)' }}
+                  <button 
+                    onClick={() => setDropOpen(!dropOpen)}
+                    className="flex items-center gap-3 p-1 pr-4 bg-white/40 dark:bg-white/5 border border-white/20 rounded-full hover:bg-white/80 transition-all shadow-sm"
                   >
                     {user.avatar
-                      ? <img src={user.avatar} alt={user.name} style={{ width: 32, height: 32, borderRadius: '50%', objectFit: 'cover' }} />
-                      : <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'linear-gradient(135deg, var(--teal), #4facfe)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: 14, fontWeight: 700 }}>
-                          {user.name?.charAt(0).toUpperCase()}
-                        </div>
+                      ? <img src={user.avatar} alt={user.name} className="w-8 h-8 rounded-full border border-[var(--teal)]" />
+                      : <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--teal)] to-indigo-500 flex items-center justify-center text-white text-xs font-black">{user.name?.charAt(0)}</div>
                     }
-                    <span className="hidden sm:block" style={{ fontSize: 15, fontWeight: 600, maxWidth: 120, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{user.name}</span>
-                    <ChevronDown className="w-4 h-4" style={{ color: 'var(--muted)' }} />
+                    <ChevronDown className={clsx("w-3 h-3 text-slate-400 transition-transform", dropOpen && "rotate-180")} />
                   </button>
 
                   {dropOpen && (
-                    <div style={{ position: 'absolute', right: 0, marginTop: 8, width: 200, background: 'var(--kd-white, #fff)', border: '1.5px solid var(--border)', borderRadius: 14, boxShadow: 'var(--kd-shadow-lg)', padding: '6px 0', zIndex: 50 }}>
-                      <Link
-                        to={dashboardPath}
-                        onClick={() => setDropOpen(false)}
-                        style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 16px', fontSize: 14, color: 'var(--ink)', textDecoration: 'none' }}
-                      >
-                        <LayoutDashboard className="w-4 h-4" style={{ color: 'var(--teal)' }} />
-                        {t('nav.dashboard')}
+                    <div className="absolute right-0 mt-3 w-56 bg-white/90 dark:bg-[#0b0c10]/95 backdrop-blur-2xl border border-white/20 rounded-2xl shadow-2xl py-2 animate-fade-in overflow-hidden z-[110]">
+                      <div className="px-4 py-3 border-b border-slate-100 dark:border-white/5">
+                        <div className="text-xs font-black text-[var(--teal)] uppercase tracking-widest mb-0.5">{user.role}</div>
+                        <div className="text-sm font-bold text-slate-800 dark:text-white truncate">{user.name}</div>
+                      </div>
+                      <Link to={dashboardPath} onClick={() => setDropOpen(false)} className="flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-[var(--teal)] hover:text-white transition-all">
+                        <LayoutDashboard className="w-4 h-4" /> {t('nav.dashboard')}
                       </Link>
-                      <button
-                        onClick={() => { logout(); setDropOpen(false); }}
-                        style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 10, padding: '10px 16px', fontSize: 14, color: '#ef4444', background: 'transparent', border: 'none', cursor: 'pointer' }}
-                      >
-                        <LogOut className="w-4 h-4" />
-                        {t('nav.logout')}
+                      <button onClick={() => { logout(); setDropOpen(false); }} className="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-red-500 hover:bg-red-500 hover:text-white transition-all border-t border-slate-100 dark:border-white/5">
+                        <LogOut className="w-4 h-4" /> {t('nav.logout')}
                       </button>
                     </div>
                   )}
                 </div>
               ) : (
-                <div className="hidden sm:flex items-center" style={{ gap: 10 }}>
-                  <Link to="/login" style={{ fontSize: 16, fontWeight: 500, color: 'var(--muted)', textDecoration: 'none', padding: '8px 16px', borderRadius: 8 }}>
-                    {t('nav.login')}
-                  </Link>
-                  <Link to="/register" style={{ background: 'var(--ink)', color: 'var(--kd-white, #fff)', border: 'none', borderRadius: 10, padding: '12px 24px', fontFamily: 'Sora, sans-serif', fontSize: 15, fontWeight: 600, cursor: 'pointer', textDecoration: 'none', display: 'inline-block' }}>
+                <div className="flex gap-2">
+                  <Link to="/login" className="hidden sm:block text-sm font-bold text-slate-500 px-5 py-2.5 rounded-full hover:text-[var(--teal)] self-center transition-colors tracking-tight">{t('nav.login')}</Link>
+                  <Link to="/register" className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-6 py-2.5 rounded-full text-sm font-black uppercase tracking-tight shadow-lg shadow-black/10 hover:scale-105 active:scale-95 transition-all">
                     {t('nav.register')}
                   </Link>
                 </div>
               )}
-            </div>
-          </div>
 
-          {/* Mobile menu */}
-          {menuOpen && (
-            <div style={{ borderTop: '1px solid var(--border)', padding: '12px 0' }}>
-              <form onSubmit={handleSearch} style={{ padding: '0 0 12px' }}>
-                <div style={{ display: 'flex', background: 'var(--kd-white, #fff)', border: '1.5px solid var(--border)', borderRadius: 40, padding: '6px 6px 6px 18px', gap: 8 }}>
-                  <input value={searchVal} onChange={(e) => setSearchVal(e.target.value)} placeholder={t('nav.search')} style={{ border: 'none', background: 'transparent', outline: 'none', fontSize: 14, color: 'var(--ink)', flex: 1 }} />
-                  <button type="submit" style={{ background: 'var(--teal)', border: 'none', borderRadius: 30, padding: '7px 16px', color: '#0d0d0d', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
-                    {lang === 'ar' ? 'ابحث' : 'Search'}
-                  </button>
-                </div>
-              </form>
-              {navLinks.map((l) => (
-                <Link key={l.to} to={l.to} onClick={() => setMenuOpen(false)}
-                  style={{ display: 'block', padding: '10px 0', fontSize: 15, fontWeight: 500, color: 'var(--ink)', textDecoration: 'none', borderBottom: '1px solid var(--border)' }}>
-                  {l.label}
-                </Link>
-              ))}
-              <button
-                onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
-                style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 10, padding: '12px 0', fontSize: 15, fontWeight: 600, color: 'var(--ink)', background: 'transparent', border: 'none', borderBottom: '1px solid var(--border)', cursor: 'pointer' }}
-              >
-                <Globe className="w-5 h-5" style={{ color: 'var(--muted)' }} />
-                {lang === 'en' ? 'العربية (AR)' : 'English (EN)'}
+              {/* Mobile Trigger */}
+              <button onClick={() => setMenuOpen(!menuOpen)} className="lg:hidden p-2 text-slate-800 dark:text-white bg-slate-100 dark:bg-white/10 rounded-full">
+                {menuOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
-              {!user ? (
-                <div style={{ display: 'flex', gap: 10, paddingTop: 12 }}>
-                  <Link to="/login" onClick={() => setMenuOpen(false)} style={{ flex: 1, textAlign: 'center', padding: '12px', border: '1.5px solid var(--border)', borderRadius: 12, fontSize: 14, fontWeight: 600, color: 'var(--ink)', textDecoration: 'none' }}>{t('nav.login')}</Link>
-                  <Link to="/register" onClick={() => setMenuOpen(false)} style={{ flex: 1, textAlign: 'center', padding: '12px', background: 'var(--ink)', borderRadius: 12, fontSize: 14, fontWeight: 600, color: 'white', textDecoration: 'none' }}>{t('nav.register')}</Link>
-                </div>
-              ) : (
-                <div style={{ paddingTop: 12, display: 'flex', flexDirection: 'column', gap: 4 }}>
-                  <Link to={dashboardPath} onClick={() => setMenuOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 0', fontSize: 14, color: 'var(--ink)', textDecoration: 'none' }}>
-                    <LayoutDashboard className="w-4 h-4" /> {t('nav.dashboard')}
-                  </Link>
-                  <button onClick={() => { logout(); setMenuOpen(false); }} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 0', fontSize: 14, color: '#ef4444', background: 'transparent', border: 'none', cursor: 'pointer' }}>
-                    <LogOut className="w-4 h-4" /> {t('nav.logout')}
-                  </button>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      </header>
+            </div> {/* closes right controls */}
+          </div> {/* closes inner flex row */}
+        </div> {/* closes outer capsule div */}
+      </header> {/* closes header */}
 
+      {/* Mobile Menu - Full Screen Glass */}
+      {menuOpen && (
+        <div className="lg:hidden fixed inset-0 z-[-1] bg-[var(--paper)]/95 backdrop-blur-2xl p-10 pt-32 animate-fade-in">
+          <div className="flex flex-col gap-6 text-center">
+            {navLinks.map((l) => (
+              <Link key={l.to} to={l.to} onClick={() => setMenuOpen(false)} className="text-3xl font-black text-slate-800 active:text-[var(--teal)] transition-colors tracking-tighter uppercase">{l.label}</Link>
+            ))}
+            <div className="h-px bg-slate-200 dark:bg-white/10 my-4" />
+            {!user ? (
+              <div className="flex flex-col gap-4">
+                <Link to="/login" onClick={() => setMenuOpen(false)} className="text-xl font-bold text-slate-500">{t('nav.login')}</Link>
+                <Link to="/register" onClick={() => setMenuOpen(false)} className="bg-[var(--teal)] text-slate-900 py-4 rounded-2xl text-lg font-black">{t('nav.register')}</Link>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-4">
+                <Link to={dashboardPath} onClick={() => setMenuOpen(false)} className="text-xl font-bold text-slate-800">{t('nav.dashboard')}</Link>
+                <button onClick={() => { logout(); setMenuOpen(false); }} className="text-xl font-bold text-red-500">{t('nav.logout')}</button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </>
   );
 }

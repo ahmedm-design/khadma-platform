@@ -394,12 +394,22 @@ export default function AdminDashboard() {
   const { t } = useLang();
 
   return (
-    <div className="py-12">
-      <div className="container-app">
-        <h1 className="section-title mb-8">{t('admin.title')}</h1>
-        <div className="flex flex-col md:flex-row gap-6">
-          <AdminSidebar />
-          <div className="flex-1 min-w-0">
+    <div className="py-12 relative overflow-hidden min-h-screen">
+      {/* Background Atmosphere */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--teal)] opacity-[0.03] rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-1/4 left-0 w-[400px] h-[400px] bg-sky-500 opacity-[0.02] rounded-full blur-[100px] pointer-events-none" />
+
+      <div className="container-app max-w-[1400px] mx-auto relative z-10">
+        <div className="mb-12 animate-fade-in">
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--teal-dark)] mb-3 inline-block">System Control</span>
+          <h1 className="kd-section-title text-4xl md:text-5xl">{t('admin.title')}</h1>
+        </div>
+
+        <div className="flex flex-col lg:flex-row gap-10">
+          <div className="w-full lg:w-72 flex-shrink-0">
+            <AdminSidebar />
+          </div>
+          <div className="flex-1 min-w-0 bg-white/40 dark:bg-white/5 border border-white/20 dark:border-white/10 backdrop-blur-2xl rounded-[32px] p-8 md:p-12 shadow-sm">
             <Routes>
               <Route index element={<AdminStats />} />
               <Route path="users" element={<AdminUsers />} />

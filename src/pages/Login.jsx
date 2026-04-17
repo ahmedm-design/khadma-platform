@@ -6,7 +6,7 @@ import { useLang } from '../context/LangContext';
 import toast from 'react-hot-toast';
 
 export default function Login() {
-  const { login } = useAuth();
+  const { login, loginWithGoogle } = useAuth();
   const { t } = useLang();
   const navigate = useNavigate();
   const location = useLocation();
@@ -34,81 +34,88 @@ export default function Login() {
   };
 
   return (
-    <div className="kd-auth-page">
-      <div className="kd-auth-card">
-        {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: 32 }}>
-          <div style={{ width: 56, height: 56, borderRadius: 16, background: 'linear-gradient(135deg, var(--teal), var(--teal-dark))', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: 22, fontWeight: 700, fontFamily: 'DM Serif Display, serif', margin: '0 auto 16px' }}>K</div>
-          <h1 className="kd-auth-title">{t('auth.login')}</h1>
-          <p className="kd-auth-subtitle">Sign in to your Khedma account</p>
+    <div className="min-h-screen kd-wallpaper mesh-bg flex items-center justify-center p-6 bg-slate-100 dark:bg-black">
+      <div className="w-full max-w-[440px] animate-fade-up">
+        {/* Logo/Brand */}
+        <div className="text-center mb-10">
+          <Link to="/" className="inline-flex items-center gap-3 group">
+            <div className="w-12 h-12 rounded-2xl bg-[var(--teal)] flex items-center justify-center text-slate-900 font-dm text-2xl font-black shadow-lg shadow-[var(--teal)]/20 group-hover:scale-105 transition-transform">K</div>
+            <span className="text-2xl font-dm tracking-tighter text-slate-900 dark:text-white group-hover:opacity-80 transition-opacity">Khadma</span>
+          </Link>
         </div>
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-          <div>
-            <label className="kd-form-label">{t('auth.email')}</label>
-            <input
-              name="email"
-              type="email"
-              value={form.email}
-              onChange={handleChange}
-              className="kd-form-input"
-              placeholder="you@example.com"
-              required
-            />
-          </div>
+        <div className="bg-white/40 dark:bg-white/5 border border-slate-200 dark:border-white/10 backdrop-blur-3xl rounded-[40px] p-8 md:p-12 shadow-2xl shadow-indigo-500/5">
+          <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tighter mb-2">{t('auth.login')}</h1>
+          <p className="text-slate-500 font-medium text-sm mb-10">Welcome back. Enter your credentials to access your account.</p>
 
-          <div>
-            <div className="kd-form-label-row">
-              <label className="kd-form-label" style={{ marginBottom: 0 }}>{t('auth.password')}</label>
-              <Link to="/" className="kd-form-link">Forgot password?</Link>
-            </div>
-            <div style={{ position: 'relative' }}>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-2">
+              <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 pl-1">{t('auth.email')}</label>
               <input
-                name="password"
-                type={showPass ? 'text' : 'password'}
-                value={form.password}
+                name="email"
+                type="email"
+                value={form.email}
                 onChange={handleChange}
-                className="kd-form-input"
-                placeholder="••••••••"
-                style={{ paddingRight: 44 }}
+                className="w-full bg-white/50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl px-5 py-4 text-sm font-bold text-slate-700 dark:text-white outline-none focus:ring-4 focus:ring-[var(--teal)]/10 focus:border-[var(--teal)] transition-all"
+                placeholder="name@example.com"
                 required
               />
-              <button
-                type="button"
-                onClick={() => setShowPass((s) => !s)}
-                style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--muted)', fontSize: 16 }}
-              >
-                {showPass ? '🙈' : '👁'}
-              </button>
             </div>
-          </div>
 
-          <button type="submit" disabled={loading} className="kd-auth-submit">
-            {loading
-              ? <div style={{ width: 20, height: 20, border: '2px solid rgba(255,255,255,0.3)', borderTopColor: 'white', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto' }} />
-              : t('auth.login')
-            }
-          </button>
-        </form>
+            <div className="space-y-2">
+              <div className="flex justify-between items-center pl-1">
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">{t('auth.password')}</label>
+                <Link to="/" className="text-[10px] font-black uppercase tracking-widest text-[var(--teal)] hover:opacity-80 transition-opacity">Forgot?</Link>
+              </div>
+              <div className="relative group">
+                <input
+                  name="password"
+                  type={showPass ? 'text' : 'password'}
+                  value={form.password}
+                  onChange={handleChange}
+                  className="w-full bg-white/50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl px-5 py-4 text-sm font-bold text-slate-700 dark:text-white outline-none focus:ring-4 focus:ring-[var(--teal)]/10 focus:border-[var(--teal)] transition-all"
+                  placeholder="••••••••"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPass((s) => !s)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors"
+                >
+                  {showPass ? '🙈' : '👁'}
+                </button>
+              </div>
+            </div>
 
-        <div className="kd-auth-divider">
-          <div className="kd-auth-divider-line" />
-          <span>{t('auth.or') || 'OR'}</span>
-          <div className="kd-auth-divider-line" />
+            <button 
+              type="submit" 
+              disabled={loading} 
+              className="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 py-5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] shadow-xl hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50"
+            >
+              {loading ? 'Processing...' : t('auth.login')}
+            </button>
+
+            <div className="flex items-center gap-4 py-2">
+              <div className="h-[1px] flex-1 bg-slate-200 dark:bg-white/10" />
+              <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">or</span>
+              <div className="h-[1px] flex-1 bg-slate-200 dark:bg-white/10" />
+            </div>
+
+            <button 
+              type="button" 
+              onClick={loginWithGoogle}
+              className="w-full bg-white/40 dark:bg-white/5 border border-slate-200 dark:border-white/10 backdrop-blur-3xl py-4 rounded-2xl flex items-center justify-center gap-3 hover:bg-white dark:hover:bg-white/10 transition-all shadow-sm"
+            >
+              <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" className="w-5 h-5" />
+              <span className="text-[10px] font-black uppercase tracking-widest text-slate-700 dark:text-white">Continue with Google</span>
+            </button>
+          </form>
+
+          <p className="mt-8 text-center text-sm font-medium text-slate-500">
+            {t('auth.no_account')}{' '}
+            <Link to="/register" className="text-[var(--teal-dark)] font-black hover:underline">{t('auth.register')}</Link>
+          </p>
         </div>
-
-        <button 
-          type="button" 
-          className="kd-google-btn"
-        >
-          <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" className="kd-google-icon" />
-          {t('auth.google_login')}
-        </button>
-
-        <p className="kd-auth-footer">
-          {t('auth.no_account')}
-          <Link to="/register" className="kd-auth-footer-link">{t('auth.register')}</Link>
-        </p>
       </div>
     </div>
   );

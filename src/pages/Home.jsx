@@ -1,21 +1,22 @@
 // pages/Home.jsx — khadma design applied
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Shield } from 'lucide-react';
 import { useLang } from '../context/LangContext';
 import api from '../api/axios';
 import ProviderCard from '../components/common/ProviderCard';
 import { SkeletonProviderCard, SkeletonCategoryCard } from '../components/common/SkeletonCard';
-
-
 export default function Home() {
   const { t, lang } = useLang();
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
-  const [providers, setProviders]   = useState([]);
-  const [searchVal, setSearchVal]   = useState('');
+  const [providers, setProviders] = useState([]);
+  const [searchVal, setSearchVal] = useState('');
   const [loadingCats, setLoadingCats] = useState(true);
   const [loadingProvs, setLoadingProvs] = useState(true);
+
+  // Modal State
+  const [activeModal, setActiveModal] = useState(null); // { type: 'provider' | 'category', data: any }
 
   useEffect(() => {
     api.get('/categories')
@@ -45,7 +46,7 @@ export default function Home() {
   const isAr = lang === 'ar';
 
   return (
-    <div className="kd-wallpaper">
+    <div className="kd-wallpaper mesh-bg min-h-screen">
       {/* HERO */}
       <section className="kd-hero">
         <div className="kd-hero-video-wrap">
@@ -54,8 +55,7 @@ export default function Home() {
             muted
             loop
             playsInline
-            className="kd-hero-video"
-            style={{ opacity: 1.0 }}
+            className="kd-hero-video grayscale-[0.5] opacity-60"
           >
             <source src="/8293017-hd_1920_1080_30fps (online-video-cutter.com).mp4" type="video/mp4" />
           </video>
@@ -64,288 +64,351 @@ export default function Home() {
 
         <div className="kd-hero-inner">
           <div className="kd-hero-text">
-            <span className="kd-hero-badge">
+            <span className="kd-hero-badge bg-white/5 border-white/10 backdrop-blur-md">
               {isAr ? 'موثوق من أكثر من 50,000 عميل' : 'Trusted by 50,000+ customers'}
             </span>
-            <h1 className="kd-hero-h1">
+            <h1 className="kd-hero-h1 text-slate-900 dark:text-slate-100">
               {isAr
                 ? <>{t('home.hero_title')}</>
-                : <>Find the <em>perfect</em><br />service for your <span className="strike">needs</span></>}
+                : <>Find the <em className="text-[var(--teal)]">perfect</em><br />service for your <span className="strike">needs</span></>}
             </h1>
-            <p className="kd-hero-sub">{t('home.hero_subtitle')}</p>
-            <form className="kd-hero-search" onSubmit={handleSearch}>
+            <p className="kd-hero-sub text-slate-500 font-medium">{t('home.hero_subtitle')}</p>
+            <form className="kd-hero-search bg-white/80 dark:bg-white/5 border-slate-200 dark:border-white/10 backdrop-blur-xl" onSubmit={handleSearch}>
               <input
                 type="text"
                 placeholder={t('nav.search')}
                 value={searchVal}
                 onChange={(e) => setSearchVal(e.target.value)}
+                className="text-slate-700 dark:text-slate-200"
               />
-              <button type="submit">{isAr ? 'بحث' : 'Search'}</button>
+              <button type="submit" className="bg-[var(--teal)] text-slate-900">{isAr ? 'بحث' : 'Search'}</button>
             </form>
             <div className="kd-hero-btns">
-              <Link to="/categories" className="kd-btn-primary">{t('home.hero_cta')}</Link>
-              <Link to="/register?role=provider" className="kd-btn-outline">{t('home.hero_cta2')}</Link>
+              <Link to="/categories" className="kd-btn-primary bg-slate-900 border-none hover:bg-[var(--teal)] hover:text-slate-900">{t('home.hero_cta')}</Link>
+              <Link to="/register?role=provider" className="kd-btn-outline border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-400 hover:border-[var(--teal)]">{t('home.hero_cta2')}</Link>
             </div>
           </div>
 
-          {/* Floating card visual */}
-          <div className="kd-hero-visual">
-            <div className="kd-float-badge">
-              <span className="pulse-dot" />
-              {isAr ? '42 خدمة جديدة اليوم' : '42 new services today'}
+          <div className="kd-hero-visual hidden lg:block opacity-90 grayscale-[0.2] hover:grayscale-0 transition-all duration-700">
+            <div className="kd-float-badge bg-white/40 dark:bg-white/10 backdrop-blur-3xl border border-white/20 text-slate-800 dark:text-slate-100 shadow-2xl">
+              <span className="pulse-dot bg-[var(--teal)] shadow-[0_0_12px_var(--teal)]" />
+              {isAr ? '٥٠+ فئة خدمة متاحة' : '50+ Service Categories'}
             </div>
-            <div className="kd-hero-card-stack kd-floating">
-              <div className="kd-hcard kd-hcard-main">
-                <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600&q=80" alt="service" />
-                <div className="kd-hcard-body">
-                  <div className="kd-hcard-seller">
-                    <div className="kd-hcard-avatar">AM</div>
+            <div className="kd-hero-card-stack group">
+              <div className="kd-hcard kd-hcard-main bg-white/40 dark:bg-white/5 border border-white/20 dark:border-white/10 backdrop-blur-3xl shadow-2xl transition-all duration-700 hover:scale-[1.02] overflow-hidden min-w-[380px]">
+                <img src="/Gemini_Generated_Image_vhi0kuvhi0kuvhi0.png" alt="khedma platform" className="grayscale-[0.1] group-hover:grayscale-0 transition-all duration-700 w-full h-48 object-cover" />
+                <div className="kd-hcard-body p-8">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-12 h-12 rounded-2xl bg-[var(--teal)]/10 flex items-center justify-center text-[var(--teal)]">
+                      <Shield className="w-6 h-6" />
+                    </div>
                     <div>
-                      <div className="kd-hcard-name">{isAr ? 'أحمد م.' : 'Ahmed M.'}</div>
-                      <div className="kd-hcard-level">{isAr ? 'بائع متميز' : 'Top Rated'}</div>
+                      <div className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--teal)]">{isAr ? 'منصة موثوقة' : 'Trusted Platform'}</div>
+                      <div className="text-white font-black text-lg">{isAr ? 'ضمان الجودة' : 'Quality Guarantee'}</div>
                     </div>
                   </div>
-                  <div className="kd-hcard-title">{isAr ? 'سأبني لك موقع React مذهل' : 'I will build a stunning React website'}</div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div className="kd-hcard-rating"><span className="star">★</span> 4.9 <span className="count">(284)</span></div>
-                    <div>
-                      <div className="kd-hcard-price">{isAr ? 'يبدأ من' : 'FROM'}</div>
-                      <div className="kd-hcard-amount">$45</div>
+                  <div className="space-y-4">
+                    <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+                      <div className="h-full bg-[var(--teal)] w-[85%] animate-pulse" />
+                    </div>
+                    <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                      <span>{isAr ? 'رضا العملاء' : 'Client Satisfaction'}</span>
+                      <span className="text-white font-black">98.4%</span>
+                    </div>
+                  </div>
+                  <div className="mt-8 flex gap-3">
+                    <div className="flex-1 py-3 rounded-xl bg-white/5 border border-white/10 text-center text-[10px] font-black uppercase tracking-widest text-slate-400 group-hover:text-white transition-colors">
+                      {isAr ? 'فحص يدوي' : 'Manual Vetting'}
+                    </div>
+                    <div className="flex-1 py-3 rounded-xl bg-[var(--teal)] text-slate-900 text-center text-[10px] font-black uppercase tracking-widest">
+                      {isAr ? 'ابدأ الآن' : 'Get Started'}
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="kd-hcard kd-hcard-side kd-hcard-right">
-                <div className="kd-hcard-row">
-                  <div className="kd-hcard-row-icon" style={{ background: 'rgba(0,201,167,0.12)' }}>✅</div>
-                  <div><div className="kd-hcard-row-label">{isAr ? 'طلبات مكتملة' : 'Orders Completed'}</div><div className="kd-hcard-row-val">1,284</div></div>
-                </div>
-                <div className="kd-hcard-row">
-                  <div className="kd-hcard-row-icon" style={{ background: 'rgba(247,196,48,0.15)' }}>⭐</div>
-                  <div><div className="kd-hcard-row-label">{isAr ? 'متوسط التقييم' : 'Avg. Rating'}</div><div className="kd-hcard-row-val">4.9 / 5.0</div></div>
-                </div>
-                <div className="kd-hcard-row">
-                  <div className="kd-hcard-row-icon" style={{ background: 'rgba(99,102,241,0.12)' }}>⚡</div>
-                  <div><div className="kd-hcard-row-label">{isAr ? 'وقت الاستجابة' : 'Response Time'}</div><div className="kd-hcard-row-val">{isAr ? '~ساعتان' : '~2 hours'}</div></div>
-                </div>
-              </div>
-              <div className="kd-hcard kd-hcard-side kd-hcard-left">
-                <div className="f-stars">⭐⭐⭐⭐⭐</div>
-                <div className="f-title">{isAr ? 'عملاء سعداء' : 'Happy customers'}</div>
-                <div className="f-val">50K+</div>
-                <div className="f-sub">{isAr ? 'لكل الخدمات' : 'Across all services'}</div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* STATS BAR */}
-      <div className="kd-stats-bar">
-        <div className="kd-stats-inner">
+      {/* STATS BAR - Refined */}
+      <div className="kd-stats-bar bg-white/40 dark:bg-white/5 border-slate-200 dark:border-white/10 backdrop-blur-2xl">
+        <div className="kd-stats-inner max-w-[1400px]">
           {[
             { num: '50K+', label: t('home.stats_users'), icon: '👥' },
-            { num: '2K+',  label: t('home.stats_providers'), icon: '🛡️' },
-            { num: '98%',  label: isAr ? 'نسبة الرضا' : 'Satisfaction Rate', icon: '⭐' },
-            { num: '50+',  label: t('home.stats_categories'), icon: '🛠️' },
+            { num: '2K+', label: t('home.stats_providers'), icon: '🛡️' },
+            { num: '98%', label: isAr ? 'نسبة الرضا' : 'Satisfaction Rate', icon: '⭐' },
+            { num: '50+', label: t('home.stats_categories'), icon: '🛠️' },
           ].map(({ num, label, icon }) => (
-            <div key={label} className="kd-stat-item">
-              <div className="kd-stat-icon">{icon}</div>
-              <span className="kd-stat-num">{num}</span>
-              <span className="kd-stat-label">{label}</span>
+            <div key={label} className="kd-stat-item border-slate-200 dark:border-white/5 group hover:bg-white/40 dark:hover:bg-white/5">
+              <div className="kd-stat-icon grayscale group-hover:grayscale-0 transition-all">{icon}</div>
+              <span className="kd-stat-num text-[var(--teal)] font-dm">{num}</span>
+              <span className="kd-stat-label text-slate-400 uppercase tracking-tighter text-[10px] font-black">{label}</span>
             </div>
           ))}
         </div>
       </div>
 
-      {/* FEATURED CATEGORIES */}
-      <section className="animate-fade-up" style={{ animationDelay: '0.2s', position: 'relative', overflow: 'hidden' }}>
-        <div className="kd-floating-blob kd-blob-1" style={{ opacity: 0.07 }}></div>
-        <div className="kd-section-wrap" style={{ position: 'relative', zIndex: 1 }}>
-          <span className="kd-section-label">{isAr ? 'تصفح الأقسام' : 'Browse by Category'}</span>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '48px' }}>
-            <div>
-              <h2 className="kd-section-title" style={{ marginBottom: 0 }}>{t('home.featured')}</h2>
-              <p style={{ marginTop: '8px', fontSize: '16px', color: 'var(--muted)' }}>{t('home.featured_sub')}</p>
+      {/* ABOUT US — Premium Boxed Facelift */}
+      <section id="about-us" className="animate-fade-up relative py-8 px-6 overflow-hidden">
+        <div className="max-w-[1400px] mx-auto bg-white/40 dark:bg-white/5 rounded-[48px] border border-white/20 dark:border-white/5 backdrop-blur-3xl relative overflow-hidden px-10 md:px-20 py-16 shadow-lg shadow-black/5">
+          {/* Subtle mesh blob instead of many floating ones */}
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--teal)] opacity-[0.02] rounded-full blur-[120px] pointer-events-none" />
+
+          <div className="kd-about-grid relative z-10">
+            <div className="kd-about-text animate-fade-in stagger-children">
+              <span className="kd-section-label text-xs tracking-[0.3em] font-black text-[var(--teal)]">{isAr ? 'عن خدمة' : 'About Khedma'}</span>
+              <h2 className="kd-section-title text-4xl md:text-6xl text-slate-800 dark:text-slate-100 font-dm leading-[1.1] mb-6">
+                {isAr ? 'إعادة تعريف التميز في الخدمة في جميع أنحاء مصر' : 'Redefining service excellence across Egypt'}
+              </h2>
+              <p className="text-slate-500 font-medium text-lg leading-relaxed mb-10 max-w-xl">
+                {isAr
+                  ? 'في "خدمة"، نؤمن بأن العثور على محترف موثوق لا ينبغي أن يكون مقامرة. منصتنا تربط العمال المهرة بالأشخاص الذين يحتاجون إليهم، مما يعزز مجتمعًا قائمًا على الثقة والشفافية والجودة العالية.'
+                  : 'At Khedma, we believe that finding a reliable professional shouldn\'t be a gamble. Our platform connects skilled workers with people who need them, fostering a community built on trust, transparency, and top-tier quality.'}
+              </p>
+              <div className="flex gap-10 mt-12">
+                <div className="group">
+                  <div className="text-[var(--teal)] text-4xl font-dm mb-1 transition-transform group-hover:scale-110">150+</div>
+                  <div className="text-[10px] uppercase font-black tracking-widest text-slate-400">{isAr ? 'مدينة مغطاة' : 'Cities Covered'}</div>
+                </div>
+                <div className="group">
+                  <div className="text-[var(--teal)] text-4xl font-dm mb-1 transition-transform group-hover:scale-110">24/7</div>
+                  <div className="text-[10px] uppercase font-black tracking-widest text-slate-400">{isAr ? 'دعم فني' : 'Premium Support'}</div>
+                </div>
+              </div>
             </div>
-            <Link to="/categories" style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '14px', fontWeight: 600, color: 'var(--teal-dark)', textDecoration: 'none' }}>
-              {t('common.see_all')} <ArrowRight style={{ width: 14, height: 14 }} />
+
+            <div className="kd-about-img animate-fade-up">
+              <div className="relative group">
+                <div className="absolute inset-0 bg-[var(--teal)] opacity-[0.03] rounded-[32px] blur-3xl group-hover:opacity-[0.1] transition-opacity" />
+                <img
+                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80"
+                  alt="About Khedma Team"
+                  className="rounded-[32px] grayscale-[0.5] hover:grayscale-0 transition-all duration-[1s] border border-white/10 shadow-2xl relative z-10"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CATEGORIES SECTION */}
+      <section className="animate-fade-up relative py-8 px-6 overflow-hidden">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+            <div className="animate-fade-in">
+              <span className="kd-section-label text-xs tracking-[0.3em] font-black text-[var(--teal)]">{isAr ? 'تصفح الأقسام' : 'Browse Categories'}</span>
+              <h2 className="kd-section-title text-4xl md:text-5xl text-slate-800 dark:text-slate-100">{t('home.featured')}</h2>
+              <p className="text-slate-500 font-medium max-w-xl">{t('home.featured_sub')}</p>
+            </div>
+            <Link to="/categories" className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-[var(--teal)] transition-all">
+              {t('common.see_all')} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
-          <div className="kd-cats-grid">
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {loadingCats
-              ? Array(8).fill(0).map((_, i) => <SkeletonCategoryCard key={i} />)
-              : (categories || []).slice(0, 8).map((cat, i) => (
-                  <Link key={cat._id} to={`/categories/${cat.slug}`} className="kd-cat-card hover-lift" style={{ animationDelay: `${i * 0.05}s` }}>
-                    <div className="kd-cat-icon-wrap">{cat.icon}</div>
-                    <div className="kd-cat-body">
-                      <div className="kd-cat-name">{lang === 'ar' && cat.nameAr ? cat.nameAr : cat.name}</div>
-                      <div className="kd-cat-desc">{lang === 'ar' && cat.descriptionAr ? cat.descriptionAr : cat.description}</div>
+              ? Array(4).fill(0).map((_, i) => <div key={i} className="aspect-[4/3] bg-slate-100 dark:bg-white/5 rounded-[32px] animate-pulse" />)
+              : categories.slice(0, 4).map((cat, i) => (
+                <div key={cat._id} className="relative group cursor-pointer" onClick={() => setActiveModal({ type: 'category', data: cat })}>
+                  <div className="kd-cat-card border-slate-200 dark:border-white/10 bg-white/40 dark:bg-white/5 backdrop-blur-3xl rounded-[32px] p-8 flex flex-col items-center text-center transition-all duration-500 group-hover:-translate-y-2 group-hover:bg-white dark:group-hover:bg-white/10 group-hover:shadow-2xl shadow-indigo-500/5">
+                    <div className="w-20 h-20 rounded-2xl bg-slate-50 dark:bg-white/5 flex items-center justify-center text-4xl mb-6 shadow-inner group-hover:scale-110 transition-transform">
+                      {cat.icon}
                     </div>
-                  </Link>
-                ))
+                    <h3 className="text-lg font-black text-slate-800 dark:text-slate-100 mb-1">{lang === 'ar' && cat.nameAr ? cat.nameAr : cat.name}</h3>
+                    <p className="text-xs text-slate-400 font-medium">{cat.subcategories?.length || 0} Specialties</p>
+                  </div>
+                </div>
+              ))
             }
           </div>
         </div>
       </section>
 
-      {/* TOP RATED PROVIDERS */}
-      <div className="kd-gigs-section animate-fade-up" style={{ animationDelay: '0.3s', position: 'relative', overflow: 'hidden' }}>
-        <div className="kd-floating-blob kd-blob-2" style={{ opacity: 0.05, top: '20%', left: '10%' }}></div>
-        <div className="kd-gigs-inner" style={{ position: 'relative', zIndex: 1 }}>
-          <span className="kd-section-label">{isAr ? 'المواهب المميزة' : 'Top Talent'}</span>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '48px' }}>
+      {/* TOP PROVIDERS */}
+      <section className="animate-fade-up relative py-8 px-6">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
             <div>
-              <h2 className="kd-section-title" style={{ marginBottom: 0 }}>{t('home.top_providers')}</h2>
-              <p style={{ marginTop: '8px', fontSize: '16px', color: 'var(--muted)' }}>{t('home.top_providers_sub')}</p>
+              <span className="kd-section-label text-xs tracking-[0.3em] font-black text-[var(--teal)]">{isAr ? 'المواهب المميزة' : 'Top Rated Providers'}</span>
+              <h2 className="kd-section-title text-4xl md:text-5xl text-slate-800 dark:text-slate-100">{t('home.top_providers')}</h2>
+              <p className="text-slate-500 font-medium max-w-xl">{t('home.top_providers_sub')}</p>
             </div>
-            <Link to="/providers" style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '14px', fontWeight: 600, color: 'var(--teal-dark)', textDecoration: 'none' }}>
-              {t('common.see_all')} <ArrowRight style={{ width: 14, height: 14 }} />
+            <Link to="/providers" className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-[var(--teal)] transition-all">
+              {t('common.see_all')} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
-          <div className="kd-gigs-grid">
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {loadingProvs
-              ? Array(6).fill(0).map((_, i) => <SkeletonProviderCard key={i} />)
-              : (providers || []).map((p) => <ProviderCard key={p._id} provider={p} />)
+              ? Array(3).fill(0).map((_, i) => <div key={i} className="aspect-[3/4] bg-slate-100 dark:bg-white/5 rounded-[32px] animate-pulse" />)
+              : providers.map((p) => (
+                <div key={p._id} className="relative group">
+                  <ProviderCard provider={p} />
+                  <button
+                    onClick={(e) => { e.preventDefault(); setActiveModal({ type: 'provider', data: p }); }}
+                    className="absolute top-6 right-6 p-2.5 bg-white/20 hover:bg-white/40 dark:bg-white/5 dark:hover:bg-white/10 backdrop-blur-xl border border-white/20 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 z-20"
+                  >
+                    <ArrowRight className="w-4 h-4 text-white -rotate-45" />
+                  </button>
+                </div>
+              ))
             }
           </div>
         </div>
-      </div>
-
-      {/* ABOUT US */}
-      <section id="about-us" className="kd-section-wrap kd-about-grid animate-fade-up" style={{ background: 'var(--paper)' }}>
-        <div className="kd-about-text">
-          <span className="kd-section-label">{isAr ? 'عن خدمة' : 'About Khedma'}</span>
-          <h2 className="kd-section-title">
-            {isAr ? 'إعادة تعريف التميز في الخدمة في جميع أنحاء مصر' : 'Redefining service excellence across Egypt'}
-          </h2>
-          <p className="kd-section-sub">
-            {isAr
-              ? 'في "خدمة"، نؤمن بأن العثور على محترف موثوق لا ينبغي أن يكون مقامرة. منصتنا تربط العمال المهرة بالأشخاص الذين يحتاجون إليهم، مما يعزز مجتمعًا قائمًا على الثقة والشفافية والجودة العالية.'
-              : 'At Khedma, we believe that finding a reliable professional shouldn\'t be a gamble. Our platform connects skilled workers with people who need them, fostering a community built on trust, transparency, and top-tier quality.'}
-          </p>
-          <div style={{ display: 'flex', gap: '32px', marginTop: '40px' }}>
-            <div>
-              <div style={{ fontSize: '32px', fontWeight: 800, color: 'var(--teal)', fontFamily: 'DM Serif Display, serif' }}>150+</div>
-              <div style={{ fontSize: '13px', color: 'var(--muted)', fontWeight: 600 }}>{isAr ? 'مدينة مغطاة' : 'Cities Covered'}</div>
-            </div>
-            <div>
-              <div style={{ fontSize: '32px', fontWeight: 800, color: 'var(--teal)', fontFamily: 'DM Serif Display, serif' }}>24/7</div>
-              <div style={{ fontSize: '13px', color: 'var(--muted)', fontWeight: 600 }}>{isAr ? 'دعم فني' : 'Premium Support'}</div>
-            </div>
-          </div>
-        </div>
-        <div className="kd-about-img" style={{ position: 'relative' }}>
-          <div style={{ position: 'absolute', inset: '-15px', border: '2px solid var(--teal)', borderRadius: '30px', opacity: 0.2, zIndex: 0 }}></div>
-          <img
-            src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80"
-            alt="About Khedma Team"
-            style={{ width: '100%', borderRadius: '24px', boxShadow: 'var(--kd-shadow-lg)', position: 'relative', zIndex: 1 }}
-          />
-          <div style={{ position: 'absolute', bottom: '-20px', left: '-20px', background: 'rgba(13,13,13,0.85)', backdropFilter: 'blur(10px)', color: 'white', padding: '24px', borderRadius: '20px', zIndex: 2, boxShadow: 'var(--kd-shadow-lg)', border: '1px solid rgba(255,255,255,0.1)' }}>
-            <div style={{ fontSize: '12px', opacity: 0.7, marginBottom: '6px', letterSpacing: '1px', fontWeight: 600 }}>{isAr ? 'مهمتنا' : 'OUR MISSION'}</div>
-            <div style={{ fontSize: '16px', fontWeight: 700, fontFamily: 'DM Serif Display, serif' }}>{isAr ? 'الجودة أولاً' : 'Quality above all'}</div>
-          </div>
-        </div>
       </section>
 
-      <section className="animate-fade-up kd-bg-pattern" style={{ animationDelay: '0.4s', padding: '90px 40px' }}>
-        <div className="kd-why-section" style={{ padding: 0 }}>
-          <span className="kd-section-label">{isAr ? 'لماذا نحن' : 'Why Us'}</span>
-          <h2 className="kd-section-title">{isAr ? 'لماذا تختار خدمة؟' : 'Why choose Khedma?'}</h2>
-          <p className="kd-section-sub">{isAr ? 'لسنا مجرد منصة — نحن شريك موثوق لكل احتياجاتك.' : "We're not just a marketplace — we're your trusted partner."}</p>
-          <div className="kd-why-grid">
+      {/* WHY CHOOSE KHEDMA */}
+      <section className="animate-fade-up relative py-12 px-6">
+        <div className="max-w-[1400px] mx-auto bg-slate-100/50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-[60px] p-12 md:p-20 relative overflow-hidden text-center">
+          <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-sky-500 opacity-[0.02] rounded-full blur-[100px] pointer-events-none" />
+
+          <div className="max-w-3xl mx-auto relative z-10">
+            <span className="kd-section-label text-xs tracking-[0.3em] font-black text-[var(--teal)] mb-6 mx-auto">{isAr ? 'لماذا نحن' : 'Why Khedma?'}</span>
+            <h2 className="kd-section-title text-4xl md:text-6xl text-slate-800 dark:text-slate-100 mb-6">{isAr ? 'لماذا تختار خدمة؟' : 'Why choose Khedma?'}</h2>
+            <p className="text-slate-500 font-medium text-lg leading-relaxed mb-16">
+              {isAr ? 'لسنا مجرد منصة — نحن شريك موثوق لكل احتياجاتك، نضمن لك الراحة والأمان في كل خطوة.' : "We're not just a marketplace — we're your trusted partner for every need, ensuring comfort and security at every step."}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
             {[
-              { icon: '✅', title: isAr ? 'محترفون موثقون' : 'Verified Professionals', desc: isAr ? 'كل مقدم خدمة يخضع لتحقق شامل قبل الانضمام.' : 'Every provider is background-checked before joining our platform.' },
-              { icon: '💰', title: isAr ? 'أفضل الأسعار مضمونة' : 'Best Prices Guaranteed', desc: isAr ? 'ادفع بأمان — لا تدفع إلا عند رضاك التام.' : 'Pay securely — only release funds when fully satisfied.' },
-              { icon: '⚡', title: isAr ? 'سريع وموثوق' : 'Fast & Reliable', desc: isAr ? 'تواصل مع محترفين في دقائق.' : 'Get matched with professionals in minutes and track your order in real-time.' },
+              { icon: '🛡️', title: isAr ? 'محترفون موثوقون' : 'Verified Professionals', desc: isAr ? 'كل مقدم خدمة يخضع لعملية تدقيق صارمة لضمان أعلى جودة.' : 'Every service provider undergoes a rigorous vetting process to ensure the highest quality standards.' },
+              { icon: '💎', title: isAr ? 'دفع آمن تماماً' : 'Secure Payments', desc: isAr ? 'نظام دفع آمن يضمن حقك؛ لا نرسل الأموال حتى تؤكد رضاك.' : 'A robust escrow system that protects you; funds are only released when you are 100% satisfied.' },
+              { icon: '⚡', title: isAr ? 'سرعة وموثوقية' : 'Fast & Reliable', desc: isAr ? 'تواصل مع أفضل الخبراء في دقائق معدودة، وتتبع طلبك مباشرة.' : 'Connect with top experts in mere minutes and track your service request in real-time.' },
             ].map((item, i) => (
-              <div key={i} className="kd-why-card hover-lift" style={{ animationDelay: `${i * 0.1}s` }}>
-                <div className="kd-why-icon">{item.icon}</div>
-                <div className="kd-why-title">{item.title}</div>
-                <div className="kd-why-desc">{item.desc}</div>
+              <div key={i} className="bg-white/60 dark:bg-white/5 border border-slate-200 dark:border-white/10 backdrop-blur-2xl rounded-[40px] p-10 flex flex-col items-center hover:bg-white transition-all duration-500 hover:-translate-y-2 group shadow-sm">
+                <div className="w-20 h-20 rounded-3xl bg-slate-50 dark:bg-white/5 flex items-center justify-center text-3xl mb-8 group-hover:scale-110 transition-transform">
+                  {item.icon}
+                </div>
+                <h3 className="text-xl font-black text-slate-800 dark:text-slate-100 mb-3">{item.title}</h3>
+                <p className="text-xs text-slate-500 font-medium leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* HOW IT WORKS */}
-      <section style={{ background: 'var(--cream)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
-        <div className="kd-section-wrap" style={{ textAlign: 'center' }}>
-          <span className="kd-section-label" style={{ display: 'flex', justifyContent: 'center' }}>{isAr ? 'عملية بسيطة' : 'Simple Process'}</span>
-          <h2 className="kd-section-title" style={{ maxWidth: 500, margin: '0 auto 12px' }}>{t('home.how_title')}</h2>
-          <p className="kd-section-sub" style={{ margin: '0 auto 52px' }}>{isAr ? 'أنجز خدمتك في خطوات سهلة' : 'Get your service done in easy steps'}</p>
-          <div className="kd-how-grid">
-            {[
-              { num: '1', title: t('home.step1'), desc: t('home.step1_desc') },
-              { num: '2', title: t('home.step2'), desc: t('home.step2_desc') },
-              { num: '3', title: t('home.step3'), desc: t('home.step3_desc') },
-              { num: '4', title: isAr ? 'قيّم وكرر' : 'Review & Repeat', desc: isAr ? 'بعد رضاك اترك تقييمك وساعد الآخرين.' : 'Once satisfied, leave a review and help others find great providers.' },
-            ].map((step, i) => (
-              <div key={i} className="kd-how-step">
-                <div className="kd-how-num">{step.num}</div>
-                <div className="kd-how-title">{step.title}</div>
-                <div className="kd-how-desc">{step.desc}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* TESTIMONIALS */}
-      <div className="kd-testi-section animate-fade-up" style={{ animationDelay: '0.5s' }}>
-        <div className="kd-testi-inner">
-          <span className="kd-section-label">{isAr ? 'قصص العملاء' : 'Customer Stories'}</span>
-          <h2 className="kd-section-title">{isAr ? 'ماذا يقول عملاؤنا' : 'What our customers say'}</h2>
-          <p className="kd-section-sub">{isAr ? 'تقييمات حقيقية من أشخاص حقيقيين.' : 'Real reviews from real people who found great services on Khedma.'}</p>
-          <div className="kd-testi-grid">
+      {/* TESTIMONIALS - Refined */}
+      <section className="animate-fade-up relative py-20 px-6">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="text-center mb-16">
+            <span className="kd-section-label text-xs tracking-[0.3em] font-black text-[var(--teal)] mx-auto mb-4">{isAr ? 'قصص العملاء' : 'Customer Stories'}</span>
+            <h2 className="kd-section-title text-4xl md:text-5xl text-slate-800 dark:text-slate-100">{isAr ? 'ماذا يقول عملاؤنا' : 'What our customers say'}</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               { text: isAr ? 'وجدت سباك ممتاز خلال 10 دقائق. أصلح تسرب الأنابيب في نفس اليوم.' : "Found a brilliant plumber within 10 minutes. Fixed our pipe leak the same day. Couldn't be happier.", name: isAr ? 'نادية الرشيدي' : 'Nadia El-Rashidy', role: isAr ? 'القاهرة، مصر' : 'Cairo, Egypt', img: 'https://i.pravatar.cc/80?img=31' },
-              { text: isAr ? 'أعدت تصميم موقعي بالكامل بجزء بسيط من تكلفة الوكالات.' : 'Got my entire website redesigned for a fraction of what agencies charge. Incredible quality.', name: isAr ? 'خالد منصور' : 'Khalid Mansour', role: isAr ? 'الإسكندرية، مصر' : 'Alexandria, Egypt', img: 'https://i.pravatar.cc/80?img=47' },
-              { text: isAr ? 'حجزت 3 خدمات في شهر واحد. خدمة أصبحت منصتي المفضلة.' : 'Booked 3 services in one month — all top notch. Khedma is now my go-to platform.', name: isAr ? 'ليلى فاروق' : 'Laila Farouk', role: isAr ? 'الجيزة، مصر' : 'Giza, Egypt', img: 'https://i.pravatar.cc/80?img=56' },
+              { text: isAr ? 'أعدت تصميم موقعي بالكامل بجزء بسيط من تكلفة الوكالات.' : 'Got my entire website redesigned for a fraction of what agencies charge. Incredible quality.', name: isAr ? 'سارة أحمد' : 'Sarah Ahmed', role: isAr ? 'الإسكندرية، مصر' : 'Alexandria, Egypt', img: 'https://i.pravatar.cc/80?img=47' },
+              { text: isAr ? 'حجزت 3 خدمات في شهر واحد. خدمة أصبحت منصتي المفضلة.' : 'Booked 3 services in one month — all top notch. Khedma is now my go-to platform.', name: isAr ? 'يوسف علي' : 'Youssef Ali', role: isAr ? 'الجيزة، مصر' : 'Giza, Egypt', img: 'https://i.pravatar.cc/80?img=56' },
             ].map((r, i) => (
-              <div key={i} className="kd-testi-card">
-                <div className="kd-testi-stars">★★★★★</div>
-                <p className="kd-testi-text">{r.text}</p>
-                <div className="kd-testi-user">
-                  <img className="kd-testi-avatar" src={r.img} alt={r.name} />
+              <div key={i} className="bg-white/40 dark:bg-white/5 border border-slate-200 dark:border-white/10 backdrop-blur-3xl rounded-[40px] p-10 hover:bg-white transition-all duration-500 shadow-sm group">
+                <div className="text-amber-500 mb-6">★★★★★</div>
+                <p className="text-slate-600 dark:text-slate-400 italic mb-10 leading-relaxed font-medium">"{r.text}"</p>
+                <div className="flex items-center gap-4">
+                  <img className="w-12 h-12 rounded-full border border-slate-200 p-1" src={r.img} alt={r.name} />
                   <div>
-                    <div className="kd-testi-name">{r.name}</div>
-                    <div className="kd-testi-role">{r.role}</div>
+                    <div className="text-sm font-black text-slate-800 dark:text-slate-100">{r.name}</div>
+                    <div className="text-[10px] uppercase font-bold tracking-widest text-slate-400">{r.role}</div>
                   </div>
                 </div>
               </div>
             ))}
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* CTA */}
-      <section className="kd-cta-section">
-        <div className="kd-cta-video-wrap">
-          <video autoPlay muted loop playsInline className="kd-cta-video">
-            <source src="/8293017-hd_1920_1080_30fps (online-video-cutter.com).mp4" type="video/mp4" />
-          </video>
-          <div className="kd-cta-overlay" />
-        </div>
-        
-        <div className="kd-cta-inner">
-          <span className="kd-section-label" style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}>
-            {isAr ? 'ابدأ اليوم' : 'Get Started Today'}
-          </span>
-          <h2 className="kd-section-title" style={{ maxWidth: 600, margin: '0 auto 16px', textAlign: 'center', color: 'white' }}>
-            {isAr ? 'هل أنت مستعد لإيجاد خدمتك المثالية؟' : 'Ready to find your perfect service?'}
-          </h2>
-          <p className="kd-section-sub" style={{ margin: '0 auto 40px', textAlign: 'center', color: 'rgba(255,255,255,0.8)' }}>
-            {isAr ? 'انضم لأكثر من 50,000 عميل و2,000 محترف. الانضمام مجاني.' : 'Join over 50,000 satisfied customers and 2,000+ professionals. Free to join.'}
-          </p>
-          <div className="kd-cta-btns">
-            <Link to="/register?role=seeker" className="kd-btn-primary" style={{ background: 'var(--teal)', color: '#000' }}>{isAr ? 'انضم كعميل' : 'Join as a Customer'}</Link>
-            <Link to="/providers" className="kd-btn-outline" style={{ borderColor: 'white', color: 'white' }}>{isAr ? 'تصفح مقدمي الخدمات' : 'Browse Providers'}</Link>
+      {/* CTA - Refined */}
+      <section className="animate-fade-up relative py-8 px-6 overflow-hidden">
+        <div className="max-w-[1400px] mx-auto bg-slate-900 rounded-[60px] relative overflow-hidden px-10 py-24 text-center">
+          <div className="absolute inset-0 z-0">
+            <video autoPlay muted loop playsInline className="w-full h-full object-cover opacity-30 grayscale">
+              <source src="/8293017-hd_1920_1080_30fps (online-video-cutter.com).mp4" type="video/mp4" />
+            </video>
+            <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 to-slate-900" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[var(--teal)] opacity-[0.05] rounded-full blur-[150px] animate-pulse" />
+          </div>
+
+          <div className="relative z-10 max-w-2xl mx-auto">
+            <span className="kd-section-label text-xs tracking-[0.3em] font-black text-[var(--teal)] mx-auto mb-6">{isAr ? 'ابدأ اليوم' : 'Get Started Today'}</span>
+            <h2 className="text-4xl md:text-6xl font-dm text-white mb-8">
+              {isAr ? 'هل أنت مستعد لإيجاد خدمتك المثالية؟' : 'Ready to find your perfect service?'}
+            </h2>
+            <p className="text-slate-400 font-medium text-lg leading-relaxed mb-12">
+              {isAr ? 'انضم لأكثر من 50,000 عميل و2,000 محترف. الانضمام مجاني.' : 'Join over 50,000 satisfied customers and 2,000+ professionals. Free to join.'}
+            </p>
+            <div className="flex flex-wrap justify-center gap-6">
+              <Link to="/register?role=seeker" className="bg-[var(--teal)] text-slate-900 px-12 py-5 rounded-2xl text-sm font-black hover:scale-105 transition-transform">{isAr ? 'انضم كعميل' : 'Join as a Customer'}</Link>
+              <Link to="/providers" className="bg-white/10 backdrop-blur-md text-white border border-white/20 px-12 py-5 rounded-2xl text-sm font-black hover:bg-white/20 transition-all">{isAr ? 'تصفح مقدمي الخدمات' : 'Browse Providers'}</Link>
+            </div>
           </div>
         </div>
       </section>
+
+      {/* QUICK VIEW MODAL implementation */}
+      {activeModal && (
+        <div className="glass-modal animate-fade-in" onClick={() => setActiveModal(null)}>
+          <div
+            className="bg-white dark:bg-[#0e0e11] border border-slate-200 dark:border-white/10 w-full max-w-2xl rounded-[40px] shadow-2xl overflow-hidden animate-fade-up"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="relative h-48 bg-slate-100 dark:bg-white/5">
+              <button
+                onClick={() => setActiveModal(null)}
+                className="absolute top-6 right-6 p-2 bg-black/40 text-white rounded-full hover:bg-black/60 transition-colors z-20"
+              >
+                <ArrowRight className="w-4 h-4 rotate-45" />
+              </button>
+              {activeModal.type === 'provider' && (
+                <div className="absolute inset-0 flex items-center justify-center text-6xl opacity-20">
+                  {activeModal.data.category?.icon || '👤'}
+                </div>
+              )}
+            </div>
+
+            <div className="p-10 text-center">
+              {activeModal.type === 'provider' ? (
+                <>
+                  <h2 className="text-3xl font-black text-slate-800 dark:text-slate-100 mb-2">
+                    {lang === 'ar' && activeModal.data.businessNameAr ? activeModal.data.businessNameAr : activeModal.data.businessName}
+                  </h2>
+                  <p className="text-[var(--teal)] font-bold mb-6 italic uppercase tracking-widest text-xs">
+                    {activeModal.data.category?.name || activeModal.data.category}
+                  </p>
+                  <p className="text-slate-500 font-medium leading-relaxed mb-10 max-w-md mx-auto">
+                    {lang === 'ar' && activeModal.data.descriptionAr ? activeModal.data.descriptionAr : activeModal.data.description}
+                  </p>
+                  <div className="flex gap-4 justify-center">
+                    <Link
+                      to={`/providers/${activeModal.data._id}`}
+                      className="bg-[var(--teal)] text-slate-900 px-10 py-4 rounded-2xl text-sm font-black hover:scale-105 transition-transform"
+                    >
+                      {t('providers.view_profile')}
+                    </Link>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="text-6xl mb-6">{activeModal.data.icon}</div>
+                  <h2 className="text-3xl font-black text-slate-800 dark:text-slate-100 mb-4">
+                    {lang === 'ar' && activeModal.data.nameAr ? activeModal.data.nameAr : activeModal.data.name}
+                  </h2>
+                  <p className="text-slate-500 font-medium leading-relaxed mb-10 max-w-md mx-auto">
+                    {lang === 'ar' && activeModal.data.descriptionAr ? activeModal.data.descriptionAr : activeModal.data.description}
+                  </p>
+                  <Link
+                    to={`/categories/${activeModal.data.slug}`}
+                    className="bg-[var(--teal)] text-slate-900 px-10 py-4 rounded-2xl text-sm font-black hover:scale-105 transition-transform"
+                  >
+                    Explore Specialty
+                  </Link>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
