@@ -124,11 +124,11 @@ export default function Navbar() {
               {/* Language toggle */}
               <button
                 onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
-                className="hidden sm:flex items-center"
+                className="flex items-center"
                 style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: '6px 10px', borderRadius: 8, color: 'var(--muted)', fontSize: 15, fontWeight: 600, gap: 4 }}
               >
                 <Globe className="w-5 h-5" />
-                {lang === 'en' ? 'ع' : 'EN'}
+                <span style={{ minWidth: 20 }}>{lang === 'en' ? 'ع' : 'EN'}</span>
               </button>
 
               {/* Auth / user menu */}
@@ -204,6 +204,13 @@ export default function Navbar() {
                   {l.label}
                 </Link>
               ))}
+              <button
+                onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
+                style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 10, padding: '12px 0', fontSize: 15, fontWeight: 600, color: 'var(--ink)', background: 'transparent', border: 'none', borderBottom: '1px solid var(--border)', cursor: 'pointer' }}
+              >
+                <Globe className="w-5 h-5" style={{ color: 'var(--muted)' }} />
+                {lang === 'en' ? 'العربية (AR)' : 'English (EN)'}
+              </button>
               {!user ? (
                 <div style={{ display: 'flex', gap: 10, paddingTop: 12 }}>
                   <Link to="/login" onClick={() => setMenuOpen(false)} style={{ flex: 1, textAlign: 'center', padding: '12px', border: '1.5px solid var(--border)', borderRadius: 12, fontSize: 14, fontWeight: 600, color: 'var(--ink)', textDecoration: 'none' }}>{t('nav.login')}</Link>
