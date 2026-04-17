@@ -1,6 +1,6 @@
 // pages/Support.jsx — vibrant professional support page with dark mode support
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { useLang } from '../context/LangContext';
 import { Shield, HelpCircle, FileText, Lock, Mail, Phone, MessageCircle, ArrowRight, CheckCircle2, Globe, Clock, Zap, X } from 'lucide-react';
@@ -11,6 +11,7 @@ export default function Support() {
   const location = useLocation();
   const [activeTab, setActiveTab] = useState('help');
   const [selectedHelp, setSelectedHelp] = useState(null);
+  const [showContactPop, setShowContactPop] = useState(false);
 
   useEffect(() => {
     if (location.hash) {
@@ -32,38 +33,38 @@ export default function Support() {
     started: {
       title: isAr ? 'كيفية البدء' : 'Getting Started',
       content: isAr ? (
-        <div className="space-y-6">
-          <p className="text-lg leading-relaxed text-[var(--ink)]">البدء مع "خدمة" هو عملية بسيطة مصممة لتوصيلك بالمحترفين في أسرع وقت ممكن.</p>
-          <div className="space-y-6">
-            <div className="p-5 bg-[var(--paper)] rounded-2xl border border-[var(--border)]">
-              <h5 className="font-bold mb-2 text-[var(--teal-dark)] text-lg">١. إنشاء الحساب</h5>
-              <p className="text-sm opacity-80 text-[var(--ink)]">سجل باستخدام بريدك الإلكتروني أو حسابات التواصل الاجتماعي. تأكد من إكمال ملفك الشخصي لزيادة المصداقية.</p>
+        <div className="space-y-8">
+          <p className="text-xl leading-relaxed text-slate-500 font-medium tracking-tight">البدء مع "خدمة" هو عملية بسيطة مصممة لتوصيلك بالمحترفين في أسرع وقت ممكن.</p>
+          <div className="grid gap-6 text-right">
+            <div className="p-8 bg-white/50 dark:bg-white/5 rounded-3xl border border-slate-200 dark:border-white/10">
+              <h5 className="font-black mb-3 text-slate-900 dark:text-white text-xl">١. إنشاء الحساب</h5>
+              <p className="text-sm text-slate-500 leading-relaxed font-medium">سجل باستخدام بريدك الإلكتروني أو حسابات التواصل الاجتماعي. تأكد من إكمال ملفك الشخصي لزيادة المصداقية.</p>
             </div>
-            <div className="p-5 bg-[var(--paper)] rounded-2xl border border-[var(--border)]">
-              <h5 className="font-bold mb-2 text-[var(--teal-dark)] text-lg">٢. البحث عن الخدمات</h5>
-              <p className="text-sm opacity-80 text-[var(--ink)]">استخدم شريط البحث المتقدم أو تصفح الأقسام للعثور على الخدمة التي تحتاجها بدقة.</p>
+            <div className="p-8 bg-white/50 dark:bg-white/5 rounded-3xl border border-slate-200 dark:border-white/10">
+              <h5 className="font-black mb-3 text-slate-900 dark:text-white text-xl">٢. البحث عن الخدمات</h5>
+              <p className="text-sm text-slate-500 leading-relaxed font-medium">استخدم شريط البحث المتقدم أو تصفح الأقسام للعثور على الخدمة التي تحتاجها بدقة.</p>
             </div>
-            <div className="p-5 bg-[var(--paper)] rounded-2xl border border-[var(--border)]">
-              <h5 className="font-bold mb-2 text-[var(--teal-dark)] text-lg">٣. التواصل والتعاقد</h5>
-              <p className="text-sm opacity-80 text-[var(--ink)]">تحدث مباشرة مع المحترفين، اطلب عروض أسعار، واتفق على تفاصيل العمل قبل البدء.</p>
+            <div className="p-8 bg-white/50 dark:bg-white/5 rounded-3xl border border-slate-200 dark:border-white/10">
+              <h5 className="font-black mb-3 text-slate-900 dark:text-white text-xl">٣. التواصل والتعاقد</h5>
+              <p className="text-sm text-slate-500 leading-relaxed font-medium">تحدث مباشرة مع المحترفين، اطلب عروض أسعار، واتفق على تفاصيل العمل قبل البدء.</p>
             </div>
           </div>
         </div>
       ) : (
-        <div className="space-y-6">
-          <p className="text-lg leading-relaxed text-[var(--ink)]">Getting started with Khedma is a simple process designed to connect you with professionals as quickly as possible.</p>
-          <div className="space-y-6">
-            <div className="p-5 bg-[var(--paper)] rounded-2xl border border-[var(--border)]">
-              <h5 className="font-bold mb-2 text-[var(--teal-dark)] text-lg">1. Account Creation</h5>
-              <p className="text-sm opacity-80 text-[var(--ink)]">Register using your email or social accounts. Make sure to complete your profile to increase trust with providers.</p>
+        <div className="space-y-8">
+          <p className="text-xl leading-relaxed text-slate-500 font-medium">Getting started with Khedma is a simple process designed to connect you with professionals as quickly as possible.</p>
+          <div className="grid gap-6">
+            <div className="p-8 bg-white/50 dark:bg-white/5 rounded-3xl border border-slate-200 dark:border-white/10">
+              <h5 className="font-black mb-3 text-slate-900 dark:text-white text-xl">1. Account Creation</h5>
+              <p className="text-sm text-slate-500 leading-relaxed">Register using your email or social accounts. Make sure to complete your profile to increase trust with providers.</p>
             </div>
-            <div className="p-5 bg-[var(--paper)] rounded-2xl border border-[var(--border)]">
-              <h5 className="font-bold mb-2 text-[var(--teal-dark)] text-lg">2. Finding Services</h5>
-              <p className="text-sm opacity-80 text-[var(--ink)]">Use the advanced search bar or browse categories to find the exact service you need.</p>
+            <div className="p-8 bg-white/50 dark:bg-white/5 rounded-3xl border border-slate-200 dark:border-white/10">
+              <h5 className="font-black mb-3 text-slate-900 dark:text-white text-xl">2. Finding Services</h5>
+              <p className="text-sm text-slate-500 leading-relaxed">Use the advanced search bar or browse categories to find the exact service you need.</p>
             </div>
-            <div className="p-5 bg-[var(--paper)] rounded-2xl border border-[var(--border)]">
-              <h5 className="font-bold mb-2 text-[var(--teal-dark)] text-lg">3. Connect & Hire</h5>
-              <p className="text-sm opacity-80 text-[var(--ink)]">Chat directly with professionals, request quotes, and agree on work details before starting.</p>
+            <div className="p-8 bg-white/50 dark:bg-white/5 rounded-3xl border border-slate-200 dark:border-white/10">
+              <h5 className="font-black mb-3 text-slate-900 dark:text-white text-xl">3. Connect & Hire</h5>
+              <p className="text-sm text-slate-500 leading-relaxed">Chat directly with professionals, request quotes, and agree on work details before starting.</p>
             </div>
           </div>
         </div>
@@ -72,38 +73,30 @@ export default function Support() {
     orders: {
       title: isAr ? 'إدارة الطلبات' : 'Managing Orders',
       content: isAr ? (
-        <div className="space-y-6">
-          <p className="text-lg leading-relaxed text-[var(--ink)]">توفر لوحة التحكم الخاصة بك أدوات قوية لتتبع وإدارة مشاريعك من البداية إلى النهاية.</p>
-          <div className="space-y-6">
-            <div className="p-5 bg-[var(--paper)] rounded-2xl border border-[var(--border)]">
-              <h5 className="font-bold mb-2 text-[var(--teal-dark)] text-lg">نظام الرسائل</h5>
-              <p className="text-sm opacity-80 text-[var(--ink)]">تحدث مع مقدم الخدمة، وأرسل الملفات، وتلقى التحديثات الفورية في مكان آمن ومركزي.</p>
+        <div className="space-y-8">
+          <p className="text-xl leading-relaxed text-slate-500 font-medium">توفر لوحة التحكم الخاصة بك أدوات قوية لتتبع وإدارة مشاريعك من البداية إلى النهاية.</p>
+          <div className="grid gap-6 text-right">
+            <div className="p-8 bg-white/5 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-3xl">
+              <h5 className="font-black mb-3 text-slate-900 dark:text-white text-xl">نظام الرسائل</h5>
+              <p className="text-sm text-slate-500 leading-relaxed font-medium">تحدث مع مقدم الخدمة، وأرسل الملفات، وتلقى التحديثات الفورية في مكان آمن ومركزي.</p>
             </div>
-            <div className="p-5 bg-[var(--paper)] rounded-2xl border border-[var(--border)]">
-              <h5 className="font-bold mb-2 text-[var(--teal-dark)] text-lg">تتبع الخطوات (Milestones)</h5>
-              <p className="text-sm opacity-80 text-[var(--ink)]">قسم مشاريعك الكبيرة إلى خطوات صغيرة وراقب تقدم العمل خطوة بخطوة.</p>
-            </div>
-            <div className="p-5 bg-[var(--paper)] rounded-2xl border border-[var(--border)]">
-              <h5 className="font-bold mb-2 text-[var(--teal-dark)] text-lg">المدفوعات الآمنة</h5>
-              <p className="text-sm opacity-80 text-[var(--ink)]">تتم معالجة جميع المدفوعات من خلال نظام الضمان لدينا، مما يضمن أمان أموالك حتى اكتمال العمل.</p>
+            <div className="p-8 bg-white/5 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-3xl">
+              <h5 className="font-black mb-3 text-slate-900 dark:text-white text-xl">تتبع الخطوات (Milestones)</h5>
+              <p className="text-sm text-slate-500 leading-relaxed font-medium">قسم مشاريعك الكبيرة إلى خطوات صغيرة وراقب تقدم العمل خطوة بخطوة.</p>
             </div>
           </div>
         </div>
       ) : (
-        <div className="space-y-6">
-          <p className="text-lg leading-relaxed text-[var(--ink)]">Your dashboard provides powerful tools to track and manage your projects from start to finish.</p>
-          <div className="space-y-6">
-            <div className="p-5 bg-[var(--paper)] rounded-2xl border border-[var(--border)]">
-              <h5 className="font-bold mb-2 text-[var(--teal-dark)] text-lg">Messaging System</h5>
-              <p className="text-sm opacity-80 text-[var(--ink)]">Chat with your service provider, send files, and receive instant updates in a secure, central hub.</p>
+        <div className="space-y-8">
+          <p className="text-xl leading-relaxed text-slate-500 font-medium">Your dashboard provides powerful tools to track and manage your projects from start to finish.</p>
+          <div className="grid gap-6">
+            <div className="p-8 bg-white/50 dark:bg-white/5 rounded-3xl border border-slate-200 dark:border-white/10">
+              <h5 className="font-black mb-3 text-slate-900 dark:text-white text-xl">Messaging System</h5>
+              <p className="text-sm text-slate-500 leading-relaxed">Chat with your service provider, send files, and receive instant updates in a secure, central hub.</p>
             </div>
-            <div className="p-5 bg-[var(--paper)] rounded-2xl border border-[var(--border)]">
-              <h5 className="font-bold mb-2 text-[var(--teal-dark)] text-lg">Milestone Tracking</h5>
-              <p className="text-sm opacity-80 text-[var(--ink)]">Break down larger projects into smaller tasks and monitor work progress step-by-step.</p>
-            </div>
-            <div className="p-5 bg-[var(--paper)] rounded-2xl border border-[var(--border)]">
-              <h5 className="font-bold mb-2 text-[var(--teal-dark)] text-lg">Secure Payments</h5>
-              <p className="text-sm opacity-80 text-[var(--ink)]">All payments are held in our secure escrow system, ensuring your money is safe until the work is completed correctly.</p>
+            <div className="p-8 bg-white/50 dark:bg-white/5 rounded-3xl border border-slate-200 dark:border-white/10">
+              <h5 className="font-black mb-3 text-slate-900 dark:text-white text-xl">Milestone Tracking</h5>
+              <p className="text-sm text-slate-500 leading-relaxed">Break down larger projects into smaller tasks and monitor work progress step-by-step.</p>
             </div>
           </div>
         </div>
@@ -118,52 +111,40 @@ export default function Support() {
       title: isAr ? 'مركز المساعدة' : 'Help Center',
       tagline: isAr ? 'دعم متواصل على مدار الساعة' : '24/7 Active Support',
       content: (
-        <div className="space-y-10">
-          <div className="flex items-center gap-4 p-6 bg-[rgba(0,201,167,0.05)] rounded-3xl border border-[var(--teal)]/20 animate-pulse">
-            <div className="w-3 h-3 bg-[var(--teal)] rounded-full animate-ping" />
-            <span className="font-bold text-[var(--teal-dark)] text-lg">{isAr ? 'نحن متصلون الآن لمساعدتك' : 'Active & Online to Help You Now'}</span>
+        <div className="space-y-12">
+          <div className="flex items-center gap-6 p-8 bg-[rgba(0,201,167,0.04)] dark:bg-white/5 rounded-[32px] border border-[var(--teal)]/10">
+            <div className="relative">
+              <div className="w-3 h-3 bg-[var(--teal)] rounded-full animate-ping absolute" />
+              <div className="w-3 h-3 bg-[var(--teal)] rounded-full" />
+            </div>
+            <span className="font-black text-slate-700 dark:text-slate-300 tracking-tight">{isAr ? 'نحن متصلون الآن لمساعدتك' : 'Global Priority Support is Active'}</span>
           </div>
           
-          <p className="text-xl leading-relaxed text-[var(--ink)] opacity-90 font-medium">{isAr ? 'مرحباً بك في مركز مساعدة خدمة. نحن هنا لضمان حصولك على أفضل تجربة ممكنة وأكثرها سلاسة.' : 'Welcome to the Khedma Help Center. We\'re here to ensure you have the best possible experience.'}</p>
+          <p className="text-2xl leading-tight text-slate-800 dark:text-slate-200 font-black tracking-tighter max-w-2xl">{isAr ? 'مرحباً بك في مركز مساعدة خدمة. نحن هنا لضمان حصولك على أفضل تجربة ممكنة وأكثرها سلاسة.' : 'Welcome to the Khedma Help Center. We ensure your professional journey is frictionless.'}</p>
           
-          <div className="grid md:grid-cols-2 gap-8">
-            <div 
-              onClick={() => setSelectedHelp('started')}
-              className="bg-[var(--kd-white)] p-10 rounded-[40px] border border-[var(--border)] transition-all duration-500 hover:bg-[var(--kd-white)] hover:shadow-2xl hover:-translate-y-2 group cursor-pointer relative overflow-hidden"
-            >
-              <div className="absolute top-0 left-0 w-2 h-full bg-[var(--teal)] scale-y-0 group-hover:scale-y-100 transition-transform origin-top" />
-              <div className="mb-8 overflow-hidden rounded-3xl aspect-video relative shadow-lg">
-                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80" alt="Support" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
+          <div className="grid md:grid-cols-2 gap-10">
+            {[
+              { id: 'started', icon: <Zap />, title: isAr ? 'كيفية البدء' : 'Getting Started', desc: isAr ? 'تعلم كيفية التسجيل والبحث عن مقدمي الخدمات الموثوقين.' : 'Learn how to register and find trusted experts.', img: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80' },
+              { id: 'orders', icon: <FileText />, title: isAr ? 'إدارة الطلبات' : 'Managing Orders', desc: isAr ? 'تتبع مشاريعك الحالية، وتواصل مع المحترفين، وقم بإدارة مدفوعاتك.' : 'Track projects, communicate with experts, and manage payments.', img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80' }
+            ].map((card) => (
+              <div 
+                key={card.id}
+                onClick={() => setSelectedHelp(card.id)}
+                className="bg-white/60 dark:bg-white/5 p-10 rounded-[40px] border border-slate-200 dark:border-white/10 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 group cursor-pointer relative overflow-hidden"
+              >
+                <div className="absolute top-0 left-0 w-2 h-0 bg-[var(--teal)] group-hover:h-full transition-all duration-700" />
+                <div className="mb-8 overflow-hidden rounded-3xl aspect-video relative shadow-lg">
+                  <img src={card.img} alt={card.title} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
+                </div>
+                <h4 className="font-black mb-4 text-3xl text-slate-900 dark:text-white leading-none tracking-tight flex items-center gap-3">
+                  {card.title} {React.cloneElement(card.icon, { className: 'w-6 h-6 text-[var(--teal)] opacity-40 group-hover:opacity-100 transition-opacity' })}
+                </h4>
+                <p className="text-slate-500 font-medium leading-relaxed">{card.desc}</p>
               </div>
-              <h4 className="font-bold mb-4 text-3xl text-[var(--teal-dark)] flex items-center gap-3">
-                {isAr ? 'كيفية البدء' : 'Getting Started'} <Zap className="w-6 h-6 text-yellow-500 animate-bounce" />
-              </h4>
-              <p className="text-lg opacity-80 leading-relaxed text-[var(--ink)]">{isAr ? 'تعلم كيفية التسجيل والبحث عن مقدمي الخدمات الموثوقين في منطقتك بكل سهولة ويسر.' : 'Learn how to register and find trusted service providers in your area in just a few clicks.'}</p>
-              <div className="mt-6 flex items-center gap-2 text-[var(--teal)] font-bold text-sm">
-                <span>{isAr ? 'عرض التفاصيل' : 'View Details'}</span>
-                <ArrowRight className="w-4 h-4" />
-              </div>
-            </div>
-            <div 
-              onClick={() => setSelectedHelp('orders')}
-              className="bg-[var(--kd-white)] p-10 rounded-[40px] border border-[var(--border)] transition-all duration-500 hover:bg-[var(--kd-white)] hover:shadow-2xl hover:-translate-y-2 group cursor-pointer relative overflow-hidden"
-            >
-              <div className="absolute top-0 left-0 w-2 h-full bg-[var(--teal)] scale-y-0 group-hover:scale-y-100 transition-transform origin-top" />
-              <div className="mb-8 overflow-hidden rounded-3xl aspect-video relative shadow-lg">
-                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80" alt="Orders" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
-              </div>
-              <h4 className="font-bold mb-4 text-3xl text-[var(--teal-dark)] flex items-center gap-3">
-                {isAr ? 'إدارة الطلبات' : 'Managing Orders'} <ArrowRight className="w-6 h-6 text-[var(--teal)] transition-transform group-hover:translate-x-3" />
-              </h4>
-              <p className="text-lg opacity-80 leading-relaxed text-[var(--ink)]">{isAr ? 'تتبع مشاريعك الحالية، وتواصل مع المحترفين، وقم بإدارة مدفوعاتك في مكان واحد.' : 'Track your current projects, communicate with professionals, and manage your payments all in one place.'}</p>
-              <div className="mt-6 flex items-center gap-2 text-[var(--teal)] font-bold text-sm">
-                <span>{isAr ? 'عرض التفاصيل' : 'View Details'}</span>
-                <ArrowRight className="w-4 h-4" />
-              </div>
-            </div>
+            ))}
           </div>
           
-          <div className="mt-16 pt-16 border-t-[3px] border-dotted border-[var(--border)]">
+          <div id="direct-contact" className="mt-24 pt-24 border-t border-slate-200 dark:border-white/5">
             <h3 className="text-4xl font-bold mb-12 text-center bg-gradient-to-r from-[var(--teal-dark)] to-[var(--teal)] bg-clip-text text-transparent">{isAr ? 'قنوات الاتصال المباشرة' : 'Direct Contact Channels'}</h3>
             <div className="grid sm:grid-cols-3 gap-8">
               {[
@@ -265,119 +246,180 @@ export default function Support() {
   ];
 
   return (
-    <div className="relative overflow-hidden min-h-screen mesh-bg">
-      {/* Side Panel Implementation */}
+    <div className="relative overflow-hidden min-h-screen mesh-bg pb-32">
+      {/* Premium Atmosphere Blocks */}
+      <div className="fixed top-0 left-0 w-full h-full pointer-events-none z-0">
+        <div className="absolute top-[5%] right-[-10%] w-[600px] h-[600px] bg-[var(--teal)] opacity-[0.03] rounded-full blur-[120px]" />
+        <div className="absolute bottom-[20%] left-[-15%] w-[500px] h-[500px] bg-indigo-500 opacity-[0.02] rounded-full blur-[100px]" />
+      </div>
+
+      {/* Expert Side Panel - Cinematic Refinement */}
       {selectedHelp && (
-        <div className="fixed inset-0 z-[100] flex justify-end">
-          {/* Backdrop */}
+        <div className="fixed inset-0 z-[160] flex justify-end">
+          <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm animate-fade-in" onClick={() => setSelectedHelp(null)} />
           <div 
-            className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm animate-fade-in" 
-            onClick={() => setSelectedHelp(null)}
-          />
-          {/* Panel */}
-          <div 
-            className="relative w-full max-w-[500px] h-full bg-white dark:bg-[#0e0e11] shadow-2xl flex flex-col transform transition-transform duration-500 ease-out animate-slide-in-right p-0 rounded-l-[40px] md:rounded-l-[60px] border-l border-slate-200 dark:border-white/10"
+            className="relative w-full max-w-xl h-full bg-white dark:bg-[#0c0d10] border-l border-slate-200 dark:border-white/10 shadow-2xl overflow-y-auto animate-slide-in-right scrollbar-hide flex flex-col pt-24"
+            onClick={e => e.stopPropagation()}
           >
-            <div className="p-8 md:p-12 border-b border-slate-200 dark:border-white/10 flex items-center justify-between bg-slate-50 dark:bg-white/5 rounded-tl-[60px]">
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-[var(--teal)] rounded-2xl text-slate-900">
-                  <HelpCircle className="w-6 h-6" />
+            <div className="p-10 md:p-14">
+              <div className="flex justify-between items-center mb-12">
+                <div className="px-5 py-2 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-full">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">{isAr ? 'تفاصيل الخبرة' : 'Expert Insight'}</span>
                 </div>
-                <h2 className="text-2xl md:text-3xl font-black text-slate-800 dark:text-slate-100">{helpDetails[selectedHelp].title}</h2>
+                <button onClick={() => setSelectedHelp(null)} className="p-3 bg-slate-100 dark:bg-white/5 text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-full transition-colors">
+                  <X className="w-5 h-5" />
+                </button>
               </div>
-              <button 
-                onClick={() => setSelectedHelp(null)}
-                className="p-3 hover:bg-slate-200 dark:hover:bg-white/10 rounded-full transition-colors text-slate-500"
-              >
-                <X className="w-6 h-6" />
-              </button>
-            </div>
-            
-            <div className="flex-1 overflow-y-auto p-8 md:p-12 pb-20 scrollbar-hide">
-               {helpDetails[selectedHelp].content}
+              
+              <h3 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white mb-6 tracking-tighter leading-none">{helpDetails[selectedHelp].title}</h3>
+              <p className="text-xs font-black uppercase tracking-[0.3em] text-[var(--teal)] mb-12">Knowledge Base Article</p>
+              
+              <div className="prose prose-slate dark:prose-invert max-w-none mb-20 text-slate-600 dark:text-slate-400 font-medium leading-relaxed">
+                {helpDetails[selectedHelp].content}
+              </div>
+
+              <div className="p-10 bg-slate-900 dark:bg-white rounded-[40px] text-white dark:text-slate-900 relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--teal)] opacity-20 rounded-full blur-3xl" />
+                <h5 className="text-xl font-black mb-4 relative z-10">{isAr ? 'تحتاج لمساعدة مخصصة؟' : 'Need Custom Support?'}</h5>
+                <p className="text-sm opacity-60 mb-8 relative z-10">{isAr ? 'فريقنا المتخصص متوفر الآن لمكالمة مباشرة.' : 'Our priority support team is currently online for a direct call.'}</p>
+                <button 
+                  onClick={() => setShowContactPop(true)}
+                  className="flex items-center gap-3 text-[10px] font-black uppercase tracking-widest relative z-10 hover:gap-5 transition-all"
+                >
+                   {isAr ? 'تحدث معنا الآن' : 'Speak with an Expert'} <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* Background Atmosphere - Simplified */}
-      <div className="fixed top-0 left-0 w-full h-full pointer-events-none z-0">
-        <div className="absolute top-[10%] left-[-10%] w-[800px] h-[800px] bg-[var(--teal)] opacity-[0.02] rounded-full blur-[150px] animate-pulse" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[800px] h-[800px] bg-indigo-500 opacity-[0.01] rounded-full blur-[150px] animate-pulse" />
-      </div>
+      {/* Direct Contact Modal - World Class Popup */}
+      {showContactPop && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-6 bg-slate-950/60 backdrop-blur-md animate-fade-in">
+          <div className="relative w-full max-w-4xl bg-white dark:bg-[#0c0d10] rounded-[60px] p-10 md:p-20 shadow-2xl border border-slate-200 dark:border-white/10 overflow-hidden animate-scale-in">
+             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[var(--teal)] to-transparent" />
+             <button onClick={() => setShowContactPop(false)} className="absolute top-10 right-10 p-4 bg-slate-100 dark:bg-white/5 rounded-full text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
+               <X className="w-6 h-6" />
+             </button>
+             
+             <div className="text-center mb-16">
+                <h4 className="text-5xl font-black text-slate-900 dark:text-white tracking-tighter mb-4">{isAr ? 'اتصال مباشر مرجح' : 'Priority Contact Channels'}</h4>
+                <p className="text-slate-500 font-medium">{isAr ? 'اختر الوسيلة التي تفضلها للتواصل مع فريقنا' : 'Choose your preferred way to connect with our elite support team'}</p>
+             </div>
 
-      <main className="max-w-[1200px] mx-auto px-10 py-24 relative z-10">
-        {/* Header Hero Section */}
-        <div className="text-center mb-24 animate-fade-up">
-          <div className="inline-flex items-center gap-3 px-6 py-2 bg-white/40 dark:bg-white/5 rounded-full shadow-sm border border-slate-200 dark:border-white/10 mb-12 backdrop-blur-md">
-             <div className="w-2 h-2 bg-[var(--teal)] rounded-full animate-pulse" />
-             <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">{isAr ? 'الدعم نشط الآن' : 'Support Systems Online'}</span>
+             <div className="grid sm:grid-cols-3 gap-8">
+               {[
+                 { icon: <Mail />, title: isAr ? 'إيميل' : 'Email', val: 'support@khedma.com', link: 'mailto:support@khedma.com' },
+                 { icon: <Phone />, title: isAr ? 'اتصال' : 'Phone', val: '+20 100 000 0000', link: 'tel:+201000000000' },
+                 { icon: <MessageCircle />, title: isAr ? 'واتس' : 'WhatsApp', val: '+20 110 000 0000', link: 'https://wa.me/201100000000' }
+               ].map((item, i) => (
+                 <a 
+                   key={i} 
+                   href={item.link} 
+                   className="p-10 rounded-[48px] border border-slate-100 dark:border-white/5 bg-slate-50 dark:bg-white/5 text-center group hover:bg-[var(--teal)] transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-[var(--teal)]/20"
+                 >
+                    <div className="w-16 h-16 mx-auto mb-6 bg-white dark:bg-white/5 rounded-full flex items-center justify-center text-[var(--teal)] group-hover:text-white group-hover:bg-white/20 transition-all">
+                       {React.cloneElement(item.icon, { className: 'w-8 h-8' })}
+                    </div>
+                    <div className="font-black text-slate-900 dark:text-white text-lg mb-1 group-hover:text-white">{item.title}</div>
+                    <div className="text-[10px] font-bold text-slate-400 group-hover:text-white/60 tracking-tight">{item.val}</div>
+                 </a>
+               ))}
+             </div>
+          </div>
+        </div>
+      )}
+
+      <main className="max-w-[1100px] mx-auto px-6 py-32 relative z-10">
+        {/* Header Hero - Stripe Minimalist Style */}
+        <div className="text-center mb-40 animate-fade-up">
+          <div className="inline-flex items-center gap-4 px-6 py-2 bg-white/40 dark:bg-white/5 rounded-full border border-slate-200 dark:border-white/10 mb-10 backdrop-blur-xl">
+             <div className="w-2 h-2 bg-[var(--teal)] rounded-full animate-ping" />
+             <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">{isAr ? 'مركز العمليات والدعم' : 'Operations & Support Hub'}</span>
           </div>
           
-          <h1 className="text-6xl md:text-8xl font-dm mb-12 text-slate-900 dark:text-slate-100 tracking-tighter leading-tight">
-            {isAr ? 'كيف يمكننا مساعدتك؟' : 'How can we help you?'}
+          <h1 className="text-6xl md:text-8xl font-black mb-10 text-slate-900 dark:text-white tracking-tighter leading-[0.85]">
+            {isAr ? 'كيف يمكننا' : 'Technical'}<br/>
+            <span className="opacity-40">{isAr ? 'المساعدة اليوم؟' : 'Assistance'}</span>
           </h1>
           
-          <p className="text-lg md:text-xl mx-auto max-w-2xl text-slate-500 font-medium leading-relaxed mb-16">
+          <p className="text-lg md:text-xl mx-auto max-w-xl text-slate-500 font-medium leading-relaxed mb-16">
             {isAr 
-              ? 'بوابتك الشاملة لجميع الإجابات والسياسات القانونية الخاصة بمنصة خدمة، مع دعم فني متكامل.'
-              : 'Your comprehensive gateway for all answers and legal policies on the Khedma platform, backed by active experts.'}
+              ? 'الخدمة لا تنتهي عند الطلب. استكشف سياساتنا، مراكز حل النزاعات، ووثائق الأمان المتطورة.'
+              : 'Service doesn\'t end at booking. Explore our smart resolution center, legal protocols, and advanced safety documentation.'}
           </p>
 
-          <div className="flex flex-wrap justify-center gap-10 opacity-30 text-slate-400">
-             <div className="flex items-center gap-3 text-xs font-black uppercase tracking-widest"><Globe className="w-4 h-4" /> 24/7 Global Access</div>
-             <div className="flex items-center gap-3 text-xs font-black uppercase tracking-widest"><Clock className="w-4 h-4" /> Instant Response</div>
-             <div className="flex items-center gap-3 text-xs font-black uppercase tracking-widest"><CheckCircle2 className="w-4 h-4" /> Verified Policies</div>
+          {/* Minimal Tab Controller */}
+          <div className="inline-flex p-1.5 bg-slate-100/50 dark:bg-white/5 border border-slate-200 dark:border-white/5 rounded-[24px] backdrop-blur-2xl">
+             {['help', 'safety', 'terms', 'privacy'].map(id => (
+                <button 
+                  key={id} 
+                  onClick={() => {
+                    const el = document.getElementById(id);
+                    el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    setActiveTab(id);
+                  }}
+                  className={clsx(
+                    "px-8 py-3.5 rounded-[20px] text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-500",
+                    activeTab === id 
+                      ? "bg-white dark:bg-white/10 text-slate-900 dark:text-white shadow-2xl scale-105" 
+                      : "text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
+                  )}
+                >
+                  {id}
+                </button>
+             ))}
           </div>
         </div>
 
-        {/* Dynamic Section Navigation - Glassy */}
-        <div className="flex justify-center flex-wrap gap-4 mb-20 animate-fade-in">
-           {['help', 'safety', 'terms', 'privacy'].map(id => (
-              <button 
-                key={id} 
-                onClick={() => {
-                  const el = document.getElementById(id);
-                  el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                  setActiveTab(id);
-                }}
-                className={clsx(
-                  "px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-500 border",
-                  activeTab === id 
-                    ? "bg-slate-900 dark:bg-white text-white dark:text-slate-900 border-slate-900 shadow-xl scale-105" 
-                    : "bg-white/40 dark:bg-white/5 text-slate-500 border-slate-200 dark:border-white/10 backdrop-blur-md hover:bg-white/60"
-                )}
-              >
-                {id}
-              </button>
-           ))}
-        </div>
-
-        <div className="space-y-24">
+        {/* Content Layers */}
+        <div className="space-y-48">
           {sections.map((sec, i) => (sec && (
             <section 
               key={sec.id} 
               id={sec.id} 
-              className="animate-fade-up bg-white/40 dark:bg-white/5 p-12 md:p-20 rounded-[60px] border border-slate-200 dark:border-white/10 backdrop-blur-3xl shadow-sm transition-all duration-700 relative group"
-              style={{ animationDelay: `${i * 0.15}s` }}
+              className="animate-fade-up"
+              style={{ animationDelay: `${i * 0.1}s` }}
             >
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-10 mb-20 relative z-10">
-                <div className="flex items-center gap-10">
-                  <div className="w-20 h-20 bg-[var(--teal)]/10 text-[var(--teal)] rounded-[32px] flex items-center justify-center transition-transform group-hover:scale-110 group-hover:rotate-6">
-                    {React.cloneElement(sec.icon, { className: 'w-8 h-8' })}
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-12 mb-16">
+                <div>
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-10 h-10 bg-slate-100 dark:bg-white/5 text-[var(--teal)] rounded-xl flex items-center justify-center border border-slate-200 dark:border-white/10">
+                      {React.cloneElement(sec.icon, { className: 'w-5 h-5' })}
+                    </div>
+                    <span className="text-[var(--teal)] font-black text-[10px] uppercase tracking-[0.34em]">{sec.tagline}</span>
                   </div>
-                  <div>
-                    <span className="text-[var(--teal)] font-black text-[10px] uppercase tracking-[0.3em] mb-2 block">{sec.tagline}</span>
-                    <h2 className="text-5xl md:text-6xl font-black text-slate-800 dark:text-slate-100 tracking-tighter leading-none">{sec.title}</h2>
-                  </div>
+                  <h2 className="text-5xl md:text-6xl font-black text-slate-900 dark:text-white tracking-tighter leading-none">{sec.title}</h2>
                 </div>
               </div>
               
-              <div className="relative z-10">
+              <div className="bg-white/40 dark:bg-white/5 border border-slate-100 dark:border-white/5 p-8 md:p-16 rounded-[60px] backdrop-blur-3xl shadow-2xl shadow-slate-200/5 transition-all duration-500 hover:bg-white/60 dark:hover:bg-white/[0.08] group relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-slate-900/5 dark:bg-white/5 rounded-full blur-[100px] pointer-events-none" />
                 {sec.content}
               </div>
             </section>
           )))}
+        </div>
+
+        {/* Global Support CTA */}
+        <div className="mt-48 bg-slate-900 dark:bg-white rounded-[60px] p-20 text-center relative overflow-hidden group">
+           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[var(--teal)]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+           <h3 className="text-5xl md:text-7xl font-black text-white dark:text-slate-900 mb-10 tracking-tighter leading-[0.85]">
+             {isAr ? 'على بعد كلمة واحدة' : 'One click away'}<br/>
+             <span className="opacity-30">{isAr ? 'من الحل المثالي' : 'from resolution'}</span>
+           </h3>
+           <div className="flex flex-wrap justify-center gap-6 relative z-10">
+              <button 
+                onClick={() => {
+                  document.getElementById('direct-contact')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="bg-[var(--teal)] text-slate-900 px-12 py-5 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-transform"
+              >
+                {isAr ? 'تواصل مع الإدارة' : 'DIRECT CONTACT'}
+              </button>
+              <Link to="/providers" className="bg-white/10 dark:bg-slate-900/10 backdrop-blur-md text-white dark:text-slate-500 px-12 py-5 rounded-2xl text-[10px] font-black uppercase tracking-widest border border-white/20 dark:border-slate-900/10 hover:bg-white/20 transition-all">{isAr ? 'العودة للمنصة' : 'EXPLORE MARKET'}</Link>
+           </div>
         </div>
       </main>
 
@@ -387,7 +429,7 @@ export default function Support() {
           to { transform: translateX(0); }
         }
         .animate-slide-in-right {
-          animation: slide-in-right 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+          animation: slide-in-right 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
         .scrollbar-hide::-webkit-scrollbar {
           display: none;
@@ -401,6 +443,8 @@ export default function Support() {
             width: 100% !important;
             max-width: 100% !important;
             border-radius: 40px 40px 0 0 !important;
+            height: 90vh !important;
+            top: 10vh !important;
           }
         }
       `}</style>

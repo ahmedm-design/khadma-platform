@@ -33,13 +33,13 @@ export default function Categories() {
       <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-sky-500 opacity-[0.01] rounded-full blur-[130px] pointer-events-none" />
 
       {/* Page Hero - Cinematic */}
-      <div className="relative pt-32 pb-16 px-10">
+      <div className="relative pt-24 pb-12 px-6 md:px-10">
         <div className="max-w-[1400px] mx-auto text-center animate-fade-in">
           <span className="kd-section-label uppercase tracking-[0.3em] text-[var(--teal)] font-black text-[10px] mb-6 inline-block bg-white/40 dark:bg-white/5 px-6 py-2 rounded-full border border-white/10 backdrop-blur-md">
             {isAr ? 'عالم من الخدمات' : 'World of Services'}
           </span>
-          <h1 className="kd-section-title text-6xl md:text-8xl mb-8 tracking-tighter">{t('categories.title')}</h1>
-          <p className="text-slate-500 font-medium max-w-2xl mx-auto leading-relaxed text-sm md:text-lg mb-16">
+          <h1 className="kd-section-title text-5xl md:text-8xl mb-8 tracking-tighter">{t('categories.title')}</h1>
+          <p className="text-slate-500 font-medium max-w-2xl mx-auto leading-relaxed text-sm md:text-lg mb-12">
             {t('categories.subtitle')}
           </p>
 

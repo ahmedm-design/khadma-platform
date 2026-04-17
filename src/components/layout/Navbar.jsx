@@ -178,7 +178,7 @@ export default function Navbar() {
 
       {/* Mobile Menu - Full Screen Glass */}
       {menuOpen && (
-        <div className="lg:hidden fixed inset-0 z-[-1] bg-[var(--paper)]/95 backdrop-blur-2xl p-10 pt-32 animate-fade-in">
+        <div className="lg:hidden fixed inset-0 z-[90] bg-white dark:bg-black/95 backdrop-blur-3xl p-10 pt-32 animate-fade-in">
           <div className="flex flex-col gap-6 text-center">
             {navLinks.map((l) => (
               <Link key={l.to} to={l.to} onClick={() => setMenuOpen(false)} className="text-3xl font-black text-slate-800 active:text-[var(--teal)] transition-colors tracking-tighter uppercase">{l.label}</Link>

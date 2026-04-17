@@ -1,7 +1,7 @@
 // pages/Home.jsx — khadma design applied
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { ArrowRight, Shield } from 'lucide-react';
+import { ArrowRight, Shield, CheckCircle2 } from 'lucide-react';
 import { useLang } from '../context/LangContext';
 import api from '../api/axios';
 import ProviderCard from '../components/common/ProviderCard';
@@ -55,7 +55,7 @@ export default function Home() {
             muted
             loop
             playsInline
-            className="kd-hero-video grayscale-[0.5] opacity-60"
+            className="kd-hero-video"
           >
             <source src="/8293017-hd_1920_1080_30fps (online-video-cutter.com).mp4" type="video/mp4" />
           </video>
@@ -89,13 +89,14 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="kd-hero-visual hidden lg:block opacity-90 grayscale-[0.2] hover:grayscale-0 transition-all duration-700">
+          <div className="kd-hero-visual hidden lg:block opacity-90 grayscale-[0.2] hover:grayscale-0 transition-all duration-700 relative">
             <div className="kd-float-badge bg-white/40 dark:bg-white/10 backdrop-blur-3xl border border-white/20 text-slate-800 dark:text-slate-100 shadow-2xl">
               <span className="pulse-dot bg-[var(--teal)] shadow-[0_0_12px_var(--teal)]" />
               {isAr ? '٥٠+ فئة خدمة متاحة' : '50+ Service Categories'}
             </div>
-            <div className="kd-hero-card-stack group">
-              <div className="kd-hcard kd-hcard-main bg-white/40 dark:bg-white/5 border border-white/20 dark:border-white/10 backdrop-blur-3xl shadow-2xl transition-all duration-700 hover:scale-[1.02] overflow-hidden min-w-[380px]">
+            
+            <div className="kd-hero-card-stack group w-full max-w-[420px]">
+              <div className="kd-hcard kd-hcard-main bg-white/40 dark:bg-white/5 border border-white/20 dark:border-white/10 backdrop-blur-3xl shadow-2xl transition-all duration-700 hover:scale-[1.02] overflow-hidden w-full relative z-10">
                 <img src="/Gemini_Generated_Image_vhi0kuvhi0kuvhi0.png" alt="khedma platform" className="grayscale-[0.1] group-hover:grayscale-0 transition-all duration-700 w-full h-48 object-cover" />
                 <div className="kd-hcard-body p-8">
                   <div className="flex items-center gap-4 mb-6">
@@ -125,6 +126,36 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
+              </div>
+
+              {/* Cinematic Secondary Card 1 - Response Speed */}
+              <div className="absolute -right-24 bottom-10 w-56 p-6 bg-slate-900 dark:bg-white/10 border border-slate-200 dark:border-white/10 rounded-[32px] backdrop-blur-3xl shadow-2xl animate-float z-20 hidden xl:block">
+                 <div className="flex items-center gap-4 mb-4">
+                    <div className="w-8 h-8 rounded-full bg-[var(--teal)] flex items-center justify-center">
+                       <CheckCircle2 className="w-4 h-4 text-slate-900" />
+                    </div>
+                    <span className="text-[8px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-100">{isAr ? 'نشط الآن' : 'LIVE ACTIVITY'}</span>
+                 </div>
+                 <div className="text-2xl font-black text-white dark:text-slate-100 mb-1 tracking-tighter">1.4 min</div>
+                 <div className="text-[9px] font-bold text-slate-500 uppercase tracking-widest leading-none">{isAr ? 'متوسط سرعة الاستجابة' : 'Avg Response Speed'}</div>
+              </div>
+
+              {/* Cinematic Secondary Card 2 - Community */}
+              <div className="absolute -left-16 top-32 px-5 py-4 bg-white/40 dark:bg-white/10 border border-white/20 dark:border-white/10 rounded-2xl backdrop-blur-3xl shadow-xl animate-float z-20 hidden xl:flex items-center gap-4" style={{ animationDelay: '1s' }}>
+                 <div className="flex -space-x-3">
+                    {[1,2,3].map(i => (
+                       <div key={i} className="w-8 h-8 rounded-full border-2 border-slate-900 overflow-hidden">
+                          <img src={`https://i.pravatar.cc/100?u=${i+10}`} alt="Expert" className="w-full h-full object-cover" />
+                       </div>
+                    ))}
+                    <div className="w-8 h-8 rounded-full bg-[var(--teal)] border-2 border-slate-900 flex items-center justify-center text-[8px] font-black text-slate-900">
+                       +1.2k
+                    </div>
+                 </div>
+                 <div>
+                    <div className="text-[10px] font-black text-white leading-none mb-1">{isAr ? 'خبراء معتمدون' : 'Vetted Experts'}</div>
+                    <div className="text-[8px] font-bold text-[var(--teal)] uppercase tracking-widest">{isAr ? 'متاحون الآن' : 'Available Now'}</div>
+                 </div>
               </div>
             </div>
           </div>
@@ -201,7 +232,10 @@ export default function Home() {
               <h2 className="kd-section-title text-4xl md:text-5xl text-slate-800 dark:text-slate-100">{t('home.featured')}</h2>
               <p className="text-slate-500 font-medium max-w-xl">{t('home.featured_sub')}</p>
             </div>
-            <Link to="/categories" className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-[var(--teal)] transition-all">
+            <Link to="/categories" className="kd-btn-special">
+              <div className="flex -space-x-2">
+                {[1,2].map(i => <img key={i} src={`https://i.pravatar.cc/100?u=${i+20}`} className="w-6 h-6 rounded-full border border-white/20 object-cover" alt="" />)}
+              </div>
               {t('common.see_all')} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -234,7 +268,10 @@ export default function Home() {
               <h2 className="kd-section-title text-4xl md:text-5xl text-slate-800 dark:text-slate-100">{t('home.top_providers')}</h2>
               <p className="text-slate-500 font-medium max-w-xl">{t('home.top_providers_sub')}</p>
             </div>
-            <Link to="/providers" className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-[var(--teal)] transition-all">
+            <Link to="/providers" className="kd-btn-special">
+              <div className="flex -space-x-2">
+                {[1,2].map(i => <img key={i} src={`https://i.pravatar.cc/100?u=${i+30}`} className="w-6 h-6 rounded-full border border-white/20 object-cover" alt="" />)}
+              </div>
               {t('common.see_all')} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
