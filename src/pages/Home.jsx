@@ -18,8 +18,15 @@ export default function Home() {
   const [loadingProvs, setLoadingProvs] = useState(true);
 
   useEffect(() => {
-    api.get('/categories').then(({ data }) => setCategories(data.data)).finally(() => setLoadingCats(false));
-    api.get('/providers?limit=6&sort=-ratingAvg').then(({ data }) => setProviders(data.data)).finally(() => setLoadingProvs(false));
+    api.get('/categories')
+      .then(({ data }) => setCategories(data?.data || []))
+      .catch(() => setCategories([]))
+      .finally(() => setLoadingCats(false));
+
+    api.get('/providers?limit=6&sort=-ratingAvg')
+      .then(({ data }) => setProviders(data?.data || []))
+      .catch(() => setProviders([]))
+      .finally(() => setLoadingProvs(false));
   }, []);
 
   const location = useLocation();
@@ -168,7 +175,7 @@ export default function Home() {
           <div className="kd-cats-grid">
             {loadingCats
               ? Array(8).fill(0).map((_, i) => <SkeletonCategoryCard key={i} />)
-                : categories.slice(0, 8).map((cat, i) => (
+              : (categories || []).slice(0, 8).map((cat, i) => (
                   <Link key={cat._id} to={`/categories/${cat.slug}`} className="kd-cat-card hover-lift" style={{ animationDelay: `${i * 0.05}s` }}>
                     <div className="kd-cat-icon-wrap">{cat.icon}</div>
                     <div className="kd-cat-body">
@@ -199,7 +206,7 @@ export default function Home() {
           <div className="kd-gigs-grid">
             {loadingProvs
               ? Array(6).fill(0).map((_, i) => <SkeletonProviderCard key={i} />)
-              : providers.map((p) => <ProviderCard key={p._id} provider={p} />)
+              : (providers || []).map((p) => <ProviderCard key={p._id} provider={p} />)
             }
           </div>
         </div>

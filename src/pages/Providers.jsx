@@ -40,11 +40,11 @@ export default function Providers() {
 
       const { data } = await api.get(url, { params: search ? {} : params });
       if (search) {
-        setProviders(data.data?.providers || []);
+        setProviders(data?.data?.providers || []);
         setTotalPages(1);
       } else {
-        setProviders(data.data);
-        setTotalPages(data.pages || 1);
+        setProviders(data?.data || []);
+        setTotalPages(data?.pages || 1);
       }
     } finally {
       setLoading(false);
@@ -52,7 +52,11 @@ export default function Providers() {
   }, [page, city, catId, minRating, sort, search]);
 
   useEffect(() => { fetchProviders(); }, [fetchProviders]);
-  useEffect(() => { api.get('/categories').then(({ data }) => setCategories(data.data)); }, []);
+  useEffect(() => { 
+    api.get('/categories')
+      .then(({ data }) => setCategories(data?.data || []))
+      .catch(() => setCategories([]));
+  }, []);
 
   const clearFilters = () => {
     setCity(''); setCatId(''); setMinRating(''); setSort('-ratingAvg');
@@ -110,7 +114,7 @@ export default function Providers() {
               {/* Category */}
               <select value={catId} onChange={(e) => setCatId(e.target.value)} style={selectStyle}>
                 <option value="">All Categories</option>
-                {categories.map((c) => (
+                {(categories || []).map((c) => (
                   <option key={c._id} value={c._id}>{c.icon} {lang === 'ar' && c.nameAr ? c.nameAr : c.name}</option>
                 ))}
               </select>
@@ -163,7 +167,7 @@ export default function Providers() {
           </div>
         ) : (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 24 }}>
-            {providers.map((p, i) => (
+            {(providers || []).map((p, i) => (
               <div key={p._id} className="animate-fade-up hover-lift" style={{ animationDelay: `${(i % 12) * 0.05}s` }}>
                 <ProviderCard provider={p} />
               </div>

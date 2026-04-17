@@ -25,14 +25,16 @@ export default function CategoryDetail() {
         return data.data._id;
       })
       .then((catId) => {
+        if (!catId) throw new Error('No category ID found');
         setLoadingProvs(true);
         return api.get(`/providers/category/${catId}`);
       })
-      .then(({ data }) => setProviders(data.data))
+      .then(({ data }) => setProviders(data?.data || []))
       .finally(() => { setLoading(false); setLoadingProvs(false); });
   }, [slug]);
 
-  const filtered = providers.filter((p) => {
+  const filtered = (providers || []).filter((p) => {
+    if (!p) return false;
     const matchesSubcat = activeSubcat ? p.subcategory === activeSubcat : true;
     const q = search.toLowerCase();
     const matchesSearch = !search ||
@@ -103,7 +105,7 @@ export default function CategoryDetail() {
             >
               All
             </button>
-            {category.subcategories.map((sub) => (
+            {(category?.subcategories || []).map((sub) => (
               <button
                 key={sub.slug}
                 onClick={() => setActiveSubcat(sub.slug)}

@@ -12,12 +12,16 @@ export default function Categories() {
   const [search, setSearch]         = useState('');
 
   useEffect(() => {
-    api.get('/categories').then(({ data }) => setCategories(data.data)).finally(() => setLoading(false));
+    api.get('/categories')
+      .then(({ data }) => setCategories(data?.data || []))
+      .catch(() => setCategories([]))
+      .finally(() => setLoading(false));
   }, []);
 
-  const filtered = categories.filter((c) => {
+  const filtered = (categories || []).filter((c) => {
+    if (!c) return false;
     const q = search.toLowerCase();
-    return c.name.toLowerCase().includes(q) || (c.nameAr || '').includes(q);
+    return (c.name || '').toLowerCase().includes(q) || (c.nameAr || '').includes(q);
   });
 
   const isAr = lang === 'ar';

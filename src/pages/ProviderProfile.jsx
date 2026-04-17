@@ -29,8 +29,8 @@ export default function ProviderProfile() {
     setLoading(true);
     api.get(`/providers/${id}`)
       .then(({ data }) => {
-        setProvider(data.data);
-        setRatings(data.ratings || []);
+        setProvider(data?.data || null);
+        setRatings(data?.ratings || []);
       })
       .catch(() => setProvider(null))
       .finally(() => setLoading(false));
@@ -43,8 +43,8 @@ export default function ProviderProfile() {
       await api.post('/ratings', { provider: id, stars: myRating, comment: myComment });
       toast.success('Review submitted!');
       const { data } = await api.get(`/providers/${id}`);
-      setProvider(data.data);
-      setRatings(data.ratings || []);
+      setProvider(data?.data || null);
+      setRatings(data?.ratings || []);
       setMyRating(0);
       setMyComment('');
     } catch (err) {
@@ -221,7 +221,7 @@ export default function ProviderProfile() {
 
         {activeTab === 'services' && (
           <div className="space-y-3 animate-fade-in">
-            {provider.services?.length > 0 ? provider.services.map((svc, i) => (
+            {provider.services?.length > 0 ? (provider.services || []).map((svc, i) => (
               <div key={i} className="card p-5">
                 <div className="flex items-start justify-between gap-4">
                   <div>
@@ -281,7 +281,7 @@ export default function ProviderProfile() {
                 <Star className="w-10 h-10 mx-auto mb-3 opacity-30" />
                 <p>{t('common.no_data')}</p>
               </div>
-            ) : ratings.map((r) => (
+            ) : (ratings || []).map((r) => (
               <div key={r._id} className="card p-5">
                 <div className="flex items-start gap-3">
                   <div className="w-9 h-9 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center text-primary-600 font-bold text-sm flex-shrink-0">

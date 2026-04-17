@@ -20,8 +20,8 @@ export default function SearchResults() {
     if (!q) return;
     setLoading(true);
     api.get(`/search?q=${encodeURIComponent(q)}`)
-      .then(({ data }) => setResults(data.data || { providers: [], categories: [] }))
-      .catch(() => {})
+      .then(({ data }) => setResults(data?.data || { providers: [], categories: [] }))
+      .catch(() => setResults({ providers: [], categories: [] }))
       .finally(() => setLoading(false));
   }, [q]);
 
@@ -60,7 +60,7 @@ export default function SearchResults() {
           <div className="mb-8">
             <h3 className="font-bold text-slate-800 dark:text-white mb-4 text-sm uppercase tracking-wider">Categories</h3>
             <div className="flex flex-wrap gap-3">
-              {results.categories.map((cat) => (
+              {(results.categories || []).map((cat) => (
                 <Link
                   key={cat._id}
                   to={`/categories/${cat.slug}`}
@@ -90,7 +90,7 @@ export default function SearchResults() {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 stagger-children">
-              {results.providers.map((p) => <ProviderCard key={p._id} provider={p} />)}
+              {(results.providers || []).map((p) => <ProviderCard key={p._id} provider={p} />)}
             </div>
           )}
         </div>
