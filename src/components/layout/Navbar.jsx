@@ -64,8 +64,8 @@ export default function Navbar() {
         'sticky top-0 z-50 bg-[var(--paper)] backdrop-blur-md transition-shadow duration-200',
         scrolled && 'shadow-md',
       )} style={{ borderBottom: '1px solid var(--border)' }}>
-        <div style={{ maxWidth: '100%', padding: '0 40px' }}>
-          <div className="flex items-center gap-4" style={{ height: 'var(--nav-h, 80px)' }}>
+        <div className="container-app" style={{ padding: '0' }}>
+          <div className="flex items-center justify-between gap-4 px-4 sm:px-6 lg:px-8" style={{ height: 'var(--nav-h, 80px)' }}>
 
             {/* Logo */}
             <Link to="/" className="kd-nav-logo flex-shrink-0">
@@ -93,8 +93,8 @@ export default function Navbar() {
               </form>
             )}
 
-            {/* Spacer */}
-            <div style={{ flex: 1 }} />
+            {/* Spacer — desktop only behavior change */}
+            <div className="hidden md:block" style={{ flex: 1 }} />
 
             {/* Nav links — desktop */}
             <nav className="hidden md:flex items-center" style={{ gap: 4 }}>
