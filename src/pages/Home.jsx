@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ArrowRight, Shield, CheckCircle2 } from 'lucide-react';
 import { useLang } from '../context/LangContext';
+import clsx from 'clsx';
 import api from '../api/axios';
 import ProviderCard from '../components/common/ProviderCard';
 import { SkeletonProviderCard, SkeletonCategoryCard } from '../components/common/SkeletonCard';
@@ -60,105 +61,108 @@ export default function Home() {
             <source src="/8293017-hd_1920_1080_30fps (online-video-cutter.com).mp4" type="video/mp4" />
           </video>
           <div className="kd-hero-overlay" />
+        <div className="kd-hero-focus-layer" />
         </div>
 
         <div className="kd-hero-inner">
           <div className="kd-hero-text">
             <div className="flex justify-center lg:justify-start">
                <div className="kd-hero-badge bg-white/5 border-white/10 backdrop-blur-md">
-                 <span className="pulse-dot mr-2" />
+                 <span className="pulse-dot me-2" />
                  {isAr ? 'موثوق من أكثر من 50,000 عميل' : 'Trusted by 50,000+ customers'}
                </div>
             </div>
-            <h1 className="kd-hero-h1 text-slate-900 dark:text-slate-100 text-center lg:text-start text-4xl md:text-7xl">
-              {isAr
-                ? <>ابحث عن <em className="text-[var(--teal)]">أفضل</em><br />محترفي الخدمات في <span className="strike">مصر</span></>
-                : <>Find the <em className="text-[var(--teal)]">perfect</em><br />service for your <span className="strike">needs</span></>}
+            <h1 className="kd-hero-h1 text-slate-900 dark:text-slate-100 text-center lg:text-start text-4xl sm:text-7xl font-black tracking-tight leading-[1.1]">
+              {isAr ? 'ابحث عن مزودي خدمة موثوقين' : 'Find Trusted Service Providers'}
             </h1>
-            <p className="kd-hero-sub text-slate-500 font-medium text-center lg:text-start text-sm md:text-lg">{t('home.hero_subtitle')}</p>
-            <form className="kd-hero-search bg-white/80 dark:bg-white/5 border-slate-200 dark:border-white/10 backdrop-blur-xl flex flex-col sm:flex-row w-full" onSubmit={handleSearch}>
+            <p className="kd-hero-sub text-slate-500 font-medium text-center lg:text-start text-sm md:text-lg max-w-xl">
+              {t('home.hero_subtitle')}
+            </p>
+            <form className="kd-hero-search bg-white/80 dark:bg-white/5 border-slate-200 dark:border-white/10 backdrop-blur-xl flex flex-col sm:flex-row w-full items-center p-1.5 shadow-2xl" onSubmit={handleSearch}>
               <input
                 type="text"
                 placeholder={t('nav.search')}
                 value={searchVal}
                 onChange={(e) => setSearchVal(e.target.value)}
-                className="text-slate-700 dark:text-slate-200 w-full"
+                className="bg-transparent border-none outline-none text-slate-700 dark:text-slate-200 w-full ps-6 pe-4 py-4 sm:py-0 text-lg font-medium"
               />
-              <button type="submit" className="bg-[var(--teal)] text-slate-900 w-full sm:w-auto">{isAr ? 'بحث' : 'Search'}</button>
+              <button type="submit" className="bg-[var(--teal)] text-slate-900 w-full sm:w-auto px-10 py-4 rounded-[32px] font-black uppercase tracking-widest text-xs transition-all hover:bg-[var(--teal-dark)] shrink-0">{isAr ? 'بحث' : 'Search'}</button>
             </form>
-            <div className="kd-hero-btns justify-center lg:justify-start">
-              <Link to="/categories" className="kd-btn-primary bg-slate-900 border-none hover:bg-[var(--teal)] hover:text-slate-900 w-full sm:w-auto text-center">{t('home.hero_cta')}</Link>
-              <Link to="/register?role=provider" className="kd-btn-outline border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-400 hover:border-[var(--teal)] w-full sm:w-auto text-center">{t('home.hero_cta2')}</Link>
+            <div className="kd-hero-btns flex flex-wrap gap-4 justify-center lg:justify-start mt-8">
+              <Link to="/categories" className="bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 px-10 py-4 rounded-2xl text-sm font-black hover:scale-105 transition-all shadow-xl">{isAr ? 'استكشف الخدمات' : 'Explore Services'}</Link>
+              <Link to="/register?role=provider" className="border-2 border-slate-200 dark:border-white/10 text-slate-700 dark:text-white px-10 py-4 rounded-2xl text-sm font-black hover:bg-slate-50 dark:hover:bg-white/5 transition-all">{isAr ? 'انضم كمزود خدمة' : 'Join as Pro'}</Link>
             </div>
           </div>
 
-          <div className="kd-hero-visual hidden lg:block opacity-90 grayscale-[0.2] hover:grayscale-0 transition-all duration-700 relative">
-            <div className="kd-float-badge hidden md:flex bg-white/40 dark:bg-white/10 backdrop-blur-3xl border border-white/20 text-slate-800 dark:text-slate-100 shadow-2xl">
-              <span className="pulse-dot bg-[var(--teal)] shadow-[0_0_12px_var(--teal)]" />
-              {isAr ? '٥٠+ فئة خدمة متاحة' : '50+ Service Categories'}
-            </div>
-            
-            <div className="kd-hero-card-stack group w-full max-w-[420px]">
-              <div className="kd-hcard kd-hcard-main bg-white/40 dark:bg-white/5 border border-white/20 dark:border-white/10 backdrop-blur-3xl shadow-2xl transition-all duration-700 hover:scale-[1.02] overflow-hidden w-full relative z-10">
-                <img src="/Gemini_Generated_Image_vhi0kuvhi0kuvhi0.png" alt="khedma platform" className="grayscale-[0.1] group-hover:grayscale-0 transition-all duration-700 w-full h-48 object-cover" />
-                <div className="kd-hcard-body p-8">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-12 h-12 rounded-2xl bg-[var(--teal)]/10 flex items-center justify-center text-[var(--teal)]">
-                      <Shield className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <div className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--teal)]">{isAr ? 'منصة موثوقة' : 'Trusted Platform'}</div>
-                      <div className="text-white font-black text-lg">{isAr ? 'ضمان الجودة' : 'Quality Guarantee'}</div>
-                    </div>
+          <div className="kd-hero-visual relative hidden lg:flex justify-center items-center">
+            <div className="relative w-full max-w-[440px]">
+              {/* Top Badge: Site Activity */}
+              <div className={clsx(
+                "absolute -top-12 z-30 bg-[#0A0A0B]/95 text-white px-5 py-2.5 rounded-2xl border border-white/10 backdrop-blur-md flex items-center gap-3 shadow-2xl",
+                isAr ? "left-0" : "right-0"
+              )}>
+                <div className="w-2.5 h-2.5 rounded-full bg-[var(--teal)] animate-pulse shadow-[0_0_12px_var(--teal)]" />
+                <span className="text-[10px] font-black uppercase tracking-widest">{isAr ? '+ 42 خدمة جديدة اليوم' : '+42 New jobs today'}</span>
+              </div>
+
+              {/* Main Visual: Khadma Brand Showcase */}
+              <div className="relative group perspective-2000">
+                <div className="bg-white dark:bg-[#1A1A1E] rounded-[40px] overflow-hidden shadow-[0_32px_64px_rgba(0,0,0,0.15)] border border-slate-100 dark:border-white/5 transition-all duration-700 hover:rotate-y-3 hover:scale-[1.01]">
+                  <div className="relative h-60 overflow-hidden">
+                    <img src="/Gemini_Generated_Image_vhi0kuvhi0kuvhi0.png" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" alt="Khadma Platform" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                   </div>
-                  <div className="space-y-4">
-                    <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
-                      <div className="h-full bg-[var(--teal)] w-[85%] animate-pulse" />
-                    </div>
-                    <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-slate-500">
-                      <span>{isAr ? 'رضا العملاء' : 'Client Satisfaction'}</span>
-                      <span className="text-white font-black">98.4%</span>
-                    </div>
-                  </div>
-                  <div className="mt-8 flex gap-3">
-                    <div className="flex-1 py-3 rounded-xl bg-white/5 border border-white/10 text-center text-[10px] font-black uppercase tracking-widest text-slate-400 group-hover:text-white transition-colors">
-                      {isAr ? 'فحص يدوي' : 'Manual Vetting'}
-                    </div>
-                    <div className="flex-1 py-3 rounded-xl bg-[var(--teal)] text-slate-900 text-center text-[10px] font-black uppercase tracking-widest">
-                      {isAr ? 'ابدأ الآن' : 'Get Started'}
+                  <div className="p-8">
+                    <div className="flex items-center gap-5">
+                      <div className="w-14 h-14 rounded-2xl bg-slate-900 flex items-center justify-center text-[var(--teal)] font-extrabold text-2xl shadow-xl shadow-black/20 italic">K</div>
+                      <div>
+                        <h4 className="font-black text-xl text-slate-800 dark:text-white leading-tight tracking-tight">{isAr ? 'منصة خدمة' : 'Khadma Platform'}</h4>
+                        <p className="text-[11px] text-[var(--teal)] font-black uppercase tracking-[0.2em] mt-1">{isAr ? 'شريكك الموثوق' : 'Your Trusted Partner'}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Cinematic Secondary Card 1 - Response Speed */}
-              <div className="absolute -right-24 bottom-10 w-56 p-6 bg-slate-900 dark:bg-white/10 border border-slate-200 dark:border-white/10 rounded-[32px] backdrop-blur-3xl shadow-2xl animate-float z-20 hidden md:block">
-                 <div className="flex items-center gap-4 mb-4">
-                    <div className="w-8 h-8 rounded-full bg-[var(--teal)] flex items-center justify-center">
-                       <CheckCircle2 className="w-4 h-4 text-slate-900" />
+                {/* Platform Stats Stack - Right/Left depending on RTL */}
+                <div className={clsx(
+                  "absolute -bottom-10 w-56 bg-white dark:bg-[#1A1A1E] rounded-[32px] p-6 shadow-2xl border border-slate-50 dark:border-white/5 z-20 transition-all hover:scale-105",
+                  isAr ? "-left-14" : "-right-14"
+                )}>
+                  <div className="space-y-5">
+                    <div className="flex items-center justify-between">
+                      <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{isAr ? 'مزودون معتمدون' : 'Verified Pros'}</div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-black text-slate-900 dark:text-white">2,400+</span>
+                        <div className="w-4 h-4 rounded-full bg-[var(--teal)]/20 flex items-center justify-center">
+                          <CheckCircle2 className="w-2.5 h-2.5 text-[var(--teal)]" />
+                        </div>
+                      </div>
                     </div>
-                    <span className="text-[8px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-100">{isAr ? 'نشط الآن' : 'LIVE ACTIVITY'}</span>
-                 </div>
-                 <div className="text-2xl font-black text-white dark:text-slate-100 mb-1 tracking-tighter">1.4 min</div>
-                 <div className="text-[9px] font-bold text-slate-500 uppercase tracking-widest leading-none">{isAr ? 'متوسط سرعة الاستجابة' : 'Avg Response Speed'}</div>
-              </div>
+                    <div className="flex items-center justify-between">
+                      <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{isAr ? 'فئات الخدمة' : 'Service Cats'}</div>
+                      <div className="flex items-center gap-1.5">
+                        <Shield className="w-3 h-3 text-yellow-500 fill-yellow-500" />
+                        <span className="text-xs font-black text-slate-900 dark:text-white">50+</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{isAr ? 'تغطية المدن' : 'City Coverage'}</div>
+                      <div className="px-2.5 py-1 rounded-full bg-slate-900 text-[var(--teal)] text-[10px] font-black tracking-widest">{isAr ? 'جميع المحافظات' : 'Nationwide'}</div>
+                    </div>
+                  </div>
+                </div>
 
-              {/* Cinematic Secondary Card 2 - Community */}
-              <div className="absolute -left-16 top-32 px-5 py-4 bg-white/40 dark:bg-white/10 border border-white/20 dark:border-white/10 rounded-2xl backdrop-blur-3xl shadow-xl animate-float z-20 hidden md:flex items-center gap-4" style={{ animationDelay: '1s' }}>
-                 <div className="flex -space-x-3">
-                    {[1,2,3].map(i => (
-                       <div key={i} className="w-8 h-8 rounded-full border-2 border-slate-900 overflow-hidden">
-                          <img src={`https://i.pravatar.cc/100?u=${i+10}`} alt="Expert" className="w-full h-full object-cover" />
-                       </div>
-                    ))}
-                    <div className="w-8 h-8 rounded-full bg-[var(--teal)] border-2 border-slate-900 flex items-center justify-center text-[8px] font-black text-slate-900">
-                       +1.2k
-                    </div>
-                 </div>
-                 <div>
-                    <div className="text-[10px] font-black text-white leading-none mb-1">{isAr ? 'خبراء معتمدون' : 'Vetted Experts'}</div>
-                    <div className="text-[8px] font-bold text-[var(--teal)] uppercase tracking-widest">{isAr ? 'متاحون الآن' : 'Available Now'}</div>
-                 </div>
+                {/* Global Trust Badge */}
+                <div className={clsx(
+                  "absolute -bottom-6 bg-white dark:bg-[#1A1A1E] rounded-[32px] p-7 shadow-2xl border border-slate-50 dark:border-white/5 text-center min-w-[140px] z-10 transition-all hover:scale-105",
+                  isAr ? "-right-24" : "-left-24"
+                )}>
+                  <div className="flex justify-center gap-1 mb-3">
+                     {[1,2,3,4,5].map(i => <Shield key={i} className="w-3 h-3 text-yellow-500 fill-yellow-500" />)}
+                  </div>
+                  <div className="text-3xl font-black text-slate-900 dark:text-white tracking-tighter transition-transform">+50K</div>
+                  <div className="text-[9px] font-black text-slate-400 uppercase tracking-[0.3em] mt-1">{isAr ? 'عملاء سعداء' : 'Happy Users'}</div>
+                </div>
               </div>
             </div>
           </div>
