@@ -57,6 +57,7 @@ export default function Home() {
             loop
             playsInline
             className="kd-hero-video"
+            poster="/Gemini_Generated_Image_vhi0kuvhi0kuvhi0.png"
           >
             <source src="/8293017-hd_1920_1080_30fps (online-video-cutter.com).mp4" type="video/mp4" />
           </video>
@@ -222,6 +223,7 @@ export default function Home() {
                 <img
                   src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80"
                   alt="About Khedma Team"
+                  loading="lazy"
                   className="rounded-[32px] grayscale-[0.5] hover:grayscale-0 transition-all duration-[1s] border border-white/10 shadow-2xl relative z-10"
                 />
               </div>

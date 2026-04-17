@@ -22,9 +22,18 @@ export default function Navbar() {
 
   const isHome = location.pathname === '/';
 
-  // Shadow on scroll
+  // Shadow on scroll - Optimized with throttling
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10);
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrolled(window.scrollY > 10);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
@@ -78,6 +87,7 @@ export default function Navbar() {
               <button 
                 onClick={() => setMenuOpen(!menuOpen)} 
                 className="p-2.5 text-slate-800 dark:text-white bg-slate-100 dark:bg-white/10 rounded-full active:scale-95 transition-all"
+                aria-label={menuOpen ? "Close menu" : "Open menu"}
               >
                 {menuOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
@@ -130,7 +140,7 @@ export default function Navbar() {
             {/* Right Controls */}
             <div className="flex items-center gap-3 z-20">
               <div className="hidden sm:flex items-center bg-slate-100/30 dark:bg-white/5 rounded-full px-2 py-1 gap-1 border border-white/5 backdrop-blur-md">
-                <button onClick={toggle} className="p-2 text-slate-500 hover:text-[var(--teal)] transition-colors rounded-full" aria-label="Toggle theme">
+                <button onClick={toggle} className="p-2 text-slate-500 hover:text-[var(--teal)] transition-colors rounded-full" aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}>
                   {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
                 </button>
                 <div className="w-[1px] h-4 bg-slate-300 dark:bg-white/10 mx-1" />
@@ -143,26 +153,61 @@ export default function Navbar() {
                 <div className="relative" ref={dropRef}>
                   <button 
                     onClick={() => setDropOpen(!dropOpen)}
-                    className="flex items-center gap-1 p-1 bg-white/40 dark:bg-white/5 border border-white/20 rounded-full hover:bg-white/80 transition-all shadow-sm"
+                    className="flex items-center gap-2 p-1 bg-white/40 dark:bg-white/5 border border-white/20 rounded-full hover:bg-white/80 dark:hover:bg-white/10 transition-all shadow-sm group"
                   >
-                    {user.avatar
-                      ? <img src={user.avatar} alt={user.name} className="w-8 h-8 rounded-full border border-[var(--teal)]" />
-                      : <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--teal)] to-indigo-500 flex items-center justify-center text-white text-xs font-black">{user.name?.charAt(0)}</div>
-                    }
+                    <div className="relative">
+                      {user.avatar
+                        ? <img src={user.avatar} alt={user.name} className="w-9 h-9 rounded-full border-2 border-white dark:border-slate-800 object-cover shadow-sm" />
+                        : <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[var(--teal)] to-indigo-600 flex items-center justify-center text-white text-[13px] font-black border-2 border-white dark:border-slate-800 shadow-sm">
+                            {user.name?.charAt(0).toUpperCase()}
+                          </div>
+                      }
+                      <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 border-2 border-white dark:border-slate-800 rounded-full shadow-sm" />
+                    </div>
+                    <ChevronDown size={14} className={clsx("text-slate-500 transition-transform duration-300 me-1", dropOpen && "rotate-180")} />
                   </button>
 
                   {dropOpen && (
-                    <div className="absolute right-0 mt-3 w-56 bg-white dark:bg-[#0b0c10] border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl py-2 z-[110] animate-scale-in">
-                      <div className="px-4 py-3 border-b border-slate-100 dark:border-white/5">
-                        <div className="text-xs font-black text-[var(--teal)] uppercase tracking-widest mb-0.5">{user.role}</div>
-                        <div className="text-sm font-bold text-slate-800 dark:text-white truncate">{user.name}</div>
+                    <div className="absolute right-0 mt-3 w-64 bg-white dark:bg-[#0f1115] border border-slate-200 dark:border-white/5 rounded-[24px] shadow-[0_20px_40px_rgba(0,0,0,0.15)] py-2.5 z-[110] animate-scale-in">
+                      {/* User Header Section */}
+                      <div className="px-5 py-4 mb-2 border-b border-slate-100 dark:border-white/5 flex items-center gap-3">
+                        {user.avatar
+                          ? <img src={user.avatar} alt={user.name} className="w-10 h-10 rounded-full object-cover" />
+                          : <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--teal)] to-indigo-600 flex items-center justify-center text-white font-black text-sm uppercase">
+                              {user.name?.charAt(0)}
+                            </div>
+                        }
+                        <div className="overflow-hidden">
+                          <div className="text-sm font-black text-slate-800 dark:text-white truncate leading-tight">{user.name}</div>
+                          <div className="text-[10px] font-bold text-[var(--teal)] uppercase tracking-widest mt-0.5">{user.role}</div>
+                        </div>
                       </div>
-                      <Link to={dashboardPath} onClick={() => setDropOpen(false)} className="flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-[var(--teal)] hover:text-white transition-all">
-                        <LayoutDashboard className="w-4 h-4" /> {t('nav.dashboard')}
-                      </Link>
-                      <button onClick={() => { logout(); setDropOpen(false); }} className="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-red-500 hover:bg-red-500 hover:text-white transition-all border-t border-slate-100 dark:border-white/5">
-                        <LogOut className="w-4 h-4" /> {t('nav.logout')}
-                      </button>
+
+                      {/* Menu Links */}
+                      <div className="px-2 space-y-1">
+                        <Link 
+                          to={dashboardPath} 
+                          onClick={() => setDropOpen(false)} 
+                          className="flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/5 hover:text-[var(--teal)] rounded-2xl transition-all group"
+                        >
+                          <div className="w-8 h-8 rounded-xl bg-slate-100 dark:bg-white/5 flex items-center justify-center group-hover:bg-[var(--teal)]/10 transition-colors">
+                            <LayoutDashboard className="w-4 h-4" />
+                          </div>
+                          {t('nav.dashboard')}
+                        </Link>
+                        
+                        <div className="h-px bg-slate-100 dark:bg-white/5 my-2 mx-2" />
+
+                        <button 
+                          onClick={() => { logout(); setDropOpen(false); }} 
+                          className="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-red-500 hover:bg-red-50 dark:hover:bg-red-500/5 rounded-2xl transition-all group"
+                        >
+                          <div className="w-8 h-8 rounded-xl bg-red-100/50 dark:bg-red-500/10 flex items-center justify-center group-hover:bg-red-500 group-hover:text-white transition-all">
+                            <LogOut className="w-4 h-4" />
+                          </div>
+                          {t('nav.logout')}
+                        </button>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -230,20 +275,41 @@ export default function Navbar() {
               <div className="flex flex-col gap-4">
                 <Link to="/login" onClick={() => setMenuOpen(false)} className="h-[56px] flex items-center justify-center font-bold text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">{t('nav.login')}</Link>
                 <Link to="/register" onClick={() => setMenuOpen(false)} className="h-[56px] flex items-center justify-center bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl font-black uppercase tracking-tight shadow-lg shadow-black/10 active:scale-95 transition-all">
-                  {t('nav.register')}
+                   {t('nav.register')}
                 </Link>
               </div>
             ) : (
-              <div className="flex flex-col gap-4">
-                <Link to={dashboardPath} onClick={() => setMenuOpen(false)} className="h-[56px] flex items-center gap-4 px-6 rounded-2xl bg-slate-100 dark:bg-white/5 font-bold text-slate-700 dark:text-slate-200">
-                  <LayoutDashboard className="w-5 h-5" /> {t('nav.dashboard')}
-                </Link>
-                <button 
-                  onClick={() => { logout(); setMenuOpen(false); }} 
-                  className="h-[56px] flex items-center gap-4 px-6 rounded-2xl text-red-500 font-bold active:bg-red-500/10 transition-colors"
-                >
-                  <LogOut className="w-5 h-5" /> {t('nav.logout')}
-                </button>
+              <div className="flex flex-col">
+                <div className="flex items-center gap-4 px-6 py-4 bg-slate-50 dark:bg-white/5 rounded-3xl mb-4">
+                  {user.avatar
+                    ? <img src={user.avatar} alt={user.name} className="w-12 h-12 rounded-full border-2 border-white dark:border-slate-800 object-cover" />
+                    : <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--teal)] to-indigo-600 flex items-center justify-center text-white font-black text-lg">
+                        {user.name?.charAt(0)}
+                      </div>
+                  }
+                  <div className="overflow-hidden">
+                    <div className="text-lg font-black text-slate-800 dark:text-white truncate leading-tight">{user.name}</div>
+                    <div className="text-xs font-bold text-[var(--teal)] uppercase tracking-widest mt-1">{user.role}</div>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Link to={dashboardPath} onClick={() => setMenuOpen(false)} className="h-[56px] flex items-center gap-4 px-6 rounded-2xl bg-white dark:bg-white/5 border border-slate-100 dark:border-white/5 font-bold text-slate-700 dark:text-slate-200 shadow-sm active:scale-[0.98] transition-all">
+                    <div className="w-8 h-8 rounded-xl bg-slate-100 dark:bg-white/10 flex items-center justify-center">
+                      <LayoutDashboard className="w-4 h-4" />
+                    </div>
+                    {t('nav.dashboard')}
+                  </Link>
+                  <button 
+                    onClick={() => { logout(); setMenuOpen(false); }} 
+                    className="w-full h-[56px] flex items-center gap-4 px-6 rounded-2xl bg-red-50 dark:bg-red-500/5 text-red-500 font-bold active:scale-[0.98] transition-all"
+                  >
+                    <div className="w-8 h-8 rounded-xl bg-red-100 dark:bg-red-500/10 flex items-center justify-center">
+                      <LogOut className="w-4 h-4" />
+                    </div>
+                    {t('nav.logout')}
+                  </button>
+                </div>
               </div>
             )}
           </div>

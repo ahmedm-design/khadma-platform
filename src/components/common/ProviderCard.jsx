@@ -1,10 +1,10 @@
 // components/common/ProviderCard.jsx — khadma design applied, logic unchanged
-import React from 'react';
+import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { MapPin, Shield, Zap } from 'lucide-react';
 import { useLang } from '../../context/LangContext';
 
-export default function ProviderCard({ provider }) {
+function ProviderCard({ provider }) {
   const { t, lang } = useLang();
   const name   = lang === 'ar' && provider.businessNameAr ? provider.businessNameAr : provider.businessName;
   const desc   = lang === 'ar' && provider.descriptionAr  ? provider.descriptionAr  : provider.description;
@@ -87,3 +87,5 @@ export default function ProviderCard({ provider }) {
     </Link>
   );
 }
+
+export default memo(ProviderCard);

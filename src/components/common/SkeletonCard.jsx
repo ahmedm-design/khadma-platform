@@ -1,7 +1,7 @@
 // components/common/SkeletonCard.jsx
-import React from 'react';
+import React, { memo } from 'react';
 
-export function SkeletonProviderCard() {
+export const SkeletonProviderCard = memo(function SkeletonProviderCard() {
   return (
     <div className="card p-4 space-y-3">
       <div className="skeleton h-40 w-full rounded-xl" />
@@ -14,9 +14,9 @@ export function SkeletonProviderCard() {
       <div className="skeleton h-9 w-full rounded-xl" />
     </div>
   );
-}
+});
 
-export function SkeletonCategoryCard() {
+export const SkeletonCategoryCard = memo(function SkeletonCategoryCard() {
   return (
     <div className="card p-5 space-y-3">
       <div className="skeleton h-12 w-12 rounded-xl" />
@@ -24,9 +24,9 @@ export function SkeletonCategoryCard() {
       <div className="skeleton h-4 w-1/2 rounded" />
     </div>
   );
-}
+});
 
-export function SkeletonProfileHeader() {
+export const SkeletonProfileHeader = memo(function SkeletonProfileHeader() {
   return (
     <div className="card p-6 flex gap-5 items-start">
       <div className="skeleton w-24 h-24 rounded-2xl flex-shrink-0" />
@@ -40,4 +40,4 @@ export function SkeletonProfileHeader() {
       </div>
     </div>
   );
-}
+});
