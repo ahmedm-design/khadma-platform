@@ -958,27 +958,95 @@
 }
 .kd-floating { animation: kd-float 6s ease-in-out infinite; }
 
-/* ── RESPONSIVE ── */
+/* ── RESPONSIVE — Mobile Refinements ── */
+.kd-nav-inner { padding: 0 40px; transition: padding 0.2s; position: relative; }
+
 @media (max-width: 1024px) {
+  .kd-nav-inner { padding: 0 24px; }
   .kd-cats-grid { grid-template-columns: repeat(3, 1fr); }
   .kd-gigs-grid { grid-template-columns: repeat(2, 1fr); }
   .kd-how-grid { grid-template-columns: repeat(2, 1fr); }
   .kd-how-grid::before { display: none; }
 }
+
 @media (max-width: 768px) {
-  .kd-hero-inner { grid-template-columns: 1fr; gap: 40px; padding: 40px 20px 80px; }
+  /* Prevent horizontal scroll */
+  html, body { max-width: 100vw; overflow-x: hidden; }
+
+  /* Navbar Centering — Premium Mobile App Style */
+  .kd-nav-inner { padding: 0 16px !important; }
+  .kd-nav-logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 24px !important;
+    margin: 0 !important;
+    white-space: nowrap;
+  }
+  .kd-nav-controls { gap: 2px !important; }
+  .kd-nav-inner [style*="flex: 1"] { display: none !important; }
+  .kd-nav-controls { margin-left: auto; } 
+  [dir="rtl"] .kd-nav-controls { margin-left: 0; margin-right: auto; }
+  
+  /* Language text hide on mobile only if needed */
+  .kd-nav-controls span[style*="min-width: 20"] { display: none; }
+
+  /* Grid Layouts to Single Column */
+  .kd-hero-inner { grid-template-columns: 1fr; gap: 40px; padding: 20px 20px 60px; text-align: center; }
+  .kd-hero-text { display: flex; flex-direction: column; align-items: center; }
+  .kd-hero-sub { margin-left: auto; margin-right: auto; font-size: 15px; }
+  .kd-hero-btns { justify-content: center; width: 100%; gap: 10px; }
+  .kd-btn-primary, .kd-btn-outline { width: 100%; text-align: center; }
+  .kd-hero-search { margin-left: auto; margin-right: auto; width: 100%; }
+  
   .kd-hero-visual { display: none; }
-  .kd-stats-inner { grid-template-columns: repeat(2, 1fr); }
-  .kd-cats-grid { grid-template-columns: repeat(2, 1fr); }
-  .kd-gigs-grid { grid-template-columns: 1fr; }
-  .kd-why-grid { grid-template-columns: 1fr; }
-  .kd-testi-grid { grid-template-columns: 1fr; }
-  .kd-how-grid { grid-template-columns: 1fr; }
-  .kd-footer-inner { grid-template-columns: 1fr 1fr; gap: 40px; }
-  .kd-footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+  .kd-stats-inner { grid-template-columns: 1fr; padding: 0 20px; }
+  .kd-stat-item { border-right: none !important; border-bottom: 1px solid var(--border); padding: 24px; }
+  .kd-stat-item:last-child { border-bottom: none; }
+
+  .kd-cats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .kd-gigs-grid { grid-template-columns: 1fr; gap: 20px; }
+  .kd-why-grid { grid-template-columns: 1fr; gap: 16px; }
+  .kd-testi-grid { grid-template-columns: 1fr; gap: 16px; }
+  .kd-how-grid { grid-template-columns: 1fr; gap: 32px; }
+  
+  .kd-footer-inner { grid-template-columns: 1fr; gap: 32px; padding: 60px 24px; text-align: center; }
+  .kd-footer-socials { justify-content: center; }
+  .kd-footer-bottom { flex-direction: column; gap: 16px; text-align: center; padding: 32px 24px; }
   .kd-subnav { display: none; }
-  .kd-section-wrap, .kd-gigs-inner, .kd-testi-inner, .kd-why-section, .kd-cta-section { padding: 40px 20px 60px; }
-  .kd-auth-card { padding: 32px 24px; }
+  
+  /* Spacing & Padding */
+  .kd-section-wrap, .kd-gigs-inner, .kd-testi-inner, .kd-why-section { padding: 50px 20px; }
+  .kd-cta-section { padding: 80px 20px; }
+  .kd-auth-card { padding: 32px 20px; border-radius: 20px; }
+  
+  /* Auth & Role Buttons */
+  div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
+
+  /* Touch Targets */
+  .kd-btn-primary, .kd-btn-outline, .kd-auth-submit, .kd-google-btn, .kd-hero-button, .kd-nav-controls button {
+    min-height: 46px;
+  }
+  
+  /* Typography Adjustments */
+  .kd-section-title { font-size: 26px !important; }
+  .kd-hero-h1 { font-size: 32px !important; }
+  .kd-section-sub { font-size: 15px !important; }
+  
+  /* About Grid & Image Fixes */
+  .kd-about-grid { grid-template-columns: 1fr; gap: 32px; text-align: center; }
+  .kd-about-text { order: 2; }
+  .kd-about-img { order: 1; margin-bottom: 20px; }
+  .kd-about-text div[style*="display: flex"] { justify-content: center; gap: 20px !important; }
+  .kd-about-img div[style*="absolute"] { position: relative !important; left: 0 !important; top: 0 !important; bottom: 0 !important; margin: 15px auto 0 !important; width: fit-content; text-align: center; }
+
+  /* General image safety */
+  img { max-width: 100%; height: auto !important; }
+}
+
+@media (max-width: 480px) {
+  .kd-cats-grid { grid-template-columns: 1fr; }
+  .kd-nav-logo { font-size: 20px !important; }
 }
 
 /* Spin for loading spinners */

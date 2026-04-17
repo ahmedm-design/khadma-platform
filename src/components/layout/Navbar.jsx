@@ -64,8 +64,17 @@ export default function Navbar() {
         'sticky top-0 z-50 bg-[var(--paper)] backdrop-blur-md transition-shadow duration-200',
         scrolled && 'shadow-md',
       )} style={{ borderBottom: '1px solid var(--border)' }}>
-        <div style={{ maxWidth: '100%', padding: '0 40px' }}>
+        <div className="kd-nav-inner" style={{ maxWidth: '100%' }}>
           <div className="flex items-center gap-4" style={{ height: 'var(--nav-h, 80px)' }}>
+
+            {/* Mobile menu button — now on the left for balance */}
+            <button
+              onClick={() => setMenuOpen((o) => !o)}
+              className="md:hidden kd-menu-btn"
+              style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: 8, color: 'var(--ink)', zIndex: 60 }}
+            >
+              {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
 
             {/* Logo */}
             <Link to="/" className="kd-nav-logo flex-shrink-0">
@@ -115,7 +124,7 @@ export default function Navbar() {
             </nav>
 
             {/* Right controls */}
-            <div className="flex items-center" style={{ gap: 6 }}>
+            <div className="flex items-center kd-nav-controls" style={{ gap: 6 }}>
               {/* Theme toggle */}
               <button onClick={toggle} style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: 8, borderRadius: 8, color: 'var(--muted)', fontSize: 16 }} aria-label="Toggle theme">
                 {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
@@ -128,7 +137,7 @@ export default function Navbar() {
                 style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: '6px 10px', borderRadius: 8, color: 'var(--muted)', fontSize: 15, fontWeight: 600, gap: 4 }}
               >
                 <Globe className="w-5 h-5" />
-                <span style={{ minWidth: 20 }}>{lang === 'en' ? 'ع' : 'EN'}</span>
+                <span className="hidden xs:block" style={{ minWidth: 20 }}>{lang === 'en' ? 'ع' : 'EN'}</span>
               </button>
 
               {/* Auth / user menu */}
@@ -179,11 +188,6 @@ export default function Navbar() {
                   </Link>
                 </div>
               )}
-
-              {/* Mobile menu button */}
-              <button onClick={() => setMenuOpen((o) => !o)} className="md:hidden" style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: 8, color: 'var(--ink)' }}>
-                {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-              </button>
             </div>
           </div>
 
