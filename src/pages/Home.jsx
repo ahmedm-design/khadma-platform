@@ -163,7 +163,7 @@ export default function Home() {
         <div className="kd-floating-blob kd-blob-1" style={{ opacity: 0.07 }}></div>
         <div className="kd-section-wrap" style={{ position: 'relative', zIndex: 1 }}>
           <span className="kd-section-label">{isAr ? 'تصفح الأقسام' : 'Browse by Category'}</span>
-          <div className="kd-section-header">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '48px' }}>
             <div>
               <h2 className="kd-section-title" style={{ marginBottom: 0 }}>{t('home.featured')}</h2>
               <p style={{ marginTop: '8px', fontSize: '16px', color: 'var(--muted)' }}>{t('home.featured_sub')}</p>
@@ -194,7 +194,7 @@ export default function Home() {
         <div className="kd-floating-blob kd-blob-2" style={{ opacity: 0.05, top: '20%', left: '10%' }}></div>
         <div className="kd-gigs-inner" style={{ position: 'relative', zIndex: 1 }}>
           <span className="kd-section-label">{isAr ? 'المواهب المميزة' : 'Top Talent'}</span>
-          <div className="kd-section-header">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '48px' }}>
             <div>
               <h2 className="kd-section-title" style={{ marginBottom: 0 }}>{t('home.top_providers')}</h2>
               <p style={{ marginTop: '8px', fontSize: '16px', color: 'var(--muted)' }}>{t('home.top_providers_sub')}</p>

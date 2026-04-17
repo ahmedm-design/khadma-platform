@@ -3,7 +3,6 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import BottomNav from './BottomNav';
 
 export default function Layout() {
   return (
@@ -13,7 +12,6 @@ export default function Layout() {
         <Outlet />
       </main>
       <Footer />
-      <BottomNav />
     </div>
   );
 }
