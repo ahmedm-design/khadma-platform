@@ -71,39 +71,48 @@ export default function Navbar() {
             : 'max-w-[1400px] bg-transparent backdrop-blur-none border-none py-4'
         )}>
           {/* Subtle line glow inside capsule */}
-          {scrolled && <div className="absolute top-0 left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-[var(--teal)]/20 to-transparent pointer-events-none" />}
-
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-8">
-              {/* Logo */}
-              <Link to="/" className="kd-nav-logo flex-shrink-0 text-3xl font-black tracking-tighter hover:scale-105 transition-transform">
-                {lang === 'ar' ? 'خدمة' : 'khedma'}<span className="text-[var(--teal)]">.</span>
-              </Link>
-
-              {/* Desktop Nav Links */}
-              <nav className="hidden lg:flex items-center gap-1">
-                {navLinks.map((l) => (
-                  <Link
-                    key={l.to}
-                    to={l.to}
-                    className={clsx(
-                      'px-4 py-2 rounded-xl text-sm font-bold tracking-tight transition-all duration-300 relative group',
-                      location.pathname === l.to ? 'text-[var(--teal-dark)]' : 'text-slate-500 uppercase'
-                    )}
-                  >
-                    {l.label}
-                    {location.pathname === l.to && (
-                      <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[var(--teal)] rounded-full animate-pulse" />
-                    )}
-                    <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-[var(--teal)] rounded-full transition-all group-hover:w-4" />
-                  </Link>
-                ))}
-              </nav>
+          {scrolled && <div className="absolute top-0 left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-[var(--teal)]/20 to-transparent pointer-events-none" />}          <div className="flex items-center justify-between gap-4 relative">
+            
+            {/* Mobile Toggle (Left) */}
+            <div className="lg:hidden flex items-center z-20">
+              <button 
+                onClick={() => setMenuOpen(!menuOpen)} 
+                className="p-2.5 text-slate-800 dark:text-white bg-slate-100 dark:bg-white/10 rounded-full active:scale-95 transition-all"
+              >
+                {menuOpen ? <X size={20} /> : <Menu size={20} />}
+              </button>
             </div>
 
-            {/* Middle Search - Professional Layout */}
+            {/* Logo (Centered on Mobile, Left on Desktop) */}
+            <div className="flex items-center lg:static absolute left-1/2 -translate-x-1/2 lg:left-auto lg:translate-x-0 z-10 transition-all duration-500">
+               <Link to="/" className="kd-nav-logo flex items-center gap-2 text-3xl font-black tracking-tighter hover:scale-105 transition-transform" onClick={() => setMenuOpen(false)}>
+                 {lang === 'ar' ? 'خدمة' : 'khedma'}<span className="text-[var(--teal)]">.</span>
+               </Link>
+
+               {/* Desktop Nav Links */}
+               <nav className="hidden lg:flex items-center gap-1 ml-8">
+                 {navLinks.map((l) => (
+                   <Link
+                     key={l.to}
+                     to={l.to}
+                     className={clsx(
+                       'px-4 py-2 rounded-xl text-sm font-bold tracking-tight transition-all duration-300 relative group',
+                       location.pathname === l.to ? 'text-[var(--teal-dark)]' : 'text-slate-500 uppercase'
+                     )}
+                   >
+                     {l.label}
+                     {location.pathname === l.to && (
+                       <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[var(--teal)] rounded-full animate-pulse" />
+                     )}
+                     <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-[var(--teal)] rounded-full transition-all group-hover:w-4" />
+                   </Link>
+                 ))}
+               </nav>
+            </div>
+
+            {/* Middle Search - Professional Layout (Hidden on mobile) */}
             {!isHome && (
-              <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-md mx-8 group">
+              <form onSubmit={handleSearch} className="hidden lg:flex flex-1 max-w-md mx-8 group">
                 <div className="flex items-center w-full bg-white/40 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-full pl-5 pr-2 py-1.5 focus-within:ring-4 focus-within:ring-[var(--teal)]/10 focus-within:border-[var(--teal)] transition-all">
                   <input
                     value={searchVal}
@@ -119,7 +128,7 @@ export default function Navbar() {
             )}
 
             {/* Right Controls */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 z-20">
               <div className="hidden sm:flex items-center bg-slate-100/30 dark:bg-white/5 rounded-full px-2 py-1 gap-1 border border-white/5 backdrop-blur-md">
                 <button onClick={toggle} className="p-2 text-slate-500 hover:text-[var(--teal)] transition-colors rounded-full" aria-label="Toggle theme">
                   {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
@@ -134,17 +143,16 @@ export default function Navbar() {
                 <div className="relative" ref={dropRef}>
                   <button 
                     onClick={() => setDropOpen(!dropOpen)}
-                    className="flex items-center gap-3 p-1 pr-4 bg-white/40 dark:bg-white/5 border border-white/20 rounded-full hover:bg-white/80 transition-all shadow-sm"
+                    className="flex items-center gap-1 p-1 bg-white/40 dark:bg-white/5 border border-white/20 rounded-full hover:bg-white/80 transition-all shadow-sm"
                   >
                     {user.avatar
                       ? <img src={user.avatar} alt={user.name} className="w-8 h-8 rounded-full border border-[var(--teal)]" />
                       : <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--teal)] to-indigo-500 flex items-center justify-center text-white text-xs font-black">{user.name?.charAt(0)}</div>
                     }
-                    <ChevronDown className={clsx("w-3 h-3 text-slate-400 transition-transform", dropOpen && "rotate-180")} />
                   </button>
 
                   {dropOpen && (
-                    <div className="absolute right-0 mt-3 w-56 bg-white/90 dark:bg-[#0b0c10]/95 backdrop-blur-2xl border border-white/20 rounded-2xl shadow-2xl py-2 animate-fade-in overflow-hidden z-[110]">
+                    <div className="absolute right-0 mt-3 w-56 bg-white dark:bg-[#0b0c10] border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl py-2 z-[110] animate-scale-in">
                       <div className="px-4 py-3 border-b border-slate-100 dark:border-white/5">
                         <div className="text-xs font-black text-[var(--teal)] uppercase tracking-widest mb-0.5">{user.role}</div>
                         <div className="text-sm font-bold text-slate-800 dark:text-white truncate">{user.name}</div>
@@ -160,18 +168,13 @@ export default function Navbar() {
                 </div>
               ) : (
                 <div className="flex gap-2">
-                  <Link to="/login" className="hidden sm:block text-sm font-bold text-slate-500 px-5 py-2.5 rounded-full hover:text-[var(--teal)] self-center transition-colors tracking-tight">{t('nav.login')}</Link>
-                  <Link to="/register" className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-6 py-2.5 rounded-full text-sm font-black uppercase tracking-tight shadow-lg shadow-black/10 hover:scale-105 active:scale-95 transition-all">
+                  <Link to="/register" className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-5 md:px-6 py-2.5 rounded-full text-xs md:text-sm font-black uppercase tracking-tight shadow-lg hover:scale-105 active:scale-95 transition-all">
                     {t('nav.register')}
                   </Link>
                 </div>
               )}
+            </div>
 
-              {/* Mobile Trigger */}
-              <button onClick={() => setMenuOpen(!menuOpen)} className="lg:hidden p-2 text-slate-800 dark:text-white bg-slate-100 dark:bg-white/10 rounded-full">
-                {menuOpen ? <X size={20} /> : <Menu size={20} />}
-              </button>
-            </div> {/* closes right controls */}
           </div> {/* closes inner flex row */}
         </div> {/* closes outer capsule div */}
       </header> {/* closes header */}
