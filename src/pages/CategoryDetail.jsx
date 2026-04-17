@@ -82,13 +82,15 @@ export default function CategoryDetail() {
         </nav>
 
         {/* Header */}
-        <div className="flex items-center gap-5 mb-10">
-          <div className="w-20 h-20 rounded-3xl bg-primary-50 dark:bg-primary-900/30 flex items-center justify-center text-5xl shadow-sm">
-            {category.icon}
+        <div className="flex flex-col sm:flex-row items-center sm:items-end gap-6 sm:gap-8 mb-16 text-center sm:text-left">
+          <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-[32px] sm:rounded-[48px] bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center justify-center text-5xl sm:text-7xl shadow-2xl relative group">
+             <div className="absolute inset-0 bg-[var(--teal)] opacity-0 group-hover:opacity-10 blur-2xl transition-opacity" />
+             <span className="relative z-10">{category.icon}</span>
           </div>
-          <div>
-            <h1 className="section-title">{catName}</h1>
-            <p className="text-slate-500 dark:text-slate-400 mt-1 text-sm">{catDesc}</p>
+          <div className="flex-1">
+            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[var(--teal)] mb-3">{category.slug?.replace(/-/g, ' ')}</p>
+            <h1 className="text-4xl sm:text-7xl font-black text-slate-900 dark:text-white tracking-tighter leading-none">{catName}</h1>
+            <p className="text-slate-500 dark:text-slate-400 mt-4 text-base sm:text-lg font-medium max-w-xl">{catDesc}</p>
           </div>
         </div>
 

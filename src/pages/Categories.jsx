@@ -38,26 +38,26 @@ export default function Categories() {
           <span className="kd-section-label uppercase tracking-[0.3em] text-[var(--teal)] font-black text-[10px] mb-6 inline-block bg-white/40 dark:bg-white/5 px-6 py-2 rounded-full border border-white/10 backdrop-blur-md">
             {isAr ? 'عالم من الخدمات' : 'World of Services'}
           </span>
-          <h1 className="kd-section-title text-5xl md:text-8xl mb-8 tracking-tighter">{t('categories.title')}</h1>
-          <p className="text-slate-500 font-medium max-w-2xl mx-auto leading-relaxed text-sm md:text-lg mb-12">
+          <h1 className="kd-section-title text-4xl sm:text-8xl mb-8 tracking-tighter leading-none">{t('categories.title')}</h1>
+          <p className="text-slate-500 font-medium max-w-2xl mx-auto leading-relaxed text-sm sm:text-lg mb-12 px-6">
             {t('categories.subtitle')}
           </p>
 
-          {/* Luxury Search Integration */}
-          <div className="relative max-w-2xl mx-auto group">
-            <div className="absolute inset-0 bg-[var(--teal)] opacity-[0.03] rounded-[30px] blur-3xl group-focus-within:opacity-[0.1] transition-opacity" />
-            <div className="relative flex items-center bg-white/60 dark:bg-white/5 border border-slate-200 dark:border-white/10 backdrop-blur-3xl rounded-[32px] p-2 pr-3 shadow-sm transition-all focus-within:ring-8 focus-within:ring-[var(--teal)]/5 focus-within:border-[var(--teal)]">
+          {/* Luxury Search Integration - Responsive Stack */}
+          <div className="relative max-w-2xl mx-auto group px-4">
+            <div className="absolute inset-0 bg-[var(--teal)] opacity-[0.03] rounded-[32px] blur-3xl group-focus-within:opacity-[0.1] transition-opacity" />
+            <form onSubmit={(e) => e.preventDefault()} className="relative flex flex-col sm:flex-row items-center bg-white/60 dark:bg-white/5 border border-slate-200 dark:border-white/10 backdrop-blur-3xl rounded-[32px] overflow-hidden p-1.5 shadow-sm transition-all focus-within:ring-8 focus-within:ring-[var(--teal)]/5 focus-within:border-[var(--teal)]">
               <input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder={t('categories.search')}
-                className="bg-transparent border-none outline-none text-sm font-bold w-full px-8 text-slate-700 dark:text-white"
+                className="bg-transparent border-none outline-none text-sm font-bold w-full px-6 py-4 text-slate-700 dark:text-white"
               />
-              <button className="bg-[var(--teal)] text-slate-900 rounded-[24px] px-10 py-4.5 text-[11px] font-black uppercase tracking-widest flex items-center gap-3 hover:bg-[var(--teal-dark)] transition-all shadow-lg shadow-[var(--teal)]/20">
+              <button className="w-full sm:w-auto bg-[var(--teal)] text-slate-900 rounded-[24px] px-8 py-4 text-[11px] font-black uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-[var(--teal-dark)] transition-all shadow-lg shadow-[var(--teal)]/20">
                 <Search className="w-4 h-4" />
                 {isAr ? 'بحث' : 'Search'}
               </button>
-            </div>
+            </form>
           </div>
         </div>
       </div>

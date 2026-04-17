@@ -179,28 +179,84 @@ export default function Navbar() {
         </div> {/* closes outer capsule div */}
       </header> {/* closes header */}
 
-      {/* Mobile Menu - Full Screen Glass */}
-      {menuOpen && (
-        <div className="lg:hidden fixed inset-0 z-[90] bg-white dark:bg-black/95 backdrop-blur-3xl p-10 pt-32 animate-fade-in">
-          <div className="flex flex-col gap-6 text-center">
+      {/* Mobile Menu - Premium Slide Drawer */}
+      <div 
+        className={clsx(
+          "lg:hidden fixed inset-0 z-[150] bg-slate-900/40 backdrop-blur-md transition-opacity duration-500",
+          menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        )}
+        onClick={() => setMenuOpen(false)}
+      >
+        <div 
+          className={clsx(
+            "absolute top-0 bottom-0 w-[80%] max-w-[400px] bg-white dark:bg-[#0c0d10] shadow-2xl transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] px-8 py-20 flex flex-col",
+            isRTL 
+              ? (menuOpen ? "left-0 translate-x-0" : "left-0 -translate-x-full")
+              : (menuOpen ? "right-0 translate-x-0" : "right-0 translate-x-full")
+          )}
+          onClick={e => e.stopPropagation()}
+        >
+          {/* Close Button Inside */}
+          <button 
+            onClick={() => setMenuOpen(false)}
+            className="absolute top-8 right-8 p-3 bg-slate-100 dark:bg-white/5 rounded-full text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+          >
+            <X size={20} />
+          </button>
+
+          <div className="flex flex-col gap-1">
+            <div className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mb-8 px-4">
+              {isRTL ? 'التنقل الرئيسي' : 'Main Navigation'}
+            </div>
             {navLinks.map((l) => (
-              <Link key={l.to} to={l.to} onClick={() => setMenuOpen(false)} className="text-3xl font-black text-slate-800 active:text-[var(--teal)] transition-colors tracking-tighter uppercase">{l.label}</Link>
+              <Link 
+                key={l.to} 
+                to={l.to} 
+                onClick={() => setMenuOpen(false)} 
+                className={clsx(
+                  "flex items-center h-[56px] px-6 rounded-2xl text-xl font-black transition-all tracking-tight",
+                  location.pathname === l.to 
+                    ? "bg-[var(--teal)] text-white shadow-lg shadow-[var(--teal)]/20" 
+                    : "text-slate-700 dark:text-slate-400 active:bg-slate-100 dark:active:bg-white/5"
+                )}
+              >
+                {l.label}
+              </Link>
             ))}
-            <div className="h-px bg-slate-200 dark:bg-white/10 my-4" />
+            
+            <div className="h-px bg-slate-100 dark:bg-white/5 my-10 mx-4" />
+            
             {!user ? (
               <div className="flex flex-col gap-4">
-                <Link to="/login" onClick={() => setMenuOpen(false)} className="text-xl font-bold text-slate-500">{t('nav.login')}</Link>
-                <Link to="/register" onClick={() => setMenuOpen(false)} className="bg-[var(--teal)] text-slate-900 py-4 rounded-2xl text-lg font-black">{t('nav.register')}</Link>
+                <Link to="/login" onClick={() => setMenuOpen(false)} className="h-[56px] flex items-center justify-center font-bold text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors">{t('nav.login')}</Link>
+                <Link to="/register" onClick={() => setMenuOpen(false)} className="h-[56px] flex items-center justify-center bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl font-black uppercase tracking-tight shadow-lg shadow-black/10 active:scale-95 transition-all">
+                  {t('nav.register')}
+                </Link>
               </div>
             ) : (
               <div className="flex flex-col gap-4">
-                <Link to={dashboardPath} onClick={() => setMenuOpen(false)} className="text-xl font-bold text-slate-800">{t('nav.dashboard')}</Link>
-                <button onClick={() => { logout(); setMenuOpen(false); }} className="text-xl font-bold text-red-500">{t('nav.logout')}</button>
+                <Link to={dashboardPath} onClick={() => setMenuOpen(false)} className="h-[56px] flex items-center gap-4 px-6 rounded-2xl bg-slate-100 dark:bg-white/5 font-bold text-slate-700 dark:text-slate-200">
+                  <LayoutDashboard className="w-5 h-5" /> {t('nav.dashboard')}
+                </Link>
+                <button 
+                  onClick={() => { logout(); setMenuOpen(false); }} 
+                  className="h-[56px] flex items-center gap-4 px-6 rounded-2xl text-red-500 font-bold active:bg-red-500/10 transition-colors"
+                >
+                  <LogOut className="w-5 h-5" /> {t('nav.logout')}
+                </button>
               </div>
             )}
           </div>
+          
+          {/* Mobile Theme Toggle */}
+          <div className="mt-auto flex items-center justify-between p-6 bg-slate-50 dark:bg-white/5 rounded-3xl">
+             <span className="text-xs font-black uppercase tracking-widest text-slate-500">{isRTL ? 'الوضع المظلم' : 'Dark Mode'}</span>
+             <button onClick={toggle} className="p-3 bg-white dark:bg-white/10 rounded-xl shadow-sm text-slate-500">
+                {dark ? <Sun size={18} /> : <Moon size={18} />}
+             </button>
+          </div>
         </div>
-      )}
+      </div>
     </>
   );
 }

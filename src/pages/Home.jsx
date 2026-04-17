@@ -64,33 +64,36 @@ export default function Home() {
 
         <div className="kd-hero-inner">
           <div className="kd-hero-text">
-            <span className="kd-hero-badge bg-white/5 border-white/10 backdrop-blur-md">
-              {isAr ? 'موثوق من أكثر من 50,000 عميل' : 'Trusted by 50,000+ customers'}
-            </span>
-            <h1 className="kd-hero-h1 text-slate-900 dark:text-slate-100">
+            <div className="flex justify-center lg:justify-start">
+               <div className="kd-hero-badge bg-white/5 border-white/10 backdrop-blur-md">
+                 <span className="pulse-dot mr-2" />
+                 {isAr ? 'موثوق من أكثر من 50,000 عميل' : 'Trusted by 50,000+ customers'}
+               </div>
+            </div>
+            <h1 className="kd-hero-h1 text-slate-900 dark:text-slate-100 text-center lg:text-start text-4xl md:text-7xl">
               {isAr
-                ? <>{t('home.hero_title')}</>
+                ? <>ابحث عن <em className="text-[var(--teal)]">أفضل</em><br />محترفي الخدمات في <span className="strike">مصر</span></>
                 : <>Find the <em className="text-[var(--teal)]">perfect</em><br />service for your <span className="strike">needs</span></>}
             </h1>
-            <p className="kd-hero-sub text-slate-500 font-medium">{t('home.hero_subtitle')}</p>
-            <form className="kd-hero-search bg-white/80 dark:bg-white/5 border-slate-200 dark:border-white/10 backdrop-blur-xl" onSubmit={handleSearch}>
+            <p className="kd-hero-sub text-slate-500 font-medium text-center lg:text-start text-sm md:text-lg">{t('home.hero_subtitle')}</p>
+            <form className="kd-hero-search bg-white/80 dark:bg-white/5 border-slate-200 dark:border-white/10 backdrop-blur-xl flex flex-col sm:flex-row w-full" onSubmit={handleSearch}>
               <input
                 type="text"
                 placeholder={t('nav.search')}
                 value={searchVal}
                 onChange={(e) => setSearchVal(e.target.value)}
-                className="text-slate-700 dark:text-slate-200"
+                className="text-slate-700 dark:text-slate-200 w-full"
               />
-              <button type="submit" className="bg-[var(--teal)] text-slate-900">{isAr ? 'بحث' : 'Search'}</button>
+              <button type="submit" className="bg-[var(--teal)] text-slate-900 w-full sm:w-auto">{isAr ? 'بحث' : 'Search'}</button>
             </form>
-            <div className="kd-hero-btns">
-              <Link to="/categories" className="kd-btn-primary bg-slate-900 border-none hover:bg-[var(--teal)] hover:text-slate-900">{t('home.hero_cta')}</Link>
-              <Link to="/register?role=provider" className="kd-btn-outline border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-400 hover:border-[var(--teal)]">{t('home.hero_cta2')}</Link>
+            <div className="kd-hero-btns justify-center lg:justify-start">
+              <Link to="/categories" className="kd-btn-primary bg-slate-900 border-none hover:bg-[var(--teal)] hover:text-slate-900 w-full sm:w-auto text-center">{t('home.hero_cta')}</Link>
+              <Link to="/register?role=provider" className="kd-btn-outline border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-400 hover:border-[var(--teal)] w-full sm:w-auto text-center">{t('home.hero_cta2')}</Link>
             </div>
           </div>
 
           <div className="kd-hero-visual hidden lg:block opacity-90 grayscale-[0.2] hover:grayscale-0 transition-all duration-700 relative">
-            <div className="kd-float-badge bg-white/40 dark:bg-white/10 backdrop-blur-3xl border border-white/20 text-slate-800 dark:text-slate-100 shadow-2xl">
+            <div className="kd-float-badge hidden md:flex bg-white/40 dark:bg-white/10 backdrop-blur-3xl border border-white/20 text-slate-800 dark:text-slate-100 shadow-2xl">
               <span className="pulse-dot bg-[var(--teal)] shadow-[0_0_12px_var(--teal)]" />
               {isAr ? '٥٠+ فئة خدمة متاحة' : '50+ Service Categories'}
             </div>
@@ -129,7 +132,7 @@ export default function Home() {
               </div>
 
               {/* Cinematic Secondary Card 1 - Response Speed */}
-              <div className="absolute -right-24 bottom-10 w-56 p-6 bg-slate-900 dark:bg-white/10 border border-slate-200 dark:border-white/10 rounded-[32px] backdrop-blur-3xl shadow-2xl animate-float z-20 hidden xl:block">
+              <div className="absolute -right-24 bottom-10 w-56 p-6 bg-slate-900 dark:bg-white/10 border border-slate-200 dark:border-white/10 rounded-[32px] backdrop-blur-3xl shadow-2xl animate-float z-20 hidden md:block">
                  <div className="flex items-center gap-4 mb-4">
                     <div className="w-8 h-8 rounded-full bg-[var(--teal)] flex items-center justify-center">
                        <CheckCircle2 className="w-4 h-4 text-slate-900" />
@@ -141,7 +144,7 @@ export default function Home() {
               </div>
 
               {/* Cinematic Secondary Card 2 - Community */}
-              <div className="absolute -left-16 top-32 px-5 py-4 bg-white/40 dark:bg-white/10 border border-white/20 dark:border-white/10 rounded-2xl backdrop-blur-3xl shadow-xl animate-float z-20 hidden xl:flex items-center gap-4" style={{ animationDelay: '1s' }}>
+              <div className="absolute -left-16 top-32 px-5 py-4 bg-white/40 dark:bg-white/10 border border-white/20 dark:border-white/10 rounded-2xl backdrop-blur-3xl shadow-xl animate-float z-20 hidden md:flex items-center gap-4" style={{ animationDelay: '1s' }}>
                  <div className="flex -space-x-3">
                     {[1,2,3].map(i => (
                        <div key={i} className="w-8 h-8 rounded-full border-2 border-slate-900 overflow-hidden">
@@ -386,14 +389,14 @@ export default function Home() {
       {/* QUICK VIEW MODAL implementation */}
       {activeModal && (
         <div className="glass-modal animate-fade-in" onClick={() => setActiveModal(null)}>
-          <div
-            className="bg-white dark:bg-[#0e0e11] border border-slate-200 dark:border-white/10 w-full max-w-2xl rounded-[40px] shadow-2xl overflow-hidden animate-fade-up"
-            onClick={(e) => e.stopPropagation()}
+          <div 
+            className="relative bg-white dark:bg-[#0c0d10] w-[92%] sm:w-full sm:max-w-2xl rounded-[40px] sm:rounded-[48px] overflow-hidden animate-scale-in"
+            onClick={e => e.stopPropagation()}
           >
-            <div className="relative h-48 bg-slate-100 dark:bg-white/5">
-              <button
-                onClick={() => setActiveModal(null)}
-                className="absolute top-6 right-6 p-2 bg-black/40 text-white rounded-full hover:bg-black/60 transition-colors z-20"
+            <div className="relative h-48 sm:h-64 bg-slate-100 dark:bg-white/5 flex items-center justify-center overflow-hidden">
+              <button 
+                onClick={() => setActiveModal({ type: null, data: null })}
+                className="absolute top-6 right-6 z-30 p-3 bg-white/10 backdrop-blur-md rounded-full text-slate-400 hover:text-white transition-all border border-white/20"
               >
                 <ArrowRight className="w-4 h-4 rotate-45" />
               </button>
@@ -404,22 +407,22 @@ export default function Home() {
               )}
             </div>
 
-            <div className="p-10 text-center">
+            <div className="p-8 sm:p-14 text-center">
               {activeModal.type === 'provider' ? (
                 <>
-                  <h2 className="text-3xl font-black text-slate-800 dark:text-slate-100 mb-2">
+                  <h2 className="text-2xl sm:text-4xl font-black text-slate-800 dark:text-slate-100 mb-2 leading-tight">
                     {lang === 'ar' && activeModal.data.businessNameAr ? activeModal.data.businessNameAr : activeModal.data.businessName}
                   </h2>
-                  <p className="text-[var(--teal)] font-bold mb-6 italic uppercase tracking-widest text-xs">
+                  <p className="text-[var(--teal)] font-bold mb-6 italic uppercase tracking-widest text-[10px] sm:text-xs">
                     {activeModal.data.category?.name || activeModal.data.category}
                   </p>
-                  <p className="text-slate-500 font-medium leading-relaxed mb-10 max-w-md mx-auto">
+                  <p className="text-slate-500 font-medium leading-relaxed mb-10 max-w-md mx-auto text-sm sm:text-base">
                     {lang === 'ar' && activeModal.data.descriptionAr ? activeModal.data.descriptionAr : activeModal.data.description}
                   </p>
-                  <div className="flex gap-4 justify-center">
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                     <Link
                       to={`/providers/${activeModal.data._id}`}
-                      className="bg-[var(--teal)] text-slate-900 px-10 py-4 rounded-2xl text-sm font-black hover:scale-105 transition-transform"
+                      className="w-full sm:w-auto bg-[var(--teal)] text-slate-900 px-10 py-4 rounded-2xl text-sm font-black hover:scale-105 transition-transform"
                     >
                       {t('providers.view_profile')}
                     </Link>
@@ -427,18 +430,18 @@ export default function Home() {
                 </>
               ) : (
                 <>
-                  <div className="text-6xl mb-6">{activeModal.data.icon}</div>
-                  <h2 className="text-3xl font-black text-slate-800 dark:text-slate-100 mb-4">
+                  <div className="text-5xl sm:text-7xl mb-6">{activeModal.data.icon}</div>
+                  <h2 className="text-3xl sm:text-5xl font-black text-slate-800 dark:text-slate-100 mb-4 leading-none tracking-tighter">
                     {lang === 'ar' && activeModal.data.nameAr ? activeModal.data.nameAr : activeModal.data.name}
                   </h2>
-                  <p className="text-slate-500 font-medium leading-relaxed mb-10 max-w-md mx-auto">
+                  <p className="text-slate-500 font-medium leading-relaxed mb-10 max-w-md mx-auto text-sm sm:text-base">
                     {lang === 'ar' && activeModal.data.descriptionAr ? activeModal.data.descriptionAr : activeModal.data.description}
                   </p>
                   <Link
                     to={`/categories/${activeModal.data.slug}`}
-                    className="bg-[var(--teal)] text-slate-900 px-10 py-4 rounded-2xl text-sm font-black hover:scale-105 transition-transform"
+                    className="w-full sm:w-auto bg-[var(--teal)] text-slate-900 px-10 py-4 rounded-2xl text-sm font-black hover:scale-105 transition-transform"
                   >
-                    Explore Specialty
+                    {isAr ? 'استكشف التخصص' : 'Explore Specialty'}
                   </Link>
                 </>
               )}

@@ -122,7 +122,7 @@ export default function Support() {
           
           <p className="text-2xl leading-tight text-slate-800 dark:text-slate-200 font-black tracking-tighter max-w-2xl">{isAr ? 'مرحباً بك في مركز مساعدة خدمة. نحن هنا لضمان حصولك على أفضل تجربة ممكنة وأكثرها سلاسة.' : 'Welcome to the Khedma Help Center. We ensure your professional journey is frictionless.'}</p>
           
-          <div className="grid md:grid-cols-2 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             {[
               { id: 'started', icon: <Zap />, title: isAr ? 'كيفية البدء' : 'Getting Started', desc: isAr ? 'تعلم كيفية التسجيل والبحث عن مقدمي الخدمات الموثوقين.' : 'Learn how to register and find trusted experts.', img: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80' },
               { id: 'orders', icon: <FileText />, title: isAr ? 'إدارة الطلبات' : 'Managing Orders', desc: isAr ? 'تتبع مشاريعك الحالية، وتواصل مع المحترفين، وقم بإدارة مدفوعاتك.' : 'Track projects, communicate with experts, and manage payments.', img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80' }
@@ -130,16 +130,16 @@ export default function Support() {
               <div 
                 key={card.id}
                 onClick={() => setSelectedHelp(card.id)}
-                className="bg-white/60 dark:bg-white/5 p-10 rounded-[40px] border border-slate-200 dark:border-white/10 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 group cursor-pointer relative overflow-hidden"
+                className="bg-white/60 dark:bg-white/5 p-8 sm:p-10 rounded-[40px] border border-slate-200 dark:border-white/10 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 group cursor-pointer relative overflow-hidden"
               >
                 <div className="absolute top-0 left-0 w-2 h-0 bg-[var(--teal)] group-hover:h-full transition-all duration-700" />
-                <div className="mb-8 overflow-hidden rounded-3xl aspect-video relative shadow-lg">
+                <div className="mb-8 overflow-hidden rounded-3xl aspect-[16/10] sm:aspect-video relative shadow-lg">
                   <img src={card.img} alt={card.title} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
                 </div>
-                <h4 className="font-black mb-4 text-3xl text-slate-900 dark:text-white leading-none tracking-tight flex items-center gap-3">
+                <h4 className="font-black mb-4 text-2xl sm:text-3xl text-slate-900 dark:text-white leading-none tracking-tight flex items-center gap-3">
                   {card.title} {React.cloneElement(card.icon, { className: 'w-6 h-6 text-[var(--teal)] opacity-40 group-hover:opacity-100 transition-opacity' })}
                 </h4>
-                <p className="text-slate-500 font-medium leading-relaxed">{card.desc}</p>
+                <p className="text-slate-500 font-medium text-sm sm:text-base leading-relaxed">{card.desc}</p>
               </div>
             ))}
           </div>
@@ -296,19 +296,19 @@ export default function Support() {
 
       {/* Direct Contact Modal - World Class Popup */}
       {showContactPop && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-6 bg-slate-950/60 backdrop-blur-md animate-fade-in">
-          <div className="relative w-full max-w-4xl bg-white dark:bg-[#0c0d10] rounded-[60px] p-10 md:p-20 shadow-2xl border border-slate-200 dark:border-white/10 overflow-hidden animate-scale-in">
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6 bg-slate-950/60 backdrop-blur-md animate-fade-in">
+          <div className="relative w-full max-w-4xl max-h-[90vh] bg-white dark:bg-[#0c0d10] rounded-[40px] sm:rounded-[60px] p-8 sm:p-20 shadow-2xl border border-slate-200 dark:border-white/10 overflow-y-auto animate-scale-in scrollbar-hide">
              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[var(--teal)] to-transparent" />
-             <button onClick={() => setShowContactPop(false)} className="absolute top-10 right-10 p-4 bg-slate-100 dark:bg-white/5 rounded-full text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
-               <X className="w-6 h-6" />
+             <button onClick={() => setShowContactPop(false)} className="absolute top-6 right-6 sm:top-10 sm:right-10 p-3 sm:p-4 bg-slate-100 dark:bg-white/5 rounded-full text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
+               <X className="w-5 h-5 sm:w-6 sm:h-6" />
              </button>
              
-             <div className="text-center mb-16">
-                <h4 className="text-5xl font-black text-slate-900 dark:text-white tracking-tighter mb-4">{isAr ? 'اتصال مباشر مرجح' : 'Priority Contact Channels'}</h4>
-                <p className="text-slate-500 font-medium">{isAr ? 'اختر الوسيلة التي تفضلها للتواصل مع فريقنا' : 'Choose your preferred way to connect with our elite support team'}</p>
+             <div className="text-center mb-12 sm:mb-16 mt-6 sm:mt-0">
+                <h4 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tighter mb-4">{isAr ? 'اتصال مباشر مرجح' : 'Priority Contact Channels'}</h4>
+                <p className="text-slate-500 font-medium text-sm sm:text-base px-4">{isAr ? 'اختر الوسيلة التي تفضلها للتواصل مع فريقنا' : 'Choose your preferred way to connect with our elite support team'}</p>
              </div>
 
-             <div className="grid sm:grid-cols-3 gap-8">
+             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
                {[
                  { icon: <Mail />, title: isAr ? 'إيميل' : 'Email', val: 'support@khedma.com', link: 'mailto:support@khedma.com' },
                  { icon: <Phone />, title: isAr ? 'اتصال' : 'Phone', val: '+20 100 000 0000', link: 'tel:+201000000000' },
@@ -317,13 +317,13 @@ export default function Support() {
                  <a 
                    key={i} 
                    href={item.link} 
-                   className="p-10 rounded-[48px] border border-slate-100 dark:border-white/5 bg-slate-50 dark:bg-white/5 text-center group hover:bg-[var(--teal)] transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-[var(--teal)]/20"
+                   className="p-8 sm:p-10 rounded-[40px] sm:rounded-[48px] border border-slate-100 dark:border-white/5 bg-slate-50 dark:bg-white/5 text-center group hover:bg-[var(--teal)] transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-[var(--teal)]/20"
                  >
-                    <div className="w-16 h-16 mx-auto mb-6 bg-white dark:bg-white/5 rounded-full flex items-center justify-center text-[var(--teal)] group-hover:text-white group-hover:bg-white/20 transition-all">
-                       {React.cloneElement(item.icon, { className: 'w-8 h-8' })}
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6 bg-white dark:bg-white/5 rounded-full flex items-center justify-center text-[var(--teal)] group-hover:text-white group-hover:bg-white/20 transition-all">
+                       {React.cloneElement(item.icon, { className: 'w-6 h-6 sm:w-8 sm:h-8' })}
                     </div>
-                    <div className="font-black text-slate-900 dark:text-white text-lg mb-1 group-hover:text-white">{item.title}</div>
-                    <div className="text-[10px] font-bold text-slate-400 group-hover:text-white/60 tracking-tight">{item.val}</div>
+                    <div className="font-black text-slate-900 dark:text-white text-base sm:text-lg mb-1 group-hover:text-white">{item.title}</div>
+                    <div className="text-[9px] sm:text-[10px] font-bold text-slate-400 group-hover:text-white/60 tracking-tight">{item.val}</div>
                  </a>
                ))}
              </div>
@@ -350,26 +350,28 @@ export default function Support() {
               : 'Service doesn\'t end at booking. Explore our smart resolution center, legal protocols, and advanced safety documentation.'}
           </p>
 
-          {/* Minimal Tab Controller */}
-          <div className="inline-flex p-1.5 bg-slate-100/50 dark:bg-white/5 border border-slate-200 dark:border-white/5 rounded-[24px] backdrop-blur-2xl">
-             {['help', 'safety', 'terms', 'privacy'].map(id => (
-                <button 
-                  key={id} 
-                  onClick={() => {
-                    const el = document.getElementById(id);
-                    el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    setActiveTab(id);
-                  }}
-                  className={clsx(
-                    "px-8 py-3.5 rounded-[20px] text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-500",
-                    activeTab === id 
-                      ? "bg-white dark:bg-white/10 text-slate-900 dark:text-white shadow-2xl scale-105" 
-                      : "text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
-                  )}
-                >
-                  {id}
-                </button>
-             ))}
+          {/* Minimal Tab Controller - Responsive Scroll */}
+          <div className="flex justify-center w-full px-4 mb-20">
+            <div className="inline-flex p-1.5 bg-slate-100/50 dark:bg-white/5 border border-slate-200 dark:border-white/5 rounded-[24px] backdrop-blur-2xl overflow-x-auto scrollbar-hide overflow-y-hidden max-w-full">
+               {['help', 'safety', 'terms', 'privacy'].map(id => (
+                  <button 
+                    key={id} 
+                    onClick={() => {
+                      const el = document.getElementById(id);
+                      el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      setActiveTab(id);
+                    }}
+                    className={clsx(
+                      "px-6 sm:px-8 py-3 rounded-[20px] text-[10px] sm:text-[11px] font-black uppercase tracking-[0.2em] transition-all duration-500 whitespace-nowrap",
+                      activeTab === id 
+                        ? "bg-white dark:bg-white/10 text-slate-900 dark:text-white shadow-2xl scale-105" 
+                        : "text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
+                    )}
+                  >
+                    {id}
+                  </button>
+               ))}
+            </div>
           </div>
         </div>
 
