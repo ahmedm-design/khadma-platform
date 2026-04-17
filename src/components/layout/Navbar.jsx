@@ -248,12 +248,23 @@ export default function Navbar() {
             )}
           </div>
           
-          {/* Mobile Theme Toggle */}
-          <div className="mt-auto flex items-center justify-between p-6 bg-slate-50 dark:bg-white/5 rounded-3xl">
-             <span className="text-xs font-black uppercase tracking-widest text-slate-500">{isRTL ? 'الوضع المظلم' : 'Dark Mode'}</span>
-             <button onClick={toggle} className="p-3 bg-white dark:bg-white/10 rounded-xl shadow-sm text-slate-500">
-                {dark ? <Sun size={18} /> : <Moon size={18} />}
-             </button>
+          {/* Mobile Utility Footer (Theme & Lang) */}
+          <div className="mt-auto flex flex-col gap-3">
+            <div className="flex items-center justify-between p-6 bg-slate-50 dark:bg-white/5 rounded-3xl">
+              <span className="text-xs font-black uppercase tracking-widest text-slate-500">{isRTL ? 'تغيير اللغة' : 'Language'}</span>
+              <button 
+                onClick={() => { setLang(lang === 'en' ? 'ar' : 'en'); setMenuOpen(false); }} 
+                className="flex items-center px-4 h-[44px] bg-white dark:bg-white/10 rounded-xl shadow-sm text-xs font-black text-[var(--teal)] uppercase tracking-widest"
+              >
+                {lang === 'en' ? 'Arabic' : 'English'}
+              </button>
+            </div>
+            <div className="flex items-center justify-between p-6 bg-slate-50 dark:bg-white/5 rounded-3xl">
+               <span className="text-xs font-black uppercase tracking-widest text-slate-500">{isRTL ? 'الوضع المظلم' : 'Dark Mode'}</span>
+               <button onClick={toggle} className="p-3 bg-white dark:bg-white/10 rounded-xl shadow-sm text-slate-500">
+                  {dark ? <Sun size={18} /> : <Moon size={18} />}
+               </button>
+            </div>
           </div>
         </div>
       </div>
