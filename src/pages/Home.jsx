@@ -8,7 +8,7 @@ import api from '../api/axios';
 import ProviderCard from '../components/common/ProviderCard';
 import { SkeletonProviderCard, SkeletonCategoryCard } from '../components/common/SkeletonCard';
 export default function Home() {
-  const { t, lang } = useLang();
+  const { t, lang, isAr } = useLang();
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const [providers, setProviders] = useState([]);
@@ -44,8 +44,6 @@ export default function Home() {
     if (searchVal.trim()) navigate(`/search?q=${encodeURIComponent(searchVal.trim())}`);
   };
 
-  const isAr = lang === 'ar';
-
   return (
     <div className="kd-wallpaper mesh-bg min-h-screen">
       {/* HERO */}
@@ -62,36 +60,50 @@ export default function Home() {
             <source src="/8293017-hd_1920_1080_30fps (online-video-cutter.com).mp4" type="video/mp4" />
           </video>
           <div className="kd-hero-overlay" />
-        <div className="kd-hero-focus-layer" />
+
+          {/* Premium Readable Overlay */}
+          <div className={clsx(
+            "absolute inset-y-0 w-full lg:w-[60%] pointer-events-none z-10 transition-all duration-700",
+            isAr
+              ? "right-0 bg-gradient-to-l from-white/95 via-white/80 to-transparent dark:from-[#08090a] dark:via-[#08090a]/80"
+              : "left-0 bg-gradient-to-r from-white/95 via-white/80 to-transparent dark:from-[#08090a] dark:via-[#08090a]/80"
+          )} />
+          <div className="kd-hero-focus-layer" />
         </div>
 
-        <div className="kd-hero-inner">
-          <div className="kd-hero-text">
+        <div className="kd-hero-inner pt-24 pb-12 md:pt-36 lg:pt-40">
+          <div className="kd-hero-text flex flex-col items-center lg:items-start">
             <div className="flex justify-center lg:justify-start">
-               <div className="kd-hero-badge bg-white/5 border-white/10 backdrop-blur-md">
-                 <span className="pulse-dot me-2" />
-                 {isAr ? 'موثوق من أكثر من 50,000 عميل' : 'Trusted by 50,000+ customers'}
-               </div>
+              <div className="kd-hero-badge bg-white/5 border-white/10 backdrop-blur-md mb-6">
+                <span className="pulse-dot me-2" />
+                {isAr ? 'موثوق من أكثر من 50,000 عميل' : 'Trusted by 50,000+ customers'}
+              </div>
             </div>
-            <h1 className="kd-hero-h1 text-slate-900 dark:text-slate-100 text-center lg:text-start text-4xl sm:text-7xl font-black tracking-tight leading-[1.1]">
+
+            <h1 className="kd-hero-h1 text-slate-900 dark:text-slate-100 text-center lg:text-start text-3xl sm:text-5xl lg:text-7xl font-black tracking-tight leading-[1.15] mb-6">
               {isAr ? 'ابحث عن مزودي خدمة موثوقين' : 'Find Trusted Service Providers'}
             </h1>
-            <p className="kd-hero-sub text-slate-500 font-medium text-center lg:text-start text-sm md:text-lg max-w-xl">
+
+            <p className="kd-hero-sub text-slate-500 font-medium text-center lg:text-start text-sm md:text-lg max-w-xl mb-10">
               {t('home.hero_subtitle')}
             </p>
-            <form className="kd-hero-search bg-white/80 dark:bg-white/5 border-slate-200 dark:border-white/10 backdrop-blur-xl flex flex-col sm:flex-row w-full items-center p-1.5 shadow-2xl" onSubmit={handleSearch}>
-              <input
-                type="text"
-                placeholder={t('nav.search')}
-                value={searchVal}
-                onChange={(e) => setSearchVal(e.target.value)}
-                className="bg-transparent border-none outline-none text-slate-700 dark:text-slate-200 w-full ps-6 pe-4 py-4 sm:py-0 text-lg font-medium"
-              />
-              <button type="submit" className="bg-[var(--teal)] text-slate-900 w-full sm:w-auto px-10 py-4 rounded-[32px] font-black uppercase tracking-widest text-xs transition-all hover:bg-[var(--teal-dark)] shrink-0">{isAr ? 'بحث' : 'Search'}</button>
+
+            <form className="kd-hero-search bg-white/90 dark:bg-white/5 border-slate-200 dark:border-white/10 backdrop-blur-xl flex flex-col sm:flex-row w-full items-center p-2 shadow-2xl gap-2 sm:gap-0" onSubmit={handleSearch}>
+              <div className="flex-1 w-full relative">
+                <input
+                  type="text"
+                  placeholder={t('nav.search')}
+                  value={searchVal}
+                  onChange={(e) => setSearchVal(e.target.value)}
+                  className="bg-transparent border-none outline-none text-slate-700 dark:text-slate-200 w-full ps-6 pe-4 py-4 lg:py-0 text-base md:text-lg font-medium"
+                />
+              </div>
+              <button type="submit" className="bg-[var(--teal)] text-slate-900 w-full sm:w-auto px-10 py-4 rounded-[20px] sm:rounded-[32px] font-black uppercase tracking-widest text-xs transition-all hover:bg-[var(--teal-dark)] shrink-0 shadow-lg shadow-[var(--teal)]/20">{isAr ? 'بحث' : 'Search'}</button>
             </form>
-            <div className="kd-hero-btns flex flex-wrap gap-4 justify-center lg:justify-start mt-8">
-              <Link to="/categories" className="bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 px-10 py-4 rounded-2xl text-sm font-black hover:scale-105 transition-all shadow-xl">{isAr ? 'استكشف الخدمات' : 'Explore Services'}</Link>
-              <Link to="/register?role=provider" className="border-2 border-slate-200 dark:border-white/10 text-slate-700 dark:text-white px-10 py-4 rounded-2xl text-sm font-black hover:bg-slate-50 dark:hover:bg-white/5 transition-all">{isAr ? 'انضم كمزود خدمة' : 'Join as Pro'}</Link>
+
+            <div className="kd-hero-btns flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center lg:justify-start mt-10">
+              <Link to="/categories" className="w-full sm:w-auto text-center bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 px-10 py-5 sm:py-4 rounded-2xl text-sm font-black hover:scale-105 transition-all shadow-xl">{isAr ? 'استكشف الخدمات' : 'Explore Services'}</Link>
+              <Link to="/register?role=provider" className="w-full sm:w-auto text-center border-2 border-slate-200 dark:border-white/10 text-slate-700 dark:text-white px-10 py-5 sm:py-4 rounded-2xl text-sm font-black hover:bg-slate-50 dark:hover:bg-white/5 transition-all">{isAr ? 'انضم كمزود خدمة' : 'Join as Pro'}</Link>
             </div>
           </div>
 
@@ -110,7 +122,7 @@ export default function Home() {
               <div className="relative group perspective-2000">
                 <div className="bg-white dark:bg-[#1A1A1E] rounded-[40px] overflow-hidden shadow-[0_32px_64px_rgba(0,0,0,0.15)] border border-slate-100 dark:border-white/5 transition-all duration-700 hover:rotate-y-3 hover:scale-[1.01]">
                   <div className="relative h-60 overflow-hidden">
-                    <img src="/Gemini_Generated_Image_vhi0kuvhi0kuvhi0.png" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" alt="Khadma Platform" />
+                    <img src="/Gemini_Generated_Image_vhi0kuvhi0kuvhi0.jpg" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" alt="Khadma Platform" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                   </div>
                   <div className="p-8">
@@ -159,7 +171,7 @@ export default function Home() {
                   isAr ? "-right-24" : "-left-24"
                 )}>
                   <div className="flex justify-center gap-1 mb-3">
-                     {[1,2,3,4,5].map(i => <Shield key={i} className="w-3 h-3 text-yellow-500 fill-yellow-500" />)}
+                    {[1, 2, 3, 4, 5].map(i => <Shield key={i} className="w-3 h-3 text-yellow-500 fill-yellow-500" />)}
                   </div>
                   <div className="text-3xl font-black text-slate-900 dark:text-white tracking-tighter transition-transform">+50K</div>
                   <div className="text-[9px] font-black text-slate-400 uppercase tracking-[0.3em] mt-1">{isAr ? 'عملاء سعداء' : 'Happy Users'}</div>
@@ -243,7 +255,7 @@ export default function Home() {
             </div>
             <Link to="/categories" className="kd-btn-special">
               <div className="flex -space-x-2">
-                {[1,2].map(i => <img key={i} src={`https://i.pravatar.cc/100?u=${i+20}`} className="w-6 h-6 rounded-full border border-white/20 object-cover" alt="" />)}
+                {[1, 2].map(i => <img key={i} src={`https://i.pravatar.cc/100?u=${i + 20}`} className="w-6 h-6 rounded-full border border-white/20 object-cover" alt="" />)}
               </div>
               {t('common.see_all')} <ArrowRight className="w-4 h-4" />
             </Link>
@@ -269,23 +281,23 @@ export default function Home() {
       </section>
 
       {/* TOP PROVIDERS */}
-      <section className="animate-fade-up relative py-8 px-6">
+      <section id="top-providers" className="animate-fade-up relative py-8 px-6 md:py-12 scroll-mt-24">
         <div className="max-w-[1400px] mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
             <div>
-              <span className="kd-section-label text-xs tracking-[0.3em] font-black text-[var(--teal)]">{isAr ? 'المواهب المميزة' : 'Top Rated Providers'}</span>
-              <h2 className="kd-section-title text-4xl md:text-5xl text-slate-800 dark:text-slate-100">{t('home.top_providers')}</h2>
-              <p className="text-slate-500 font-medium max-w-xl">{t('home.top_providers_sub')}</p>
+              <span className="kd-section-label text-[10px] sm:text-xs tracking-[0.3em] font-black text-[var(--teal)] uppercase">{isAr ? 'المواهب المميزة' : 'Top Rated Providers'}</span>
+              <h2 className="kd-section-title text-3xl sm:text-4xl md:text-5xl text-slate-800 dark:text-slate-100 mt-2 mb-4">{t('home.top_providers')}</h2>
+              <p className="text-slate-500 font-medium max-w-xl text-sm sm:text-base">{t('home.top_providers_sub')}</p>
             </div>
             <Link to="/providers" className="kd-btn-special">
               <div className="flex -space-x-2">
-                {[1,2].map(i => <img key={i} src={`https://i.pravatar.cc/100?u=${i+30}`} className="w-6 h-6 rounded-full border border-white/20 object-cover" alt="" />)}
+                {[1, 2].map(i => <img key={i} src={`https://i.pravatar.cc/100?u=${i + 30}`} className="w-6 h-6 rounded-full border border-white/20 object-cover" alt="" />)}
               </div>
               {t('common.see_all')} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             {loadingProvs
               ? Array(3).fill(0).map((_, i) => <div key={i} className="aspect-[3/4] bg-slate-100 dark:bg-white/5 rounded-[32px] animate-pulse" />)
               : providers.map((p) => (
@@ -293,9 +305,9 @@ export default function Home() {
                   <ProviderCard provider={p} />
                   <button
                     onClick={(e) => { e.preventDefault(); setActiveModal({ type: 'provider', data: p }); }}
-                    className="absolute top-6 right-6 p-2.5 bg-white/20 hover:bg-white/40 dark:bg-white/5 dark:hover:bg-white/10 backdrop-blur-xl border border-white/20 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 z-20"
+                    className="absolute top-4 right-4 sm:top-6 sm:right-6 p-2 bg-white/20 hover:bg-white/40 dark:bg-white/5 dark:hover:bg-white/10 backdrop-blur-xl border border-white/20 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 z-20"
                   >
-                    <ArrowRight className="w-4 h-4 text-white -rotate-45" />
+                    <ArrowRight className="w-3.5 h-3.5 text-white -rotate-45" />
                   </button>
                 </div>
               ))
@@ -395,18 +407,18 @@ export default function Home() {
       {/* QUICK VIEW MODAL implementation */}
       {activeModal && (
         <div className="glass-modal animate-fade-in" onClick={() => setActiveModal(null)}>
-          <div 
+          <div
             className="relative bg-white dark:bg-[#0c0d10] w-[92%] sm:w-full sm:max-w-2xl rounded-[40px] sm:rounded-[48px] overflow-hidden animate-scale-in"
             onClick={e => e.stopPropagation()}
           >
             <div className="relative h-48 sm:h-64 bg-slate-100 dark:bg-white/5 flex items-center justify-center overflow-hidden">
-              <button 
-                onClick={() => setActiveModal({ type: null, data: null })}
+              <button
+                onClick={() => setActiveModal(null)}
                 className="absolute top-6 right-6 z-30 p-3 bg-white/10 backdrop-blur-md rounded-full text-slate-400 hover:text-white transition-all border border-white/20"
               >
                 <ArrowRight className="w-4 h-4 rotate-45" />
               </button>
-              {activeModal.type === 'provider' && (
+              {activeModal.type === 'provider' && activeModal.data && (
                 <div className="absolute inset-0 flex items-center justify-center text-6xl opacity-20">
                   {activeModal.data.category?.icon || '👤'}
                 </div>
@@ -414,7 +426,7 @@ export default function Home() {
             </div>
 
             <div className="p-8 sm:p-14 text-center">
-              {activeModal.type === 'provider' ? (
+              {activeModal.data && activeModal.type === 'provider' ? (
                 <>
                   <h2 className="text-2xl sm:text-4xl font-black text-slate-800 dark:text-slate-100 mb-2 leading-tight">
                     {lang === 'ar' && activeModal.data.businessNameAr ? activeModal.data.businessNameAr : activeModal.data.businessName}
@@ -434,7 +446,7 @@ export default function Home() {
                     </Link>
                   </div>
                 </>
-              ) : (
+              ) : activeModal.data ? (
                 <>
                   <div className="text-5xl sm:text-7xl mb-6">{activeModal.data.icon}</div>
                   <h2 className="text-3xl sm:text-5xl font-black text-slate-800 dark:text-slate-100 mb-4 leading-none tracking-tighter">
@@ -450,7 +462,7 @@ export default function Home() {
                     {isAr ? 'استكشف التخصص' : 'Explore Specialty'}
                   </Link>
                 </>
-              )}
+              ) : null}
             </div>
           </div>
         </div>

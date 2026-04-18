@@ -11,7 +11,7 @@ import { SkeletonProviderCard } from '../components/common/SkeletonCard';
 const CITIES = ['Cairo', 'Giza', 'Alexandria', 'Mansoura', 'Tanta', 'Luxor', 'Aswan'];
 
 export default function Providers() {
-  const { t, lang } = useLang();
+  const { t, lang, isAr } = useLang();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [providers, setProviders]     = useState([]);
@@ -65,7 +65,6 @@ export default function Providers() {
   };
 
   const hasFilters = city || catId || minRating || search;
-  const isAr = lang === 'ar';
 
   const inputStyle = { width: '100%', padding: '12px 16px', border: '1.5px solid var(--border)', borderRadius: 12, fontSize: 14, outline: 'none', background: 'var(--kd-white, white)', color: 'var(--ink)', fontFamily: 'Sora, sans-serif' };
   const selectStyle = { ...inputStyle, cursor: 'pointer', appearance: 'none' };
@@ -77,7 +76,7 @@ export default function Providers() {
       <div className="absolute bottom-1/4 left-0 w-[400px] h-[400px] bg-indigo-500 opacity-[0.02] rounded-full blur-[100px] pointer-events-none" />
 
       {/* Page Hero Strip */}
-      <div className="relative pt-24 pb-12 px-10 border-b border-slate-200/50 dark:border-white/5">
+      <div className="relative pb-12 px-10 border-b border-slate-200/50 dark:border-white/5">
         <div className="max-w-[1400px] mx-auto text-center md:text-left">
           <div className="flex flex-col md:flex-row items-center md:items-end justify-between gap-10">
             <div className="animate-fade-in flex-1">

@@ -9,7 +9,7 @@ import { SkeletonProviderCard } from '../components/common/SkeletonCard';
 
 export default function CategoryDetail() {
   const { slug } = useParams();
-  const { t, lang } = useLang();
+  const { t, lang, isAr } = useLang();
   const [category, setCategory]         = useState(null);
   const [providers, setProviders]       = useState([]);
   const [activeSubcat, setActiveSubcat] = useState('');
@@ -70,7 +70,7 @@ export default function CategoryDetail() {
   const catDesc = lang === 'ar' && category.descriptionAr ? category.descriptionAr : category.description;
 
   return (
-    <div className="py-12">
+    <div className="pb-12">
       <div className="container-app">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm text-slate-400 mb-6">

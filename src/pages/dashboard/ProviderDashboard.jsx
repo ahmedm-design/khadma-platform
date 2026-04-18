@@ -2,14 +2,14 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useLang } from '../../context/LangContext';
-import { Edit3, Plus, Trash2, Save, X, Star, AlertCircle, CheckCircle, Clock } from 'lucide-react';
+import { Edit3, Plus, Trash2, Save, X, Star, AlertCircle, CheckCircle, Clock, Camera, User as UserIcon } from 'lucide-react';
 import api from '../../api/axios';
 import toast from 'react-hot-toast';
 import StarRating from '../../components/common/StarRating';
 
 export default function ProviderDashboard() {
   const { user } = useAuth();
-  const { t }    = useLang();
+  const { t, lang, isAr } = useLang();
 
   const [provider, setProvider]   = useState(null);
   const [ratings, setRatings]     = useState([]);
@@ -57,6 +57,24 @@ export default function ProviderDashboard() {
     }
   };
 
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Implementation would normally use a FormData and a specific upload endpoint
+    // For now, we simulate the upload or use a base64 for preview if the backend supports it
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      const base64 = reader.result;
+      setForm(prev => ({ ...prev, avatar: base64 }));
+      // If there is a specific upload endpoint:
+      // const formData = new FormData();
+      // formData.append('image', file);
+      // await api.post('/upload', formData);
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleAddService = async () => {
     if (!newSvc.title || !newSvc.price) return toast.error('Title and price are required');
     setAddingSvc(true);
@@ -85,9 +103,9 @@ export default function ProviderDashboard() {
   if (loading) return <div className="py-20 container-app"><div className="skeleton h-64 rounded-2xl" /></div>;
 
   const statusConfig = {
-    approved: { icon: CheckCircle, color: 'text-emerald-500', bg: 'bg-emerald-50 dark:bg-emerald-900/20', label: 'Approved' },
+    approved: { icon: CheckCircle, color: 'text-[var(--teal)]', bg: 'bg-[var(--teal)]/10', label: 'Approved' },
     pending:  { icon: Clock,        color: 'text-amber-500',   bg: 'bg-amber-50 dark:bg-amber-900/20',   label: 'Pending Review' },
-    rejected: { icon: AlertCircle,  color: 'text-red-500',     bg: 'bg-red-50 dark:bg-red-900/20',       label: 'Rejected' },
+    rejected: { icon: AlertCircle,  color: 'text-red-400',     bg: 'bg-red-50 dark:bg-red-900/10',       label: 'Rejected' },
   };
   const { icon: StatusIcon, color, bg, label } = statusConfig[provider?.status] || statusConfig.pending;
 
@@ -98,7 +116,7 @@ export default function ProviderDashboard() {
   ];
 
   return (
-    <div className="py-12 relative overflow-hidden min-h-screen">
+    <div className="pb-12 relative overflow-hidden min-h-screen">
       {/* Background Atmosphere consistent with Home */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[rgba(16,185,129,0.04)] rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-1/4 left-0 w-[400px] h-[400px] bg-[rgba(52,211,153,0.03)] rounded-full blur-[100px] pointer-events-none" />
@@ -151,15 +169,13 @@ export default function ProviderDashboard() {
         </div>
 
         {/* Advanced Segmented Control Tool for Tabs */}
-        <div className="flex p-1.5 mb-10 bg-slate-200/50 dark:bg-white/5 border border-white/20 dark:border-white/5 rounded-[24px] backdrop-blur-xl max-w-2xl mx-auto">
+        <div className="flex gap-8 mb-10 border-b border-slate-200 dark:border-white/10 max-w-2xl mx-auto">
           {tabs.map(({ id, label: lbl }) => (
             <button 
               key={id} 
               onClick={() => setActiveTab(id)}
-              className={`flex-1 py-3 px-6 rounded-[20px] text-sm font-bold transition-all duration-500 relative ${
-                activeTab === id
-                  ? 'bg-white dark:bg-white/10 text-[var(--teal-dark)] dark:text-[var(--teal)] shadow-sm'
-                  : 'text-slate-500 hover:text-slate-800 dark:hover:text-white'
+              className={`pb-4 px-2 text-sm font-bold border-b-2 transition-all ${
+                activeTab === id ? 'border-[var(--teal)] text-[var(--teal-dark)]' : 'border-transparent text-slate-400 hover:text-slate-600'
               }`}
             >
               {lbl}
@@ -170,11 +186,38 @@ export default function ProviderDashboard() {
         {/* Profile Tab */}
         {activeTab === 'profile' && (
           <div className="bg-white/40 dark:bg-white/5 border border-white/20 dark:border-white/10 backdrop-blur-2xl rounded-[32px] p-10 animate-fade-in shadow-sm space-y-8">
+            {/* Profile Header With Picture */}
+            <div className="flex flex-col md:flex-row items-center gap-10 pb-10 mb-10 border-b border-slate-100 dark:border-white/5">
+              <div className="relative group/pic">
+                <div className="w-32 h-32 rounded-[40px] bg-slate-100 dark:bg-white/5 overflow-hidden border-4 border-white dark:border-slate-800 shadow-xl flex items-center justify-center">
+                  {(editing ? form.avatar : provider.avatar) ? (
+                    <img 
+                      src={editing ? form.avatar : provider.avatar} 
+                      alt="Profile" 
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <UserIcon className="w-12 h-12 text-slate-300" />
+                  )}
+                </div>
+                {editing && (
+                  <label className="absolute -bottom-2 -right-2 w-10 h-10 bg-[var(--teal)] text-white rounded-2xl flex items-center justify-center cursor-pointer shadow-lg hover:scale-110 active:scale-95 transition-all">
+                    <Camera className="w-5 h-5" />
+                    <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
+                  </label>
+                )}
+              </div>
+              <div className="text-center md:text-left">
+                <h4 className="text-2xl font-black text-slate-800 dark:text-white mb-2">{provider.businessName}</h4>
+                <p className="text-sm text-slate-400 font-medium">{provider.category?.icon} {provider.category?.name || 'Service Provider'}</p>
+              </div>
+            </div>
+
             <div className="flex justify-between items-center mb-4">
               <div className="text-xl font-bold text-slate-800 dark:text-white">{isAr ? 'بيانات العمل' : 'Business Details'}</div>
               <div className="flex gap-3">
                 {!editing
-                  ? <button onClick={() => setEditing(true)} className="btn-secondary text-xs uppercase tracking-widest font-bold px-6 py-3 rounded-xl border-slate-200 gap-2"><Edit3 className="w-4 h-4" /> {t('dashboard.edit_profile')}</button>
+                  ? <button onClick={() => setEditing(true)} className="px-4 py-2 bg-[var(--teal)]/10 text-[var(--teal-dark)] rounded-xl text-xs font-bold hover:bg-[var(--teal-dark)] hover:text-white transition-all flex items-center gap-2"><Edit3 className="w-4 h-4" /> {t('dashboard.edit_profile')}</button>
                   : <>
                       <button onClick={() => { setEditing(false); setForm(provider); }} className="btn-ghost text-xs uppercase tracking-widest font-bold px-6 py-3 rounded-xl gap-1"><X className="w-4 h-4" /> {t('common.cancel')}</button>
                       <button onClick={handleSave} disabled={saving} className="btn-primary text-xs uppercase tracking-widest font-bold px-8 py-3 rounded-xl gap-1 shadow-lg shadow-[var(--teal)]/20"><Save className="w-4 h-4" /> {saving ? '...' : t('dashboard.save')}</button>

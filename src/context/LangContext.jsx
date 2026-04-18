@@ -24,9 +24,10 @@ export function LangProvider({ children }) {
   };
 
   const isRTL = lang === 'ar';
+  const isAr = lang === 'ar';
 
   return (
-    <LangContext.Provider value={{ lang, setLang, t, isRTL }}>
+    <LangContext.Provider value={{ lang, setLang, t, isRTL, isAr }}>
       {children}
     </LangContext.Provider>
   );

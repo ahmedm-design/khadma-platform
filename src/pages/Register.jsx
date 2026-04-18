@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { useLang } from '../context/LangContext';
 import toast from 'react-hot-toast';
 import clsx from 'clsx';
+import PasswordInput from '../components/common/PasswordInput';
 
 export default function Register() {
   const { register, loginWithGoogle } = useAuth();
@@ -17,7 +18,6 @@ export default function Register() {
   const [form, setForm] = useState({
     name: '', email: '', phone: '', password: '', confirmPassword: '', role: initialRole,
   });
-  const [showPass, setShowPass] = useState(false);
   const [loading, setLoading]   = useState(false);
 
   const handleChange = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
@@ -39,8 +39,13 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen kd-wallpaper mesh-bg flex items-center justify-center p-6 bg-slate-100 dark:bg-black py-20">
-      <div className="w-full max-w-[460px] animate-fade-up">
+    <div className="relative min-h-screen kd-wallpaper mesh-bg flex items-start justify-center p-6 bg-slate-100 dark:bg-[#08090a] pt-2 pb-32 overflow-hidden">
+      {/* Premium Background Ambiance */}
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-[var(--teal)] opacity-[0.03] dark:opacity-[0.07] rounded-full blur-[120px] pointer-events-none animate-pulse" />
+      <div className="absolute bottom-[0%] right-[-10%] w-[50%] h-[50%] bg-sky-500 opacity-[0.02] dark:opacity-[0.05] rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-[20%] right-[10%] w-[20%] h-[20%] bg-[var(--teal)] opacity-[0.02] dark:opacity-[0.04] rounded-full blur-[80px] pointer-events-none" />
+
+      <div className="relative w-full max-w-[460px] animate-fade-up z-10">
         {/* Logo/Brand */}
         <div className="text-center mb-10">
           <Link to="/" className="inline-flex items-center gap-3 group">
@@ -49,9 +54,9 @@ export default function Register() {
           </Link>
         </div>
 
-        <div className="bg-white/40 dark:bg-white/5 border border-slate-200 dark:border-white/10 backdrop-blur-3xl rounded-[40px] p-8 md:p-12 shadow-2xl shadow-indigo-500/5">
+        <div className="bg-white/80 dark:bg-white/[0.03] border border-slate-200 dark:border-white/10 backdrop-blur-3xl rounded-[40px] p-8 md:p-12 shadow-2xl shadow-[var(--teal)]/5 transition-colors duration-500">
           <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tighter mb-2">{t('auth.register')}</h1>
-          <p className="text-slate-500 font-medium text-sm mb-10">Join thousands of users on the Khedma marketplace.</p>
+          <p className="text-slate-500 dark:text-slate-400 font-medium text-sm mb-10">Join thousands of users on the Khedma marketplace.</p>
 
           {/* Role selector */}
           <div className="grid grid-cols-2 gap-4 mb-8">
@@ -67,7 +72,7 @@ export default function Register() {
                   "flex flex-col items-center gap-3 p-6 rounded-2xl border-2 transition-all duration-300",
                   form.role === role 
                     ? "bg-[var(--teal)] text-slate-900 border-[var(--teal)] shadow-lg shadow-[var(--teal)]/10 scale-105" 
-                    : "bg-white/30 dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-500 dark:text-slate-400 opacity-60 hover:opacity-100"
+                    : "bg-white/30 dark:bg-white/[0.02] border-slate-200 dark:border-white/5 text-slate-500 dark:text-slate-500 opacity-60 hover:opacity-100 hover:border-[var(--teal)]/30"
                 )}
               >
                 <span className="text-3xl">{icon}</span>
@@ -91,26 +96,25 @@ export default function Register() {
             </div>
             
             <div className="space-y-1">
-              <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 pl-1">{t('auth.password')}</label>
-              <div className="relative group">
-                <input
-                  name="password"
-                  type={showPass ? 'text' : 'password'}
-                  value={form.password}
-                  onChange={handleChange}
-                  className="w-full bg-white/50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl px-5 py-3 text-sm font-bold text-slate-700 dark:text-white outline-none focus:ring-4 focus:ring-[var(--teal)]/10 focus:border-[var(--teal)] transition-all"
-                  placeholder="••••••••"
-                  required
-                />
-                <button type="button" onClick={() => setShowPass((s) => !s)} className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors">
-                  {showPass ? '🙈' : '👁'}
-                </button>
-              </div>
+              <PasswordInput
+                name="password"
+                value={form.password}
+                onChange={handleChange}
+                label={t('auth.password')}
+                placeholder="••••••••"
+                required
+              />
             </div>
 
             <div className="space-y-1">
-              <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 pl-1">{t('auth.confirm_password')}</label>
-              <input name="confirmPassword" type="password" value={form.confirmPassword} onChange={handleChange} className="w-full bg-white/50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl px-5 py-3 text-sm font-bold text-slate-700 dark:text-white outline-none focus:ring-4 focus:ring-[var(--teal)]/10 focus:border-[var(--teal)] transition-all" placeholder="Repeat password" required />
+              <PasswordInput
+                name="confirmPassword"
+                value={form.confirmPassword}
+                onChange={handleChange}
+                label={t('auth.confirm_password')}
+                placeholder="Repeat password"
+                required
+              />
             </div>
 
             <button 

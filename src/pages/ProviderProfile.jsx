@@ -15,7 +15,7 @@ import { SkeletonProfileHeader } from '../components/common/SkeletonCard';
 
 export default function ProviderProfile() {
   const { id } = useParams();
-  const { t, lang } = useLang();
+  const { t, lang, isAr } = useLang();
   const { user } = useAuth();
 
   const [provider, setProvider]   = useState(null);
@@ -85,7 +85,7 @@ export default function ProviderProfile() {
   ];
 
   return (
-    <div className="relative overflow-hidden min-h-screen mesh-bg py-12">
+    <div className="relative overflow-hidden min-h-screen mesh-bg pb-12">
       {/* Atmosphere blobs */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--teal)] opacity-[0.05] rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-indigo-500 opacity-[0.02] rounded-full blur-[100px] pointer-events-none" />

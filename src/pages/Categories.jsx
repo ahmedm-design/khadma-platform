@@ -6,7 +6,7 @@ import { useLang } from '../context/LangContext';
 import api from '../api/axios';
 
 export default function Categories() {
-  const { t, lang } = useLang();
+  const { t, lang, isAr } = useLang();
   const [categories, setCategories] = useState([]);
   const [loading, setLoading]       = useState(true);
   const [search, setSearch]         = useState('');
@@ -24,8 +24,6 @@ export default function Categories() {
     return (c.name || '').toLowerCase().includes(q) || (c.nameAr || '').includes(q);
   });
 
-  const isAr = lang === 'ar';
-
   return (
     <div className="relative overflow-hidden min-h-screen mesh-bg">
       {/* Background Atmosphere - Simplified for Calm Mood */}
@@ -33,7 +31,7 @@ export default function Categories() {
       <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-sky-500 opacity-[0.01] rounded-full blur-[130px] pointer-events-none" />
 
       {/* Page Hero - Cinematic */}
-      <div className="relative pt-24 pb-12 px-6 md:px-10">
+      <div className="relative pb-12 px-6 md:px-10">
         <div className="max-w-[1400px] mx-auto text-center animate-fade-in">
           <span className="kd-section-label uppercase tracking-[0.3em] text-[var(--teal)] font-black text-[10px] mb-6 inline-block bg-white/40 dark:bg-white/5 px-6 py-2 rounded-full border border-white/10 backdrop-blur-md">
             {isAr ? 'عالم من الخدمات' : 'World of Services'}

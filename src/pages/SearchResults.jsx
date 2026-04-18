@@ -9,7 +9,7 @@ import { SkeletonProviderCard } from '../components/common/SkeletonCard';
 
 export default function SearchResults() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { t, lang } = useLang();
+  const { t, lang, isAr } = useLang();
   const q = searchParams.get('q') || '';
 
   const [results, setResults]    = useState({ providers: [], categories: [] });
@@ -31,7 +31,7 @@ export default function SearchResults() {
   };
 
   return (
-    <div className="py-12">
+    <div className="pb-12">
       <div className="container-app">
         {/* Search bar */}
         <form onSubmit={handleSearch} className="max-w-xl mx-auto mb-10">

@@ -34,10 +34,10 @@ export default function UserDashboard() {
   ];
 
   return (
-    <div className="py-12 relative overflow-hidden min-h-screen">
+    <div className="pb-12 relative overflow-hidden min-h-screen">
       {/* Background Atmosphere */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-sky-500 opacity-[0.03] rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/4 left-0 w-[400px] h-[400px] bg-indigo-500 opacity-[0.02] rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--teal)] opacity-[0.03] rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-1/4 left-0 w-[400px] h-[400px] bg-sky-500 opacity-[0.02] rounded-full blur-[100px] pointer-events-none" />
 
       <div className="container-app max-w-5xl mx-auto relative z-10">
         {/* Header */}
@@ -99,7 +99,7 @@ export default function UserDashboard() {
                     <button onClick={() => setEditing(false)} className="btn-ghost text-xs uppercase tracking-widest font-bold px-6 py-3.5 rounded-xl gap-1">
                       <X className="w-4 h-4" /> {t('common.cancel')}
                     </button>
-                    <button onClick={handleSave} disabled={saving} className="btn-primary shadow-lg shadow-indigo-500/20 flex-1 md:flex-none text-xs uppercase tracking-widest font-bold px-8 py-3.5 rounded-xl gap-1">
+                    <button onClick={handleSave} disabled={saving} className="btn-primary shadow-lg shadow-[var(--teal)]/20 flex-1 md:flex-none text-xs uppercase tracking-widest font-bold px-8 py-3.5 rounded-xl gap-1">
                       <Save className="w-4 h-4" /> {saving ? '...' : t('dashboard.save')}
                     </button>
                   </>
@@ -115,9 +115,9 @@ export default function UserDashboard() {
                 { label: 'Account Created', key: 'createdAt', editable: false, format: (val) => new Date(val).toLocaleDateString() },
               ].map(({ label, key, editable, format }) => (
                 <div key={key} className="group flex flex-col">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 transition-colors group-focus-within:text-indigo-500">{label}</label>
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 transition-colors group-focus-within:text-[var(--teal)]">{label}</label>
                   {editing && editable
-                    ? <input value={form[key]} onChange={(e) => setForm((f) => ({ ...f, [key]: e.target.value }))} className="bg-slate-100/50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-5 py-4 text-sm focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all outline-none font-bold" />
+                    ? <input value={form[key]} onChange={(e) => setForm((f) => ({ ...f, [key]: e.target.value }))} className="bg-slate-100/50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-5 py-4 text-sm focus:ring-4 focus:ring-[var(--teal)]/10 focus:border-[var(--teal)] transition-all outline-none font-bold" />
                     : <p className="text-sm font-bold text-slate-700 dark:text-slate-200 py-3 border-b border-slate-100 dark:border-white/5">
                         {format ? format(user?.[key]) : user?.[key] || '—'}
                       </p>
@@ -170,7 +170,7 @@ function NotificationsPanel() {
     success: 'bg-emerald-100 text-emerald-700',
     error:   'bg-red-100 text-red-600',
     warning: 'bg-amber-100 text-amber-700',
-    approval:'bg-blue-100 text-blue-700',
+    approval:'bg-sky-100 text-sky-700',
     default: 'bg-slate-100 text-slate-600',
   };
 
@@ -180,9 +180,9 @@ function NotificationsPanel() {
         <div
           key={note._id}
           onClick={() => !note.isRead && markRead(note._id)}
-          className={`card p-4 flex gap-3 cursor-pointer hover:shadow-md transition-shadow ${!note.isRead ? 'border-primary-200 dark:border-primary-800' : ''}`}
+          className={`card p-4 flex gap-3 cursor-pointer hover:shadow-md transition-shadow ${!note.isRead ? 'border-[var(--teal)]/30 dark:border-[var(--teal-dark)]/30' : ''}`}
         >
-          <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${note.isRead ? 'bg-slate-300' : 'bg-primary-500'}`} />
+          <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${note.isRead ? 'bg-slate-300' : 'bg-[var(--teal)]'}`} />
           <div className="flex-1 min-w-0">
             <p className={`text-sm font-semibold ${note.isRead ? 'text-slate-600 dark:text-slate-400' : 'text-slate-900 dark:text-white'}`}>
               {note.title}

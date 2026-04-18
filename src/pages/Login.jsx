@@ -4,6 +4,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useLang } from '../context/LangContext';
 import toast from 'react-hot-toast';
+import PasswordInput from '../components/common/PasswordInput';
 
 export default function Login() {
   const { login, loginWithGoogle } = useAuth();
@@ -13,7 +14,6 @@ export default function Login() {
   const from = location.state?.from?.pathname || '/';
 
   const [form, setForm]         = useState({ email: '', password: '' });
-  const [showPass, setShowPass] = useState(false);
   const [loading, setLoading]   = useState(false);
 
   const handleChange = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
@@ -34,8 +34,12 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen kd-wallpaper mesh-bg flex items-center justify-center p-6 bg-slate-100 dark:bg-black">
-      <div className="w-full max-w-[440px] animate-fade-up">
+    <div className="relative min-h-screen kd-wallpaper mesh-bg flex items-start justify-center p-6 bg-slate-100 dark:bg-[#08090a] pt-2 pb-32 overflow-hidden">
+      {/* Premium Background Ambiance */}
+      <div className="absolute top-[-5%] right-[-5%] w-[45%] h-[45%] bg-[var(--teal)] opacity-[0.03] dark:opacity-[0.08] rounded-full blur-[130px] pointer-events-none" />
+      <div className="absolute bottom-[0%] left-[-10%] w-[40%] h-[40%] bg-sky-500 opacity-[0.02] dark:opacity-[0.06] rounded-full blur-[110px] pointer-events-none animate-pulse" />
+
+      <div className="relative w-full max-w-[440px] animate-fade-up z-10">
         {/* Logo/Brand */}
         <div className="text-center mb-10">
           <Link to="/" className="inline-flex items-center gap-3 group">
@@ -44,7 +48,7 @@ export default function Login() {
           </Link>
         </div>
 
-        <div className="bg-white/40 dark:bg-white/5 border border-slate-200 dark:border-white/10 backdrop-blur-3xl rounded-[40px] p-8 md:p-12 shadow-2xl shadow-indigo-500/5">
+        <div className="bg-white/40 dark:bg-white/5 border border-slate-200 dark:border-white/10 backdrop-blur-3xl rounded-[40px] p-8 md:p-12 shadow-2xl shadow-[var(--teal)]/5">
           <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tighter mb-2">{t('auth.login')}</h1>
           <p className="text-slate-500 font-medium text-sm mb-10">Welcome back. Enter your credentials to access your account.</p>
 
@@ -67,24 +71,13 @@ export default function Login() {
                 <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">{t('auth.password')}</label>
                 <Link to="/" className="text-[10px] font-black uppercase tracking-widest text-[var(--teal)] hover:opacity-80 transition-opacity">Forgot?</Link>
               </div>
-              <div className="relative group">
-                <input
-                  name="password"
-                  type={showPass ? 'text' : 'password'}
-                  value={form.password}
-                  onChange={handleChange}
-                  className="w-full bg-white/50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl px-5 py-4 text-sm font-bold text-slate-700 dark:text-white outline-none focus:ring-4 focus:ring-[var(--teal)]/10 focus:border-[var(--teal)] transition-all"
-                  placeholder="••••••••"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPass((s) => !s)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors"
-                >
-                  {showPass ? '🙈' : '👁'}
-                </button>
-              </div>
+              <PasswordInput
+                name="password"
+                value={form.password}
+                onChange={handleChange}
+                placeholder="••••••••"
+                required
+              />
             </div>
 
             <button 

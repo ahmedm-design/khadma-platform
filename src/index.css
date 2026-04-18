@@ -3,6 +3,29 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Hide native browser password reveal and caps-lock buttons */
+input::-ms-reveal,
+input::-ms-clear,
+input::-webkit-password-toggle-button,
+input::-webkit-credentials-auto-fill-button {
+  display: none !important;
+  appearance: none;
+  -webkit-appearance: none;
+  width: 0;
+  height: 0;
+}
+::-webkit-contacts-auto-fill-button {
+  visibility: hidden;
+  display: none !important;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+}
+input[type="password"]::-webkit-password-toggle-button {
+  display: none !important;
+}
+
+
 /* ── Base ─────────────────────────────────────────────────── */
 @layer base {
   :root {
@@ -19,8 +42,8 @@
     --nav-h:          80px;
     --max-w:          1340px;
     --kd-radius:      24px;
-    --kd-shadow:      0 8px 30px rgba(26, 27, 30, 0.04);
-    --kd-shadow-lg:   0 16px 48px rgba(26, 27, 30, 0.08);
+    --kd-shadow:      0 8px 30px rgba(15, 184, 157, 0.04);
+    --kd-shadow-lg:   0 16px 48px rgba(15, 184, 157, 0.08);
   }
   .dark {
     --color-bg:       #0a0a0c;
@@ -67,7 +90,7 @@
 /* ── Components ───────────────────────────────────────────── */
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center gap-2 bg-primary-500 hover:bg-primary-600
+    @apply inline-flex items-center gap-2 bg-[var(--teal)] hover:bg-[var(--teal-dark)]
            text-white font-semibold px-5 py-2.5 rounded-xl transition-all duration-200
            shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0
            disabled:opacity-50 disabled:pointer-events-none;
@@ -76,8 +99,8 @@
     @apply inline-flex items-center gap-2 bg-white dark:bg-slate-800
            border border-slate-200 dark:border-slate-700
            text-slate-700 dark:text-slate-200 font-semibold px-5 py-2.5
-           rounded-xl transition-all duration-200 hover:border-primary-300
-           hover:text-primary-600 shadow-sm hover:shadow;
+           rounded-xl transition-all duration-200 hover:border-[var(--teal)]
+           hover:text-[var(--teal-dark)] shadow-sm hover:shadow;
   }
   .btn-ghost {
     @apply inline-flex items-center gap-2 text-slate-600 dark:text-slate-300
@@ -113,7 +136,7 @@
     @apply bg-slate-200 dark:bg-slate-700 animate-skeleton rounded-lg;
   }
   .text-gradient {
-    @apply bg-gradient-to-r from-primary-500 to-accent-500 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-[var(--teal)] to-sky-400 bg-clip-text text-transparent;
   }
   .scrollbar-hide {
     scrollbar-width: none;
@@ -1176,12 +1199,14 @@
   .kd-nav-controls span[style*="min-width: 20"] { display: none; }
 
   /* Grid Layouts to Single Column */
-  .kd-hero-inner { grid-template-columns: 1fr; gap: 40px; padding: 20px 20px 60px; text-align: center; }
+  .kd-hero-inner { grid-template-columns: 1fr; gap: 40px; padding: 10px 20px 60px; text-align: center; }
   .kd-hero-text { display: flex; flex-direction: column; align-items: center; }
-  .kd-hero-sub { margin-left: auto; margin-right: auto; font-size: 15px; }
-  .kd-hero-btns { justify-content: center; width: 100%; gap: 10px; }
+  .kd-hero-sub { margin-left: auto; margin-right: auto; font-size: 14px; line-height: 1.6; }
+  .kd-hero-btns { flex-direction: column !important; width: 100%; gap: 12px; }
+  .kd-hero-btns a { width: 100% !important; text-align: center; padding: 18px !important; }
   .kd-btn-primary, .kd-btn-outline { width: 100%; text-align: center; }
-  .kd-hero-search { margin-left: auto; margin-right: auto; width: 100%; }
+  .kd-hero-search { margin-left: auto; margin-right: auto; width: 100%; padding: 8px !important; border-radius: 24px !important; }
+  .kd-hero-search button { width: 100% !important; border-radius: 18px !important; margin-top: 4px; padding: 16px !important; }
   
   .kd-hero-visual { display: none; }
   .kd-stats-inner { grid-template-columns: 1fr; padding: 0 20px; }
