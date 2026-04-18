@@ -79,14 +79,14 @@ export default function Navbar() {
   return (
     <>
       <header className={clsx(
-        'fixed top-0 left-0 right-0 z-[100] transition-all duration-500 py-3 px-4 md:px-10',
-        scrolled ? 'mt-2' : 'mt-0'
+        'fixed top-0 left-0 right-0 z-[100] transition-all duration-500 py-2 sm:py-3 px-2 sm:px-4 md:px-10',
+        scrolled ? 'mt-0 sm:mt-2' : 'mt-0'
       )}>
         <div className={clsx(
           'mx-auto transition-all duration-700 relative overflow-visible',
           scrolled 
-            ? 'max-w-[1200px] bg-white/80 dark:bg-[#0b0c10]/80 backdrop-blur-2xl rounded-[30px] border border-white/20 shadow-2xl px-6 py-2' 
-            : 'max-w-[1400px] bg-transparent backdrop-blur-none border-none py-4 px-6'
+            ? 'max-w-[1200px] bg-white/80 dark:bg-[#0b0c10]/80 backdrop-blur-2xl rounded-[30px] border border-white/20 shadow-2xl px-4 sm:px-6 py-2' 
+            : 'max-w-[1400px] bg-transparent backdrop-blur-none border-none py-2 px-2 sm:py-4 sm:px-6'
         )}>
           {/* Subtle line glow inside capsule */}
           {scrolled && <div className="absolute top-0 left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-[var(--teal)]/30 to-transparent pointer-events-none" />}

@@ -565,11 +565,11 @@ export default function AdminDashboard() {
           <h1 className="kd-section-title text-4xl md:text-5xl">{t('admin.title')}</h1>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-10">
-          <div className="w-full lg:w-72 flex-shrink-0">
+        <div className="flex flex-col md:flex-row gap-6 md:gap-10">
+          <div className="w-full md:w-56 flex-shrink-0">
             <AdminSidebar />
           </div>
-          <div className="flex-1 min-w-0 bg-white/40 dark:bg-white/5 border border-white/20 dark:border-white/10 backdrop-blur-2xl rounded-[32px] p-8 md:p-12 shadow-sm">
+          <div className="flex-1 min-w-0 bg-white/40 dark:bg-white/5 border border-white/20 dark:border-white/10 backdrop-blur-2xl rounded-[24px] md:rounded-[32px] p-4 sm:p-8 md:p-12 shadow-sm">
             <Routes>
               <Route index element={<AdminStats />} />
               <Route path="users" element={<AdminUsers />} />

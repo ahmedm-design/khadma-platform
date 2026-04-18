@@ -201,8 +201,8 @@ export default function Home() {
       </div>
 
       {/* ABOUT US — Premium Boxed Facelift */}
-      <section id="about-us" className="animate-fade-up relative py-8 px-6 overflow-hidden">
-        <div className="max-w-[1400px] mx-auto bg-white/40 dark:bg-white/5 rounded-[48px] border border-white/20 dark:border-white/5 backdrop-blur-3xl relative overflow-hidden px-10 md:px-20 py-16 shadow-lg shadow-black/5">
+      <section id="about-us" className="animate-fade-up relative py-8 px-4 sm:px-6 overflow-hidden">
+        <div className="max-w-[1400px] mx-auto bg-white/40 dark:bg-white/5 rounded-[32px] md:rounded-[48px] border border-white/20 dark:border-white/5 backdrop-blur-3xl relative overflow-hidden px-6 sm:px-10 md:px-20 py-12 sm:py-16 shadow-lg shadow-black/5">
           {/* Subtle mesh blob instead of many floating ones */}
           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--teal)] opacity-[0.02] rounded-full blur-[120px] pointer-events-none" />
 
@@ -217,12 +217,12 @@ export default function Home() {
                   ? 'في "خدمة"، نؤمن بأن العثور على محترف موثوق لا ينبغي أن يكون مقامرة. منصتنا تربط العمال المهرة بالأشخاص الذين يحتاجون إليهم، مما يعزز مجتمعًا قائمًا على الثقة والشفافية والجودة العالية.'
                   : 'At Khedma, we believe that finding a reliable professional shouldn\'t be a gamble. Our platform connects skilled workers with people who need them, fostering a community built on trust, transparency, and top-tier quality.'}
               </p>
-              <div className="flex gap-10 mt-12">
-                <div className="group">
+              <div className="flex flex-col sm:flex-row gap-6 sm:gap-10 mt-12">
+                <div className="group text-center sm:text-start">
                   <div className="text-[var(--teal)] text-4xl font-dm mb-1 transition-transform group-hover:scale-110">150+</div>
                   <div className="text-[10px] uppercase font-black tracking-widest text-slate-400">{isAr ? 'مدينة مغطاة' : 'Cities Covered'}</div>
                 </div>
-                <div className="group">
+                <div className="group text-center sm:text-start">
                   <div className="text-[var(--teal)] text-4xl font-dm mb-1 transition-transform group-hover:scale-110">24/7</div>
                   <div className="text-[10px] uppercase font-black tracking-widest text-slate-400">{isAr ? 'دعم فني' : 'Premium Support'}</div>
                 </div>
@@ -317,8 +317,8 @@ export default function Home() {
       </section>
 
       {/* WHY CHOOSE KHEDMA */}
-      <section className="animate-fade-up relative py-12 px-6">
-        <div className="max-w-[1400px] mx-auto bg-slate-100/50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-[60px] p-12 md:p-20 relative overflow-hidden text-center">
+      <section className="animate-fade-up relative py-12 px-4 sm:px-6">
+        <div className="max-w-[1400px] mx-auto bg-slate-100/50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-[40px] md:rounded-[60px] p-8 sm:p-12 md:p-20 relative overflow-hidden text-center">
           <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-sky-500 opacity-[0.02] rounded-full blur-[100px] pointer-events-none" />
 
           <div className="max-w-3xl mx-auto relative z-10">
@@ -335,7 +335,7 @@ export default function Home() {
               { icon: '💎', title: isAr ? 'دفع آمن تماماً' : 'Secure Payments', desc: isAr ? 'نظام دفع آمن يضمن حقك؛ لا نرسل الأموال حتى تؤكد رضاك.' : 'A robust escrow system that protects you; funds are only released when you are 100% satisfied.' },
               { icon: '⚡', title: isAr ? 'سرعة وموثوقية' : 'Fast & Reliable', desc: isAr ? 'تواصل مع أفضل الخبراء في دقائق معدودة، وتتبع طلبك مباشرة.' : 'Connect with top experts in mere minutes and track your service request in real-time.' },
             ].map((item, i) => (
-              <div key={i} className="bg-white/60 dark:bg-white/5 border border-slate-200 dark:border-white/10 backdrop-blur-2xl rounded-[40px] p-10 flex flex-col items-center hover:bg-white transition-all duration-500 hover:-translate-y-2 group shadow-sm">
+              <div key={i} className="bg-white/60 dark:bg-white/5 border border-slate-200 dark:border-white/10 backdrop-blur-2xl rounded-[32px] sm:rounded-[40px] p-8 sm:p-10 flex flex-col items-center hover:bg-white transition-all duration-500 hover:-translate-y-2 group shadow-sm">
                 <div className="w-20 h-20 rounded-3xl bg-slate-50 dark:bg-white/5 flex items-center justify-center text-3xl mb-8 group-hover:scale-110 transition-transform">
                   {item.icon}
                 </div>
@@ -361,7 +361,7 @@ export default function Home() {
               { text: isAr ? 'أعدت تصميم موقعي بالكامل بجزء بسيط من تكلفة الوكالات.' : 'Got my entire website redesigned for a fraction of what agencies charge. Incredible quality.', name: isAr ? 'سارة أحمد' : 'Sarah Ahmed', role: isAr ? 'الإسكندرية، مصر' : 'Alexandria, Egypt', img: 'https://i.pravatar.cc/80?img=47' },
               { text: isAr ? 'حجزت 3 خدمات في شهر واحد. خدمة أصبحت منصتي المفضلة.' : 'Booked 3 services in one month — all top notch. Khedma is now my go-to platform.', name: isAr ? 'يوسف علي' : 'Youssef Ali', role: isAr ? 'الجيزة، مصر' : 'Giza, Egypt', img: 'https://i.pravatar.cc/80?img=56' },
             ].map((r, i) => (
-              <div key={i} className="bg-white/40 dark:bg-white/5 border border-slate-200 dark:border-white/10 backdrop-blur-3xl rounded-[40px] p-10 hover:bg-white transition-all duration-500 shadow-sm group">
+              <div key={i} className="bg-white/40 dark:bg-white/5 border border-slate-200 dark:border-white/10 backdrop-blur-3xl rounded-[32px] sm:rounded-[40px] p-8 sm:p-10 hover:bg-white transition-all duration-500 shadow-sm group">
                 <div className="text-amber-500 mb-6">★★★★★</div>
                 <p className="text-slate-600 dark:text-slate-400 italic mb-10 leading-relaxed font-medium">"{r.text}"</p>
                 <div className="flex items-center gap-4">
@@ -378,8 +378,8 @@ export default function Home() {
       </section>
 
       {/* CTA - Refined */}
-      <section className="animate-fade-up relative py-8 px-6 overflow-hidden">
-        <div className="max-w-[1400px] mx-auto bg-slate-900 rounded-[60px] relative overflow-hidden px-10 py-24 text-center">
+      <section className="animate-fade-up relative py-8 px-4 sm:px-6 overflow-hidden">
+        <div className="max-w-[1400px] mx-auto bg-slate-900 rounded-[32px] md:rounded-[60px] relative overflow-hidden px-6 sm:px-10 py-16 sm:py-24 text-center">
           <div className="absolute inset-0 z-0">
             <video autoPlay muted loop playsInline className="w-full h-full object-cover opacity-30 grayscale">
               <source src="/8293017-hd_1920_1080_30fps (online-video-cutter.com).mp4" type="video/mp4" />
@@ -390,15 +390,15 @@ export default function Home() {
 
           <div className="relative z-10 max-w-2xl mx-auto">
             <span className="kd-section-label text-xs tracking-[0.3em] font-black text-[var(--teal)] mx-auto mb-6">{isAr ? 'ابدأ اليوم' : 'Get Started Today'}</span>
-            <h2 className="text-4xl md:text-6xl font-dm text-white mb-8">
+            <h2 className="text-3xl sm:text-4xl md:text-6xl font-dm text-white mb-8 leading-tight">
               {isAr ? 'هل أنت مستعد لإيجاد خدمتك المثالية؟' : 'Ready to find your perfect service?'}
             </h2>
-            <p className="text-slate-400 font-medium text-lg leading-relaxed mb-12">
+            <p className="text-slate-400 font-medium text-base sm:text-lg leading-relaxed mb-12">
               {isAr ? 'انضم لأكثر من 50,000 عميل و2,000 محترف. الانضمام مجاني.' : 'Join over 50,000 satisfied customers and 2,000+ professionals. Free to join.'}
             </p>
-            <div className="flex flex-wrap justify-center gap-6">
-              <Link to="/register?role=seeker" className="bg-[var(--teal)] text-slate-900 px-12 py-5 rounded-2xl text-sm font-black hover:scale-105 transition-transform">{isAr ? 'انضم كعميل' : 'Join as a Customer'}</Link>
-              <Link to="/providers" className="bg-white/10 backdrop-blur-md text-white border border-white/20 px-12 py-5 rounded-2xl text-sm font-black hover:bg-white/20 transition-all">{isAr ? 'تصفح مقدمي الخدمات' : 'Browse Providers'}</Link>
+            <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6 w-full">
+              <Link to="/register?role=seeker" className="w-full sm:w-auto bg-[var(--teal)] text-slate-900 px-8 sm:px-12 py-5 rounded-2xl text-sm font-black hover:scale-105 transition-transform">{isAr ? 'انضم كعميل' : 'Join as a Customer'}</Link>
+              <Link to="/providers" className="w-full sm:w-auto bg-white/10 backdrop-blur-md text-white border border-white/20 px-8 sm:px-12 py-5 rounded-2xl text-sm font-black hover:bg-white/20 transition-all">{isAr ? 'تصفح مقدمي الخدمات' : 'Browse Providers'}</Link>
             </div>
           </div>
         </div>
