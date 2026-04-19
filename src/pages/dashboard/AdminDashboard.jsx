@@ -8,7 +8,7 @@ import clsx from 'clsx';
 import {
   LayoutDashboard, Users, Briefcase, Tag, CheckCircle, XCircle,
   TrendingUp, ToggleLeft, ToggleRight, Star, Plus, Edit3, Trash2,
-  Users2, UserCheck, Layers, Eye, Zap, ArrowRight
+  Users2, UserCheck, Layers, Eye, Zap, ArrowRight, Search
 } from 'lucide-react';
 
 // ── Sidebar ──────────────────────────────────────────────────
@@ -238,22 +238,37 @@ function AdminUsers() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [searchStr, setSearchStr] = useState('');
   const pageSize = 10;
 
   useEffect(() => {
     api.get('/admin/users').then(({ data }) => setUsers(data.data)).finally(() => setLoading(false));
   }, []);
 
-  const totalPages = Math.ceil(users.length / pageSize);
+  const filteredUsers = useMemo(() => {
+    if (!searchStr.trim()) return users;
+    const lower = searchStr.toLowerCase();
+    return users.filter(u => 
+      u.name?.toLowerCase().includes(lower) || 
+      u.email?.toLowerCase().includes(lower) ||
+      u.role?.toLowerCase().includes(lower)
+    );
+  }, [users, searchStr]);
+
+  const totalPages = Math.ceil(filteredUsers.length / pageSize);
   const displayUsers = useMemo(() => {
     const start = (page - 1) * pageSize;
-    return users.slice(start, start + pageSize);
-  }, [users, page, pageSize]);
+    return filteredUsers.slice(start, start + pageSize);
+  }, [filteredUsers, page, pageSize]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [searchStr]);
 
   const toggleActive = useCallback(async (id) => {
     try {
       const { data } = await api.put(`/admin/users/${id}/toggle`);
-      setUsers((prev) => prev.map((u) => u._id === id ? data.data : u));
+      setUsers((prev) => prev.map((u) => u._id === id ? { ...u, ...(data?.data || {}), isActive: data?.data?.isActive ?? !u.isActive } : u));
       toast.success('User status updated');
     } catch (err) {
       toast.error('Could not update user');
@@ -264,7 +279,21 @@ function AdminUsers() {
 
   return (
     <div>
-      <h2 className="font-bold text-xl text-slate-900 dark:text-white mb-6">{t('admin.users')}</h2>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
+        <h2 className="font-bold text-xl text-slate-900 dark:text-white">{t('admin.users')}</h2>
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+            <Search className="w-4 h-4" />
+          </div>
+          <input 
+            type="text" 
+            placeholder="Search users..." 
+            value={searchStr}
+            onChange={(e) => setSearchStr(e.target.value)}
+            className="input text-sm pl-10 py-2 w-full sm:w-64"
+          />
+        </div>
+      </div>
       <div className="card overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -343,25 +372,39 @@ function AdminProviders() {
   const [reason, setReason]       = useState('');
   
   const [page, setPage] = useState(1);
-  const pageSize = 5; // Reduced page size because cards are heavy
+  const [searchStr, setSearchStr] = useState('');
+  const pageSize = 8; 
 
   const fetchProviders = useCallback((status) => {
     setLoading(true);
     api.get(`/admin/providers?status=${status}`)
       .then(({ data }) => {
         setProviders(data.data);
-        setPage(1); // Reset to page 1 on tab change
+        setPage(1); 
       })
       .finally(() => setLoading(false));
   }, []);
 
   useEffect(() => { fetchProviders(tab); }, [fetchProviders, tab]);
 
-  const totalPages = Math.ceil(providers.length / pageSize);
+  const filteredProviders = useMemo(() => {
+    if (!searchStr.trim()) return providers;
+    const l = searchStr.toLowerCase();
+    return providers.filter(p => 
+      p.businessName?.toLowerCase().includes(l) || 
+      p.user?.email?.toLowerCase().includes(l) ||
+      p.city?.toLowerCase().includes(l) ||
+      p.category?.name?.toLowerCase().includes(l)
+    );
+  }, [providers, searchStr]);
+
+  const totalPages = Math.ceil(filteredProviders.length / pageSize);
   const displayProviders = useMemo(() => {
     const start = (page - 1) * pageSize;
-    return providers.slice(start, start + pageSize);
-  }, [providers, page, pageSize]);
+    return filteredProviders.slice(start, start + pageSize);
+  }, [filteredProviders, page, pageSize]);
+
+  useEffect(() => { setPage(1); }, [searchStr]);
 
   const approve = useCallback(async (id) => {
     try {
@@ -374,7 +417,7 @@ function AdminProviders() {
   }, []);
 
   const reject = useCallback(async () => {
-    if (!reason) return toast.error('Please provide a reason');
+    if (!reason.trim()) return toast.error('Please provide a reason');
     try {
       await api.put(`/admin/providers/${rejectId}/reject`, { reason });
       toast.success('Provider rejected');
@@ -387,42 +430,76 @@ function AdminProviders() {
   }, [reason, rejectId]);
 
   return (
-    <div>
-      <h2 className="font-bold text-xl text-slate-900 dark:text-white mb-6">{t('admin.providers')}</h2>
+    <div className="animate-fade-in">
+      {/* Header & Search */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-8 gap-5">
+        <div>
+          <h2 className="font-bold text-2xl text-slate-900 dark:text-white tracking-tight">{t('admin.providers')}</h2>
+          <p className="text-[10px] text-slate-500 mt-1.5 uppercase tracking-widest font-black">Review Applications</p>
+        </div>
+        
+        <div className="relative w-full sm:w-80">
+          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+            <Search className="w-4 h-4" />
+          </div>
+          <input 
+            type="text" 
+            placeholder="Search providers..." 
+            value={searchStr}
+            onChange={(e) => setSearchStr(e.target.value)}
+            className="input text-sm pl-11 pr-4 py-3 w-full rounded-[16px] border border-slate-200 dark:border-white/10 shadow-sm font-medium"
+          />
+        </div>
+      </div>
 
-      {/* Status tabs */}
-      <div className="flex gap-2 mb-5">
+      {/* Segmented Premium Tabs */}
+      <div className="flex flex-wrap bg-slate-100/50 dark:bg-black/30 p-1.5 rounded-[20px] mb-8 border border-slate-200/50 dark:border-white/5 shadow-inner">
         {['pending', 'approved', 'rejected'].map((s) => (
           <button key={s} onClick={() => setTab(s)}
-            className={`px-4 py-2 rounded-xl text-sm font-semibold capitalize transition-colors border ${
-              tab === s ? 'bg-primary-500 text-white border-primary-500' : 'border-slate-200 dark:border-slate-700 text-slate-500 hover:border-slate-300'
+            className={`flex-1 sm:flex-none px-6 py-2.5 rounded-[14px] text-xs font-black uppercase tracking-wider transition-all duration-300 ${
+              tab === s 
+               ? 'bg-white dark:bg-slate-800 text-[var(--teal-dark)] dark:text-[var(--teal)] shadow-md ring-1 ring-slate-200 dark:ring-white/10 scale-100' 
+               : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 hover:bg-white/50 dark:hover:bg-white/5 scale-[0.98]'
             }`}
-          >{s}</button>
+          >
+            {s}
+            {tab === s && s === 'pending' && filteredProviders.length > 0 && (
+              <span className="ml-2 inline-flex items-center justify-center bg-amber-500 text-white text-[10px] font-bold w-4 h-4 rounded-full animate-bounce">
+                {filteredProviders.length}
+              </span>
+            )}
+          </button>
         ))}
       </div>
 
-      {loading ? <div className="skeleton h-64 rounded-2xl" /> : (
-        <div className="space-y-3">
-          {providers.length === 0 && (
-            <div className="card p-10 text-center text-slate-400">No {tab} providers</div>
+      {loading ? <div className="skeleton h-64 rounded-[32px]" /> : (
+        <div className="space-y-4">
+          {displayProviders.length === 0 && (
+            <div className="bg-white/40 dark:bg-white/[0.02] border-2 border-dashed border-slate-200 dark:border-white/5 p-16 rounded-[40px] flex flex-col items-center justify-center text-center animate-fade-in">
+               <Briefcase className="w-12 h-12 text-slate-300 dark:text-slate-600 mb-4" />
+               <h3 className="font-bold text-slate-700 dark:text-white mb-2 text-lg">No providers found</h3>
+               <p className="text-sm font-medium text-slate-400">There are no {tab} providers matching your criteria.</p>
+            </div>
           )}
+          
           {displayProviders.map((p) => (
-            <div key={p._id} className="card p-5">
-              <div className="flex items-start justify-between gap-4 flex-wrap">
-                <div className="flex items-center sm:items-start gap-5">
-                  <div className="w-20 h-20 rounded-3xl bg-[var(--teal)]/10 dark:bg-white/5 flex-shrink-0 flex items-center justify-center overflow-hidden shadow-md border border-slate-100 dark:border-white/10">
+             <div key={p._id} className="group flex flex-col sm:flex-row sm:items-center gap-5 p-5 lg:p-6 bg-white dark:bg-slate-900/40 rounded-[28px] border border-slate-100 dark:border-white/5 hover:border-[var(--teal)]/30 hover:shadow-2xl hover:shadow-[var(--teal)]/5 transition-all duration-500">
+               
+               {/* Avatar and Info */}
+               <div className="flex items-center gap-5 sm:w-[50%] lg:w-[40%] text-left">
+                 <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-[20px] bg-gradient-to-br from-[var(--teal)]/10 to-transparent dark:from-white/10 dark:to-transparent flex-shrink-0 flex items-center justify-center overflow-hidden shadow-inner border border-white/50 dark:border-white/10 relative group-hover:scale-105 transition-transform duration-500">
                     {(() => {
                       const avatarSrc = p.image || p.avatar || p.user?.image;
                       const fallback = p.businessName ? p.businessName.charAt(0).toUpperCase() : '👤';
 
                       return (
-                        <div className="w-full h-full flex items-center justify-center group">
+                        <div className="w-full h-full flex items-center justify-center group/img">
                           {avatarSrc && (
                             <img
                               src={avatarSrc}
                               loading="lazy"
                               alt={p.businessName}
-                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                              className="w-full h-full object-cover transition-transform duration-700 group-hover/img:scale-110"
                               onError={(e) => {
                                 e.currentTarget.style.display = 'none';
                                 e.currentTarget.nextElementSibling.style.display = 'flex';
@@ -430,7 +507,7 @@ function AdminProviders() {
                             />
                           )}
                           <div 
-                            className="w-full h-full items-center justify-center font-black text-3xl text-[var(--teal-dark)] dark:text-[var(--teal)] bg-gradient-to-br from-transparent to-black/[0.02]"
+                            className="w-full h-full items-center justify-center font-black text-3xl text-[var(--teal-dark)] dark:text-[var(--teal)] bg-white/50 dark:bg-transparent"
                             style={{ display: avatarSrc ? 'none' : 'flex' }}
                           >
                             {fallback}
@@ -438,68 +515,82 @@ function AdminProviders() {
                         </div>
                       );
                     })()}
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-slate-900 dark:text-white">{p.businessName}</h3>
-                    <p className="text-xs text-slate-400">{p.user?.email}</p>
-                    {p.city && <p className="text-xs text-slate-400">{p.city}</p>}
-                    {p.category && (
-                      <span className="badge bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 mt-1 shadow-sm">
-                        {p.category.name}
-                      </span>
-                    )}
-                  </div>
-                </div>
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-end gap-3 w-full sm:w-auto">
-                  <span className="text-xs font-black text-slate-500 bg-slate-100 dark:bg-white/5 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-white/10 uppercase tracking-widest whitespace-nowrap">
+                 </div>
+                 <div className="min-w-0 flex-1">
+                    <h3 className="font-extrabold text-lg text-slate-900 dark:text-white truncate tracking-tight">{p.businessName}</h3>
+                    <p className="text-xs font-mono text-slate-400 mt-1 mb-2.5 truncate">{p.user?.email}</p>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      {p.city && <span className="text-[9px] font-black text-slate-500 bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/5 px-2 py-1 rounded-md uppercase tracking-widest">{p.city}</span>}
+                      {p.category && (
+                        <span className="text-[9px] font-black px-2 py-1 bg-sky-50 dark:bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-100 dark:border-sky-500/20 rounded-md uppercase tracking-widest">
+                          {p.category.name}
+                        </span>
+                      )}
+                    </div>
+                 </div>
+               </div>
+
+               {/* Meta Info (Date, Rating) */}
+               <div className="flex sm:flex-col items-center sm:items-end justify-between sm:w-[20%] lg:w-[25%] mt-2 sm:mt-0 px-1">
+                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] whitespace-nowrap px-2">
                     {p.createdAt ? new Date(p.createdAt).toLocaleDateString() : 'N/A'}
                   </span>
-                  <div className="flex justify-end gap-2 w-full sm:w-auto">
-                    {tab === 'pending' && (
-                      <>
-                        <button onClick={() => approve(p._id)} className="btn-primary text-xs py-2 px-3 gap-1 shadow-md hover:shadow-lg">
-                          <CheckCircle className="w-3.5 h-3.5" /> {t('admin.approve')}
-                        </button>
-                        <button onClick={() => setRejectId(p._id)} className="btn-secondary text-xs py-2 px-3 gap-1 border-red-200 text-red-500 hover:bg-red-50 hover:border-red-300">
-                          <XCircle className="w-3.5 h-3.5" /> {t('admin.reject')}
-                        </button>
-                      </>
-                    )}
-                    {tab === 'approved' && (
-                      <span className="badge bg-emerald-100/50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20 shadow-inner">
-                        <CheckCircle className="w-3 h-3" /> Approved
-                      </span>
-                    )}
-                  </div>
-                </div>
-                {p.ratingCount > 0 && (
-                  <div className="flex items-center gap-1 text-xs text-slate-400">
-                    <Star className="w-3 h-3 text-amber-400 fill-amber-400" />
-                    {p.ratingAvg} ({p.ratingCount})
-                  </div>
-                )}
-              </div>
-              {p.description && <p className="text-xs text-slate-500 mt-3 line-clamp-2">{p.description}</p>}
-            </div>
+                  {p.ratingCount > 0 ? (
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-slate-600 dark:text-slate-300 mt-2">
+                      <Star className="w-4 h-4 text-amber-500 fill-amber-500 animate-pulse" />
+                      {p.ratingAvg} <span className="text-[10px] font-normal text-slate-400">({p.ratingCount})</span>
+                    </div>
+                  ) : (
+                    <div className="text-[10px] font-medium text-slate-400 mt-2 px-2 hidden sm:block">No reviews</div>
+                  )}
+               </div>
+
+               {/* Action Buttons */}
+               <div className="flex items-center justify-end gap-2 w-full sm:w-[30%] lg:w-[35%] mt-5 sm:mt-0 pt-5 sm:pt-0 border-t sm:border-t-0 border-slate-100 dark:border-slate-800/50">
+                  {tab === 'pending' && (
+                    <>
+                      <button onClick={() => setRejectId(p._id)} className="w-12 h-12 flex items-center justify-center rounded-[16px] border border-red-200 text-red-500 hover:bg-red-50 dark:border-red-500/20 dark:hover:bg-red-500/10 transition-colors tooltip" aria-label="Reject">
+                        <XCircle className="w-5 h-5" />
+                      </button>
+                      <button onClick={() => approve(p._id)} className="flex-1 h-12 flex items-center justify-center gap-2 bg-[var(--teal)] text-slate-900 font-extrabold text-xs uppercase tracking-[0.2em] rounded-[16px] hover:scale-105 active:scale-95 transition-all shadow-lg shadow-[var(--teal)]/20">
+                        <CheckCircle className="w-4 h-4" /> {t('admin.approve')}
+                      </button>
+                    </>
+                  )}
+                  {tab === 'approved' && (
+                    <span className="px-5 py-3 rounded-[16px] bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-black uppercase tracking-[0.2em] border border-emerald-200 dark:border-emerald-500/20 flex flex-col sm:flex-row items-center gap-2 text-center">
+                      <CheckCircle className="w-4 h-4" /> Active Pro
+                    </span>
+                  )}
+                  {tab === 'rejected' && (
+                    <span className="px-5 py-3 rounded-[16px] bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-black uppercase tracking-[0.2em] border border-red-200 dark:border-red-500/20 flex flex-col sm:flex-row items-center gap-2 text-center">
+                      <XCircle className="w-4 h-4" /> Denied
+                    </span>
+                  )}
+               </div>
+             </div>
           ))}
           
         {/* Pagination UI for Providers */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-between px-4 py-4 mt-4 bg-white/50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-700/50 backdrop-blur-md rounded-2xl text-sm shadow-sm">
+          <div className="flex items-center justify-between px-4 py-4 mt-8 bg-white/50 dark:bg-black/20 border border-slate-100 dark:border-white/5 backdrop-blur-md rounded-2xl text-sm shadow-sm ring-1 ring-black/5 dark:ring-white/5">
             <button 
               disabled={page === 1} 
               onClick={() => { setPage(p => p - 1); window.scrollTo({top: 0, behavior: 'smooth'}); }} 
-              className="px-4 py-2 font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-white/5 rounded-xl disabled:opacity-30 transition-all hover:bg-slate-200 dark:hover:bg-white/10"
+              className="px-5 py-2.5 font-bold text-slate-600 dark:text-slate-300 bg-white dark:bg-white/5 hover:text-[var(--teal)] rounded-xl disabled:opacity-30 transition-all hover:bg-slate-50 dark:hover:bg-white/10 shadow-sm border border-slate-200 dark:border-transparent flex items-center gap-2"
             >
               {isRTL ? 'التالي' : 'Previous'}
             </button>
-            <div className="text-slate-500 font-medium tracking-wide">
-              Page <span className="font-black text-slate-900 dark:text-white px-1">{page}</span> of {totalPages}
+            <div className="text-slate-500 font-medium tracking-wide bg-slate-100 dark:bg-white/5 px-4 py-2 rounded-lg font-mono text-[11px] uppercase space-x-1">
+              <span>Page</span>
+              <span className="font-black text-[var(--teal-dark)] dark:text-[var(--teal)] text-sm px-0.5">{page}</span>
+              <span>of</span>
+              <span className="font-bold text-slate-900 dark:text-white">{totalPages}</span>
             </div>
             <button 
               disabled={page === totalPages} 
               onClick={() => { setPage(p => p + 1); window.scrollTo({top: 0, behavior: 'smooth'}); }} 
-              className="px-4 py-2 font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-white/5 rounded-xl disabled:opacity-30 transition-all hover:bg-slate-200 dark:hover:bg-white/10"
+              className="px-5 py-2.5 font-bold text-slate-600 dark:text-slate-300 bg-white dark:bg-white/5 hover:text-[var(--teal)] rounded-xl disabled:opacity-30 transition-all hover:bg-slate-50 dark:hover:bg-white/10 shadow-sm border border-slate-200 dark:border-transparent flex items-center gap-2"
             >
               {isRTL ? 'السابق' : 'Next'}
             </button>
@@ -508,21 +599,35 @@ function AdminProviders() {
         </div>
       )}
 
-      {/* Reject modal */}
+      {/* Premium Reject Modal */}
       {rejectId && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="card p-6 w-full max-w-sm animate-fade-up">
-            <h3 className="font-bold text-slate-900 dark:text-white mb-4">Reject Provider</h3>
-            <textarea
-              value={reason}
-              onChange={(e) => setReason(e.target.value)}
-              placeholder="Reason for rejection..."
-              rows={3}
-              className="input text-sm resize-none mb-4"
-            />
-            <div className="flex gap-3">
-              <button onClick={() => { setRejectId(null); setReason(''); }} className="btn-ghost flex-1 text-sm">{t('common.cancel')}</button>
-              <button onClick={reject} className="btn-primary flex-1 text-sm bg-red-500 hover:bg-red-600">{t('admin.reject')}</button>
+        <div className="fixed inset-0 bg-slate-900/40 dark:bg-[#0c0d10]/80 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-fade-in">
+          <div className="bg-white dark:bg-[#15161A] border border-slate-100 dark:border-white/5 p-8 w-full max-w-md rounded-[40px] shadow-2xl shadow-black/20 animate-scale-in relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-red-500 opacity-[0.03] rounded-full blur-[80px] pointer-events-none" />
+            
+            <div className="relative z-10">
+              <div className="w-14 h-14 rounded-2xl bg-red-50 dark:bg-red-500/10 text-red-500 flex items-center justify-center mb-6 shadow-inner ring-1 ring-red-500/20">
+                <XCircle className="w-7 h-7" />
+              </div>
+              <h3 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight mb-2">Reject Application</h3>
+              <p className="text-xs text-slate-500 font-medium mb-6 leading-relaxed">Please provide a reason for rejecting this provider. They will be notified via email. This action is final.</p>
+              
+              <textarea
+                value={reason}
+                onChange={(e) => setReason(e.target.value)}
+                placeholder="e.g. Invalid commercial license provided..."
+                rows={4}
+                className="w-full bg-slate-50 dark:bg-black/40 border border-slate-200 dark:border-white/10 rounded-2xl p-4 text-sm font-medium text-slate-900 dark:text-white placeholder:text-slate-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 outline-none resize-none mb-8 transition-all shadow-inner"
+              />
+              
+              <div className="flex gap-4">
+                <button onClick={() => { setRejectId(null); setReason(''); }} className="flex-1 py-4 font-extrabold text-slate-500 hover:text-slate-800 dark:hover:text-white bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 rounded-[20px] transition-colors text-xs uppercase tracking-widest">
+                   {t('common.cancel')}
+                </button>
+                <button onClick={reject} className="flex-1 py-4 font-extrabold text-white bg-red-500 hover:bg-red-600 rounded-[20px] shadow-lg shadow-red-500/20 active:scale-95 transition-all text-xs uppercase tracking-widest gap-2 flex items-center justify-center">
+                   {t('admin.reject')} Confirm
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -541,17 +646,30 @@ function AdminCategories() {
   const [form, setForm] = useState({ name: '', nameAr: '', description: '', descriptionAr: '', icon: '🔧', slug: '' });
 
   const [page, setPage] = useState(1);
-  const pageSize = 10;
+  const [searchStr, setSearchStr] = useState('');
+  const pageSize = 12;
 
   useEffect(() => {
     api.get('/admin/categories').then(({ data }) => setCategories(data.data)).finally(() => setLoading(false));
   }, []);
 
-  const totalPages = Math.ceil(categories.length / pageSize);
+  const filteredCategories = useMemo(() => {
+    if (!searchStr.trim()) return categories;
+    const l = searchStr.toLowerCase();
+    return categories.filter(c => 
+      c.name?.toLowerCase().includes(l) || 
+      c.nameAr?.toLowerCase().includes(l) || 
+      c.slug?.toLowerCase().includes(l)
+    );
+  }, [categories, searchStr]);
+
+  const totalPages = Math.ceil(filteredCategories.length / pageSize);
   const displayCategories = useMemo(() => {
     const start = (page - 1) * pageSize;
-    return categories.slice(start, start + pageSize);
-  }, [categories, page, pageSize]);
+    return filteredCategories.slice(start, start + pageSize);
+  }, [filteredCategories, page, pageSize]);
+
+  useEffect(() => { setPage(1); }, [searchStr]);
 
   const handleSubmit = useCallback(async () => {
     try {
@@ -587,52 +705,121 @@ function AdminCategories() {
     }
   }, []);
 
-  if (loading) return <div className="skeleton h-64 rounded-2xl" />;
+  if (loading) return <div className="skeleton h-64 rounded-[32px]" />;
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="font-bold text-xl text-slate-900 dark:text-white">{t('admin.categories')}</h2>
-        <button onClick={() => { setShowForm(true); setEditingCat(null); }} className="btn-primary text-sm gap-2">
-          <Plus className="w-4 h-4" /> {t('admin.add_category')}
-        </button>
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-8 gap-5">
+        <h2 className="font-bold text-2xl text-slate-900 dark:text-white tracking-tight">{t('admin.categories')}</h2>
+        
+        <div className="flex flex-col sm:flex-row items-center gap-3">
+          <div className="relative w-full sm:w-auto">
+            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+              <Search className="w-4 h-4" />
+            </div>
+            <input 
+              type="text" 
+              placeholder="Search categories..." 
+              value={searchStr}
+              onChange={(e) => setSearchStr(e.target.value)}
+              className="input text-sm pl-10 pr-4 py-2.5 w-full sm:w-64 rounded-xl border border-slate-200 dark:border-white/10 shadow-sm"
+            />
+          </div>
+          <button onClick={() => { setShowForm(true); setEditingCat(null); }} className="btn-primary text-sm gap-2 w-full sm:w-auto px-6 h-11 rounded-xl shadow-md hover:shadow-lg whitespace-nowrap">
+            <Plus className="w-4 h-4" /> {t('admin.add_category')}
+          </button>
+        </div>
       </div>
 
       {showForm && (
-        <div className="card p-5 mb-5 animate-fade-up">
-          <h3 className="font-bold mb-4">{editingCat ? t('admin.edit') : t('admin.add_category')}</h3>
-          <div className="grid grid-cols-2 gap-3">
-            <input placeholder="Name (EN)" value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} className="input text-sm" />
-            <input placeholder="Name (AR)" value={form.nameAr} onChange={(e) => setForm((f) => ({ ...f, nameAr: e.target.value }))} className="input text-sm" dir="rtl" />
-            <input placeholder="Slug (e.g. home-maintenance)" value={form.slug} onChange={(e) => setForm((f) => ({ ...f, slug: e.target.value.toLowerCase().replace(/\s+/g,'-') }))} className="input text-sm" />
-            <input placeholder="Icon (emoji)" value={form.icon} onChange={(e) => setForm((f) => ({ ...f, icon: e.target.value }))} className="input text-sm" />
-            <input placeholder="Description (EN)" value={form.description} onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))} className="input text-sm col-span-2" />
-            <input placeholder="Description (AR)" value={form.descriptionAr} onChange={(e) => setForm((f) => ({ ...f, descriptionAr: e.target.value }))} className="input text-sm col-span-2" dir="rtl" />
+        <div className="card p-6 md:p-8 mb-8 animate-fade-down ring-1 ring-[var(--teal)] shadow-[0_0_40px_rgba(0,0,0,0.05)] dark:shadow-[0_0_40px_rgba(15,184,157,0.1)] transition-all bg-white relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-[var(--teal)] opacity-[0.03] rounded-full blur-[100px] pointer-events-none" />
+          
+          <div className="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100 dark:border-slate-800 relative z-10">
+             <div className="w-10 h-10 rounded-xl bg-[var(--teal)]/10 text-[var(--teal)] flex items-center justify-center">
+                 {editingCat ? <Edit3 className="w-5 h-5"/> : <Plus className="w-5 h-5"/>}
+             </div>
+             <h3 className="font-black text-lg text-slate-900 dark:text-white tracking-tight">
+               {editingCat ? t('admin.edit') : t('admin.add_category')}
+             </h3>
           </div>
-          <div className="flex gap-3 mt-4">
-            <button onClick={() => { setShowForm(false); setEditingCat(null); }} className="btn-ghost text-sm">{t('common.cancel')}</button>
-            <button onClick={handleSubmit} className="btn-primary text-sm">{t('common.save')}</button>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 relative z-10">
+            <div>
+               <label className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1.5 block">Name (EN)</label>
+               <input placeholder="e.g. Plumbing" value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} className="input text-sm w-full font-medium" />
+            </div>
+            <div>
+               <label className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1.5 block text-right">Name (AR)</label>
+               <input placeholder="سباكة" value={form.nameAr} onChange={(e) => setForm((f) => ({ ...f, nameAr: e.target.value }))} className="input text-sm w-full font-medium" dir="rtl" />
+            </div>
+            <div>
+               <label className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1.5 block">URL Slug</label>
+               <input placeholder="e.g. home-maintenance" value={form.slug} onChange={(e) => setForm((f) => ({ ...f, slug: e.target.value.toLowerCase().replace(/\s+/g,'-') }))} className="input text-sm w-full font-mono text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-[#0c0d10]" />
+            </div>
+            <div>
+               <label className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1.5 block">Emoji Icon</label>
+               <input placeholder="e.g. 🔧" value={form.icon} onChange={(e) => setForm((f) => ({ ...f, icon: e.target.value }))} className="input text-sm w-full text-xl py-1.5" />
+            </div>
+            <div className="md:col-span-2">
+               <label className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1.5 block">Description (EN)</label>
+               <input placeholder="Describe this category..." value={form.description} onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))} className="input text-sm w-full text-slate-500 font-medium" />
+            </div>
+            <div className="md:col-span-2">
+               <label className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1.5 block text-right">Description (AR)</label>
+               <input placeholder="وصف الخدمة..." value={form.descriptionAr} onChange={(e) => setForm((f) => ({ ...f, descriptionAr: e.target.value }))} className="input text-sm w-full text-slate-500 font-medium" dir="rtl" />
+            </div>
+          </div>
+          
+          <div className="flex justify-end gap-3 mt-8 relative z-10">
+            <button onClick={() => { setShowForm(false); setEditingCat(null); }} className="btn-ghost text-sm px-6 font-bold">{t('common.cancel')}</button>
+            <button onClick={handleSubmit} className="btn-primary text-sm px-8 gap-2 font-bold shadow-lg shadow-[var(--teal)]/20 hover:shadow-[var(--teal)]/40 transition-shadow">
+               <CheckCircle className="w-4 h-4" /> {t('common.save')}
+            </button>
           </div>
         </div>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {categories.length === 0 && !loading && (
+          <div className="card p-12 text-center text-slate-400 flex flex-col items-center">
+             <div className="w-20 h-20 rounded-full bg-slate-50 dark:bg-white/5 flex items-center justify-center mb-4">
+                <Tag className="w-8 h-8 text-slate-300 dark:text-slate-500" />
+             </div>
+             <p className="font-bold text-slate-500">No categories found</p>
+          </div>
+      )}
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {displayCategories.map((cat) => (
-          <div key={cat._id} className="card p-4 flex items-center justify-between gap-3">
-            <div className="flex items-center gap-3">
-              <span className="text-3xl">{cat.icon}</span>
-              <div>
-                <h3 className="font-semibold text-sm text-slate-900 dark:text-white">{cat.name}</h3>
-                <p className="text-xs text-slate-400">{cat.nameAr} · {cat.subcategories?.length || 0} subcats</p>
+          <div key={cat._id} className="group relative bg-white dark:bg-white/[0.02] border border-slate-200 dark:border-white/5 rounded-[28px] p-6 shadow-sm hover:shadow-xl hover:shadow-[var(--teal)]/5 hover:-translate-y-1 transition-all duration-300 overflow-hidden">
+            <div className="absolute top-0 right-0 p-4 opacity-[0.03] group-hover:opacity-10 group-hover:scale-150 transition-all duration-700 pointer-events-none transform translate-x-4 -translate-y-4">
+               <div className="text-[120px] leading-none">{cat.icon}</div>
+            </div>
+
+            <div className="flex items-start justify-between gap-3 mb-5 relative z-10">
+              <div className="w-14 h-14 rounded-[20px] bg-slate-50 dark:bg-white/5 flex items-center justify-center text-3xl shadow-inner group-hover:scale-110 group-hover:bg-[var(--teal)]/10 transition-all duration-300 border border-transparent group-hover:border-[var(--teal)]/20">
+                {cat.icon}
+              </div>
+              <div className="flex justify-end gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto">
+                <button onClick={() => startEdit(cat)} className="w-9 h-9 flex items-center justify-center text-slate-400 hover:text-[var(--teal)] hover:bg-[var(--teal)]/10 rounded-[14px] transition-all bg-white dark:bg-slate-800 shadow-sm border border-slate-100 dark:border-slate-700">
+                  <Edit3 className="w-4 h-4" />
+                </button>
+                <button onClick={() => handleDelete(cat._id)} className="w-9 h-9 flex items-center justify-center text-slate-400 hover:text-rose-500 hover:bg-rose-500/10 rounded-[14px] transition-all bg-white dark:bg-slate-800 shadow-sm border border-slate-100 dark:border-slate-700">
+                  <Trash2 className="w-4 h-4" />
+                </button>
               </div>
             </div>
-            <div className="flex justify-end gap-2">
-              <button onClick={() => startEdit(cat)} className="p-2 text-slate-400 hover:text-[var(--teal)] hover:bg-[var(--teal)]/10 rounded-xl transition-colors">
-                <Edit3 className="w-4 h-4" />
-              </button>
-              <button onClick={() => handleDelete(cat._id)} className="p-2 text-slate-400 hover:text-rose-500 hover:bg-rose-500/10 rounded-xl transition-colors">
-                <Trash2 className="w-4 h-4" />
-              </button>
+            
+            <div className="space-y-1 relative z-10">
+              <h3 className="font-bold text-lg text-slate-900 dark:text-white tracking-tight">{cat.name}</h3>
+              <p className="text-[13px] font-medium text-slate-500 dark:text-slate-400">{cat.nameAr}</p>
+            </div>
+            
+            <div className="relative mt-6 flex items-center justify-end border-t border-slate-100 dark:border-white/5 pt-4 z-10 group-hover:border-[var(--teal)]/20 transition-colors">
+               <div className="flex flex-col text-right">
+                  <span className="text-sm font-black text-slate-800 dark:text-white leading-none mb-1">{cat.subcategories?.length || 0}</span>
+                  <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-400">Subcats</span>
+               </div>
             </div>
           </div>
         ))}
@@ -640,21 +827,24 @@ function AdminCategories() {
 
       {/* Pagination UI for Categories */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between px-4 py-4 mt-4 bg-white/50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-700/50 backdrop-blur-md rounded-2xl text-sm shadow-sm">
+        <div className="flex items-center justify-between px-4 py-4 mt-6 bg-white/50 dark:bg-black/20 border border-slate-100 dark:border-white/5 backdrop-blur-md rounded-2xl text-sm shadow-sm ring-1 ring-black/5 dark:ring-white/5">
           <button 
             disabled={page === 1} 
             onClick={() => { setPage(p => p - 1); window.scrollTo({top: 0, behavior: 'smooth'}); }} 
-            className="px-4 py-2 font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-white/5 rounded-xl disabled:opacity-30 transition-all hover:bg-slate-200 dark:hover:bg-white/10"
+            className="px-5 py-2.5 font-bold text-slate-600 dark:text-slate-300 bg-white dark:bg-white/5 hover:text-[var(--teal)] rounded-xl disabled:opacity-30 transition-all hover:bg-slate-50 dark:hover:bg-white/10 shadow-sm border border-slate-200 dark:border-transparent flex items-center gap-2"
           >
             {isRTL ? 'التالي' : 'Previous'}
           </button>
-          <div className="text-slate-500 font-medium tracking-wide">
-            Page <span className="font-black text-slate-900 dark:text-white px-1">{page}</span> of {totalPages}
+          <div className="text-slate-500 font-medium tracking-wide bg-slate-100 dark:bg-white/5 px-4 py-2 rounded-lg font-mono text-[11px] uppercase space-x-1">
+            <span>Page</span>
+            <span className="font-black text-[var(--teal-dark)] dark:text-[var(--teal)] text-sm px-0.5">{page}</span>
+            <span>of</span>
+            <span className="font-bold text-slate-900 dark:text-white">{totalPages}</span>
           </div>
           <button 
             disabled={page === totalPages} 
             onClick={() => { setPage(p => p + 1); window.scrollTo({top: 0, behavior: 'smooth'}); }} 
-            className="px-4 py-2 font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-white/5 rounded-xl disabled:opacity-30 transition-all hover:bg-slate-200 dark:hover:bg-white/10"
+            className="px-5 py-2.5 font-bold text-slate-600 dark:text-slate-300 bg-white dark:bg-white/5 hover:text-[var(--teal)] rounded-xl disabled:opacity-30 transition-all hover:bg-slate-50 dark:hover:bg-white/10 shadow-sm border border-slate-200 dark:border-transparent flex items-center gap-2"
           >
             {isRTL ? 'السابق' : 'Next'}
           </button>
@@ -663,6 +853,7 @@ function AdminCategories() {
     </div>
   );
 }
+
 
 // ── Main Admin Dashboard wrapper ─────────────────────────────
 export default function AdminDashboard() {

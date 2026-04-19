@@ -29,36 +29,41 @@ input[type="password"]::-webkit-password-toggle-button {
 /* ── Base ─────────────────────────────────────────────────── */
 @layer base {
   :root {
-    --color-bg:       #fdfdfc;
-    --paper:          #f9f9f7;
-    --ink:            #1a1b1e;
-    --teal:           #0fb89d;
-    --teal-dark:      #0d9681;
-    --cream:          #f7f2ea;
-    --muted:          #71717a;
-    --border:         #e7e2da;
+    --color-bg:       #ffffff;
+    --paper:          #f4f7f6;
+    --ink:            #212529;
+    --teal:           #00c9a7;
+    --teal-dark:      #009f84;
+    --cream:          #f0f4f8;
+    --muted:          #6c757d;
+    --border:         #e2e8f0;
     --kd-white:       #ffffff;
     --card-bg:        #ffffff;
     --nav-h:          80px;
     --max-w:          1340px;
-    --kd-radius:      24px;
-    --kd-shadow:      0 8px 30px rgba(15, 184, 157, 0.04);
-    --kd-shadow-lg:   0 16px 48px rgba(15, 184, 157, 0.08);
+    --kd-radius:      12px;
+    --kd-shadow:      0 4px 12px rgba(0, 0, 0, 0.05);
+    --kd-shadow-lg:   0 8px 24px rgba(0, 0, 0, 0.08);
   }
   .dark {
-    --color-bg:       #0a0a0c;
-    --paper:          #0e0e11;
-    --ink:            #eceff4;
-    --cream:          #111218;
-    --border:         #1c1d22;
-    --kd-white:       #14151a;
-    --card-bg:        #14151a;
-    --muted:          #828997;
-    --kd-shadow:      0 10px 40px rgba(0,0,0,0.4);
-    --kd-shadow-lg:   0 20px 60px rgba(0,0,0,0.6);
+    --color-bg:       #000000; /* OLED True Black */
+    --paper:          #050505; /* Barely elevated section background */
+    --ink:            #f8fafc;
+    --cream:          #000000;
+    --border:         #171717; /* Very subtle border */
+    --kd-white:       #0a0a0a; /* Slightly elevated card bg */
+    --card-bg:        #0a0a0a;
+    --muted:          #a1a1aa; /* Neutral-400 for clean contrast */
+    --teal:           #3b82f6;
+    --teal-dark:      #2563eb;
+    --kd-shadow:      0 10px 40px rgba(0,0,0,0.8);
+    --kd-shadow-lg:   0 20px 60px rgba(0,0,0,0.9);
   }
 
-  html { scroll-behavior: smooth; }
+  html {
+    font-size: 90%; /* Scale down rem-based sizing slightly */
+    scroll-behavior: smooth; 
+  }
 
   body {
     @apply bg-[var(--color-bg)] text-slate-700 dark:text-slate-300 transition-colors duration-300 antialiased overflow-x-hidden;
@@ -67,11 +72,13 @@ input[type="password"]::-webkit-password-toggle-button {
   }
 
   /* RTL / Arabic Optimization */
-  [dir="rtl"] body,
+  [dir="rtl"] body {
+    font-family: 'Cairo', system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+  }
+  
   [dir="rtl"] * {
     font-family: 'Cairo', system-ui, -apple-system, sans-serif !important;
-    line-height: 1.8 !important;
-    letter-spacing: 0 !important;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -198,34 +205,21 @@ input[type="password"]::-webkit-password-toggle-button {
 .hover-lift:hover { transform: translateY(-8px); }
 
 .glass-morphism {
-  background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: var(--kd-white);
+  border: 1px solid var(--border);
 }
 .dark .glass-morphism {
-  background: rgba(14, 14, 17, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-@keyframes mesh {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+  background: var(--kd-white);
+  border: 1px solid var(--border);
 }
 
 .mesh-bg {
   background-color: var(--color-bg);
-  background-image: 
-    radial-gradient(at 0% 0%, hsla(168, 81%, 39%, 0.05) 0, transparent 50%), 
-    radial-gradient(at 50% 0%, hsla(210, 100%, 50%, 0.04) 0, transparent 50%), 
-    radial-gradient(at 100% 0%, hsla(168, 81%, 39%, 0.05) 0, transparent 50%);
-  background-size: 200% 200%;
-  animation: mesh 20s ease infinite;
 }
 
 .glass-modal {
   @apply fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-10;
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.6);
 }
 
 /* ─────────────────────────────────────────────────────────
@@ -239,31 +233,24 @@ input[type="password"]::-webkit-password-toggle-button {
 
 .kd-wallpaper {
   background-color: var(--paper);
-  background-image: url("https://www.transparenttextures.com/patterns/white-diamond.png");
 }
 .dark .kd-wallpaper {
-  background-image: url("https://www.transparenttextures.com/patterns/carbon-fibre.png");
+  background-color: var(--paper);
 }
 
 .kd-bg-pattern {
-  background-image: radial-gradient(var(--border) 1px, transparent 1px);
-  background-size: 32px 32px;
+  background-color: var(--color-bg);
 }
 
 .kd-gradient-bg {
-  background: linear-gradient(135deg, var(--paper) 0%, var(--cream) 100%);
+  background: var(--paper);
 }
 
 .kd-floating-blob {
-  position: absolute;
-  filter: blur(100px);
-  z-index: 0;
-  border-radius: 50%;
-  opacity: 0.1;
-  pointer-events: none;
+  display: none;
 }
-.kd-blob-1 { width: 500px; height: 500px; background: var(--teal); top: -250px; right: -150px; opacity: 0.08; }
-.kd-blob-2 { width: 400px; height: 400px; background: #60a5fa; bottom: -150px; left: -150px; opacity: 0.06; }
+.kd-blob-1 { display: none; }
+.kd-blob-2 { display: none; }
 
 /* ── SECTION LABEL / TITLE / SUB ── */
 .kd-section-label {
@@ -517,32 +504,28 @@ input[type="password"]::-webkit-password-toggle-button {
   justify-content: center;
   gap: 8px;
   padding: 14px 36px;
-  border-radius: 9999px;
-  border: 1px solid rgba(226, 232, 240, 1);
-  background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
-  font-size: 11px;
-  font-weight: 900;
+  border-radius: 8px;
+  border: 1px solid var(--teal);
+  background: var(--teal);
+  font-size: 13px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: #94a3b8;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: 0.05em;
+  color: #ffffff;
+  transition: all 0.3s ease;
   cursor: pointer;
   text-decoration: none;
 }
 
 .dark .kd-btn-special {
-  border-color: rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
 }
 
 .kd-btn-special:hover {
-  color: white;
-  background: var(--teal);
-  border-color: var(--teal);
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px -12px rgba(15, 184, 157, 0.3);
+  background: var(--teal-dark);
+  border-color: var(--teal-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .kd-btn-special svg {

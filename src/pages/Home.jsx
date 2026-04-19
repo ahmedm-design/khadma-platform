@@ -1,7 +1,7 @@
 // pages/Home.jsx — khadma design applied
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { ArrowRight, Shield, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, Shield, CheckCircle2, Search } from 'lucide-react';
 import { useLang } from '../context/LangContext';
 import clsx from 'clsx';
 import api from '../api/axios';
@@ -88,17 +88,22 @@ export default function Home() {
               {t('home.hero_subtitle')}
             </p>
 
-            <form className="kd-hero-search bg-white/90 dark:bg-white/5 border-slate-200 dark:border-white/10 backdrop-blur-xl flex flex-col sm:flex-row w-full items-center p-2 shadow-2xl gap-2 sm:gap-0" onSubmit={handleSearch}>
-              <div className="flex-1 w-full relative">
+            <form className="relative flex flex-col sm:flex-row w-full max-w-[640px] bg-white dark:bg-[#0c0d10] border-2 border-transparent dark:border-white/5 rounded-[28px] sm:rounded-full p-2.5 shadow-[0_20px_40px_rgba(0,0,0,0.08)] hover:shadow-2xl focus-within:border-[var(--teal)] focus-within:shadow-[0_0_40px_rgba(0,201,167,0.15)] transition-all duration-300 gap-3 sm:gap-0 group z-20 mb-8" onSubmit={handleSearch}>
+              <div className="flex-1 w-full relative flex items-center">
+                <div className={clsx("absolute text-slate-300 dark:text-slate-500 group-focus-within:text-[var(--teal)] transition-colors duration-300", isAr ? "right-6" : "left-6")}>
+                  <Search size={22} strokeWidth={3} />
+                </div>
                 <input
                   type="text"
-                  placeholder={t('nav.search')}
+                  placeholder={isAr ? 'ما الذي تبحث عنه؟' : 'What service are you looking for?'}
                   value={searchVal}
                   onChange={(e) => setSearchVal(e.target.value)}
-                  className="bg-transparent border-none outline-none text-slate-700 dark:text-slate-200 w-full ps-6 pe-4 py-4 lg:py-0 text-base md:text-lg font-medium"
+                  className={clsx("bg-transparent border-none outline-none text-slate-800 dark:text-slate-100 w-full py-4 text-base md:text-lg font-bold placeholder:text-slate-400 placeholder:font-medium", isAr ? "pr-16 pl-4" : "pl-16 pr-4")}
                 />
               </div>
-              <button type="submit" className="bg-[var(--teal)] text-slate-900 w-full sm:w-auto px-10 py-4 rounded-[20px] sm:rounded-[32px] font-black uppercase tracking-widest text-xs transition-all hover:bg-[var(--teal-dark)] shrink-0 shadow-lg shadow-[var(--teal)]/20">{isAr ? 'بحث' : 'Search'}</button>
+              <button type="submit" className="bg-[var(--teal)] text-slate-900 w-full sm:w-auto px-10 h-[56px] rounded-[20px] sm:rounded-full font-black uppercase tracking-[0.2em] text-sm transition-transform hover:scale-[1.02] active:scale-95 shrink-0 shadow-lg hover:shadow-[var(--teal)]/30 flex items-center justify-center">
+                {isAr ? 'بحث' : 'Search'}
+              </button>
             </form>
 
             <div className="kd-hero-btns flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center lg:justify-start mt-10">
@@ -136,38 +141,11 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Platform Stats Stack - Right/Left depending on RTL */}
-                <div className={clsx(
-                  "absolute -bottom-10 w-56 bg-white dark:bg-[#1A1A1E] rounded-[32px] p-6 shadow-2xl border border-slate-50 dark:border-white/5 z-20 transition-all hover:scale-105",
-                  isAr ? "-left-14" : "-right-14"
-                )}>
-                  <div className="space-y-5">
-                    <div className="flex items-center justify-between">
-                      <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{isAr ? 'مزودون معتمدون' : 'Verified Pros'}</div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-black text-slate-900 dark:text-white">2,400+</span>
-                        <div className="w-4 h-4 rounded-full bg-[var(--teal)]/20 flex items-center justify-center">
-                          <CheckCircle2 className="w-2.5 h-2.5 text-[var(--teal)]" />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{isAr ? 'فئات الخدمة' : 'Service Cats'}</div>
-                      <div className="flex items-center gap-1.5">
-                        <Shield className="w-3 h-3 text-yellow-500 fill-yellow-500" />
-                        <span className="text-xs font-black text-slate-900 dark:text-white">50+</span>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{isAr ? 'تغطية المدن' : 'City Coverage'}</div>
-                      <div className="px-2.5 py-1 rounded-full bg-slate-900 text-[var(--teal)] text-[10px] font-black tracking-widest">{isAr ? 'جميع المحافظات' : 'Nationwide'}</div>
-                    </div>
-                  </div>
-                </div>
+
 
                 {/* Global Trust Badge */}
                 <div className={clsx(
-                  "absolute -bottom-6 bg-white dark:bg-[#1A1A1E] rounded-[32px] p-7 shadow-2xl border border-slate-50 dark:border-white/5 text-center min-w-[140px] z-10 transition-all hover:scale-105",
+                  "absolute -bottom-6 bg-white/20 dark:bg-[#1A1A1E]/20 rounded-[32px] p-7 shadow-2xl border border-white/30 dark:border-white/10 text-center min-w-[140px] z-10 transition-all hover:scale-105 hover:bg-white/30 dark:hover:bg-[#1A1A1E]/30",
                   isAr ? "-right-24" : "-left-24"
                 )}>
                   <div className="flex justify-center gap-1 mb-3">
