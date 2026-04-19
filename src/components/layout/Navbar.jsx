@@ -162,8 +162,8 @@ export default function Navbar() {
 
             {/* Right Controls */}
             <div className="flex items-center gap-2 sm:gap-3 z-20">
-              {/* Language Switcher - Now visible on mobile header too */}
-              <div className="flex items-center bg-white/40 dark:bg-white/10 border border-white/20 rounded-full px-1 py-1 sm:px-2 sm:gap-1 backdrop-blur-md shadow-sm">
+              {/* Controls Wrapper */}
+              <div className="hidden md:flex items-center bg-white/40 dark:bg-white/10 border border-white/20 rounded-full px-2 gap-1 backdrop-blur-md shadow-sm">
                 <button 
                   onClick={toggle} 
                   className="p-1.5 sm:p-2 text-slate-500 hover:text-[var(--teal)] transition-colors rounded-full" 
