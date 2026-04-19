@@ -15,7 +15,7 @@ function ProviderCard({ provider }) {
   return (
     <Link 
       to={`/providers/${provider._id}`} 
-      className="group relative block w-full max-w-[320px] mx-auto bg-white/40 dark:bg-white/5 border border-slate-200 dark:border-white/10 backdrop-blur-3xl rounded-[32px] overflow-hidden transition-all duration-500 hover:-translate-y-1 hover:scale-[1.02] hover:shadow-2xl hover:shadow-[var(--teal)]/10"
+      className="group relative block w-full bg-white/40 dark:bg-white/5 border border-slate-200 dark:border-white/10 backdrop-blur-3xl rounded-[24px] sm:rounded-[32px] overflow-hidden transition-all duration-500 hover:-translate-y-1 hover:scale-[1.02] hover:shadow-2xl hover:shadow-[var(--teal)]/10"
     >
       {/* Image / placeholder */}
       <div className="aspect-[4/3] overflow-hidden relative">

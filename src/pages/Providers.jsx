@@ -78,7 +78,7 @@ export default function Providers() {
       {/* Page Hero Strip */}
       <div className="relative pb-8 md:pb-12 px-6 md:px-10 border-b border-slate-200/50 dark:border-white/5">
         <div className="max-w-[1400px] mx-auto text-center md:text-left">
-          <div className="flex flex-col md:flex-row items-center md:items-end justify-between gap-10">
+          <div className="flex flex-col md:flex-row items-center md:items-end justify-between gap-6 md:gap-10">
             <div className="animate-fade-in flex-1">
               <span className="kd-section-label uppercase tracking-[0.3em] text-[var(--teal)] mb-4 inline-block font-black text-[10px]">{isAr ? 'المحترفون' : 'Verified Professionals'}</span>
               <h1 className="kd-section-title text-4xl sm:text-5xl md:text-7xl mb-4 md:mb-6 tracking-tighter leading-tight">{t('providers.title')}</h1>
@@ -117,7 +117,7 @@ export default function Providers() {
       <div className="max-w-[1400px] mx-auto px-5 sm:px-6 lg:px-10 py-6 md:py-8 relative z-10">
         {/* Filter Panel - Glassmorphic */}
         {showFilters && (
-          <div className="bg-white/60 dark:bg-white/5 border border-white/40 dark:border-white/10 backdrop-blur-3xl rounded-[32px] p-8 mb-12 shadow-2xl shadow-indigo-500/5 animate-fade-in">
+          <div className="bg-white/60 dark:bg-white/5 border border-white/40 dark:border-white/10 backdrop-blur-3xl rounded-[24px] sm:rounded-[32px] p-5 sm:p-8 mb-12 shadow-2xl shadow-indigo-500/5 animate-fade-in">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {/* Search */}
               <div className="relative group">
@@ -183,7 +183,7 @@ export default function Providers() {
 
         {/* Results Grid - High End Cards */}
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
             {Array(12).fill(0).map((_, i) => <SkeletonProviderCard key={i} />)}
           </div>
         ) : providers.length === 0 ? (
@@ -196,7 +196,7 @@ export default function Providers() {
             )}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
             {(providers || []).map((p, i) => (
               <div key={p._id} className="animate-fade-up" style={{ animationDelay: `${(i % 12) * 0.05}s` }}>
                 <ProviderCard provider={p} />

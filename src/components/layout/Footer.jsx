@@ -40,7 +40,7 @@ export default function Footer() {
                   </p>
               </div>
               <div className="relative z-10 flex-shrink-0 w-full lg:w-auto flex flex-col sm:flex-row justify-center gap-4">
-                  <Link to="/#about-us" className="h-[50px] sm:h-[60px] px-8 sm:px-10 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-black rounded-xl sm:rounded-[20px] flex items-center justify-center transition-all uppercase tracking-[0.2em] text-[10px] sm:text-sm backdrop-blur-md text-center">
+                  <Link to="/#about-us" className="w-full sm:w-auto h-[50px] sm:h-[60px] px-8 sm:px-10 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-black rounded-xl sm:rounded-[20px] flex items-center justify-center transition-all uppercase tracking-[0.2em] text-[10px] sm:text-sm backdrop-blur-md text-center">
                      {isAr ? 'استكشف المنصة' : 'Explore Platform'}
                   </Link>
               </div>

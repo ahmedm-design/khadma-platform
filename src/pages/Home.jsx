@@ -117,7 +117,7 @@ export default function Home() {
               {/* Top Badge: Site Activity */}
               <div className={clsx(
                 "absolute -top-12 z-30 bg-[#0A0A0B]/95 text-white px-5 py-2.5 rounded-2xl border border-white/10 backdrop-blur-md flex items-center gap-3 shadow-2xl",
-                isAr ? "left-0" : "right-0"
+                "right-0"
               )}>
                 <div className="w-2.5 h-2.5 rounded-full bg-[var(--teal)] animate-pulse shadow-[0_0_12px_var(--teal)]" />
                 <span className="text-[10px] font-black uppercase tracking-widest">{isAr ? '+ 42 خدمة جديدة اليوم' : '+42 New jobs today'}</span>
@@ -146,7 +146,7 @@ export default function Home() {
                 {/* Global Trust Badge */}
                 <div className={clsx(
                   "absolute -bottom-6 bg-white/20 dark:bg-[#1A1A1E]/20 rounded-[32px] p-7 shadow-2xl border border-white/30 dark:border-white/10 text-center min-w-[140px] z-10 transition-all hover:scale-105 hover:bg-white/30 dark:hover:bg-[#1A1A1E]/30",
-                  isAr ? "-right-24" : "-left-24"
+                  "-left-24"
                 )}>
                   <div className="flex justify-center gap-1 mb-3">
                     {[1, 2, 3, 4, 5].map(i => <Shield key={i} className="w-3 h-3 text-yellow-500 fill-yellow-500" />)}
@@ -179,8 +179,8 @@ export default function Home() {
       </div>
 
       {/* ABOUT US — Premium Boxed Facelift */}
-      <section id="about-us" className="animate-fade-up relative py-8 px-6 overflow-hidden">
-        <div className="max-w-[1400px] mx-auto bg-white/40 dark:bg-white/5 rounded-[48px] border border-white/20 dark:border-white/5 backdrop-blur-3xl relative overflow-hidden px-10 md:px-20 py-16 shadow-lg shadow-black/5">
+      <section id="about-us" className="animate-fade-up relative py-8 sm:py-16 px-4 sm:px-6 overflow-hidden">
+        <div className="max-w-[1400px] mx-auto bg-white/40 dark:bg-white/5 rounded-[32px] sm:rounded-[48px] border border-white/20 dark:border-white/5 backdrop-blur-3xl relative overflow-hidden px-6 sm:px-10 md:px-20 py-12 sm:py-16 shadow-lg shadow-black/5">
           {/* Subtle mesh blob instead of many floating ones */}
           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--teal)] opacity-[0.02] rounded-full blur-[120px] pointer-events-none" />
 
@@ -223,7 +223,7 @@ export default function Home() {
       </section>
 
       {/* CATEGORIES SECTION */}
-      <section className="animate-fade-up relative py-8 px-6 overflow-hidden">
+      <section className="animate-fade-up relative py-8 sm:py-16 px-4 sm:px-6 overflow-hidden">
         <div className="max-w-[1400px] mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
             <div className="animate-fade-in">
@@ -259,7 +259,7 @@ export default function Home() {
       </section>
 
       {/* TOP PROVIDERS */}
-      <section id="top-providers" className="animate-fade-up relative py-8 px-6 md:py-12 scroll-mt-24">
+      <section id="top-providers" className="animate-fade-up relative py-8 sm:py-16 px-4 sm:px-6 scroll-mt-24">
         <div className="max-w-[1400px] mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
             <div>
@@ -295,8 +295,8 @@ export default function Home() {
       </section>
 
       {/* WHY CHOOSE KHEDMA */}
-      <section className="animate-fade-up relative py-12 px-6">
-        <div className="max-w-[1400px] mx-auto bg-slate-100/50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-[60px] p-12 md:p-20 relative overflow-hidden text-center">
+      <section className="animate-fade-up relative py-8 sm:py-16 px-4 sm:px-6">
+        <div className="max-w-[1400px] mx-auto bg-slate-100/50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-[32px] sm:rounded-[60px] p-8 sm:p-20 relative overflow-hidden text-center">
           <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-sky-500 opacity-[0.02] rounded-full blur-[100px] pointer-events-none" />
 
           <div className="max-w-3xl mx-auto relative z-10">
@@ -313,8 +313,8 @@ export default function Home() {
               { icon: '💎', title: isAr ? 'دفع آمن تماماً' : 'Secure Payments', desc: isAr ? 'نظام دفع آمن يضمن حقك؛ لا نرسل الأموال حتى تؤكد رضاك.' : 'A robust escrow system that protects you; funds are only released when you are 100% satisfied.' },
               { icon: '⚡', title: isAr ? 'سرعة وموثوقية' : 'Fast & Reliable', desc: isAr ? 'تواصل مع أفضل الخبراء في دقائق معدودة، وتتبع طلبك مباشرة.' : 'Connect with top experts in mere minutes and track your service request in real-time.' },
             ].map((item, i) => (
-              <div key={i} className="bg-white/60 dark:bg-white/5 border border-slate-200 dark:border-white/10 backdrop-blur-2xl rounded-[40px] p-10 flex flex-col items-center hover:bg-white transition-all duration-500 hover:-translate-y-2 group shadow-sm">
-                <div className="w-20 h-20 rounded-3xl bg-slate-50 dark:bg-white/5 flex items-center justify-center text-3xl mb-8 group-hover:scale-110 transition-transform">
+              <div key={i} className="bg-white/60 dark:bg-white/5 border border-slate-200 dark:border-white/10 backdrop-blur-2xl rounded-[32px] sm:rounded-[40px] p-8 sm:p-10 flex flex-col items-center hover:bg-white transition-all duration-500 hover:-translate-y-2 group shadow-sm">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl sm:rounded-3xl bg-slate-50 dark:bg-white/5 flex items-center justify-center text-2xl sm:text-3xl mb-6 sm:mb-8 group-hover:scale-110 transition-transform">
                   {item.icon}
                 </div>
                 <h3 className="text-xl font-black text-slate-800 dark:text-slate-100 mb-3">{item.title}</h3>
@@ -333,13 +333,13 @@ export default function Home() {
             <span className="kd-section-label text-xs tracking-[0.3em] font-black text-[var(--teal)] mx-auto mb-4">{isAr ? 'قصص العملاء' : 'Customer Stories'}</span>
             <h2 className="kd-section-title text-4xl md:text-5xl text-slate-800 dark:text-slate-100">{isAr ? 'ماذا يقول عملاؤنا' : 'What our customers say'}</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             {[
               { text: isAr ? 'وجدت سباك ممتاز خلال 10 دقائق. أصلح تسرب الأنابيب في نفس اليوم.' : "Found a brilliant plumber within 10 minutes. Fixed our pipe leak the same day. Couldn't be happier.", name: isAr ? 'نادية الرشيدي' : 'Nadia El-Rashidy', role: isAr ? 'القاهرة، مصر' : 'Cairo, Egypt', img: 'https://i.pravatar.cc/80?img=31' },
               { text: isAr ? 'أعدت تصميم موقعي بالكامل بجزء بسيط من تكلفة الوكالات.' : 'Got my entire website redesigned for a fraction of what agencies charge. Incredible quality.', name: isAr ? 'سارة أحمد' : 'Sarah Ahmed', role: isAr ? 'الإسكندرية، مصر' : 'Alexandria, Egypt', img: 'https://i.pravatar.cc/80?img=47' },
               { text: isAr ? 'حجزت 3 خدمات في شهر واحد. خدمة أصبحت منصتي المفضلة.' : 'Booked 3 services in one month — all top notch. Khedma is now my go-to platform.', name: isAr ? 'يوسف علي' : 'Youssef Ali', role: isAr ? 'الجيزة، مصر' : 'Giza, Egypt', img: 'https://i.pravatar.cc/80?img=56' },
             ].map((r, i) => (
-              <div key={i} className="bg-white/40 dark:bg-white/5 border border-slate-200 dark:border-white/10 backdrop-blur-3xl rounded-[40px] p-10 hover:bg-white transition-all duration-500 shadow-sm group">
+              <div key={i} className="bg-white/40 dark:bg-white/5 border border-slate-200 dark:border-white/10 backdrop-blur-3xl rounded-[32px] sm:rounded-[40px] p-8 sm:p-10 hover:bg-white transition-all duration-500 shadow-sm group">
                 <div className="text-amber-500 mb-6">★★★★★</div>
                 <p className="text-slate-600 dark:text-slate-400 italic mb-10 leading-relaxed font-medium">"{r.text}"</p>
                 <div className="flex items-center gap-4">
@@ -356,8 +356,8 @@ export default function Home() {
       </section>
 
       {/* CTA - Refined */}
-      <section className="animate-fade-up relative py-8 px-6 overflow-hidden">
-        <div className="max-w-[1400px] mx-auto bg-slate-900 rounded-[60px] relative overflow-hidden px-10 py-24 text-center">
+      <section className="animate-fade-up relative py-8 px-4 sm:px-6 overflow-hidden">
+        <div className="max-w-[1400px] mx-auto bg-slate-900 rounded-[32px] sm:rounded-[60px] relative overflow-hidden px-6 sm:px-10 py-16 sm:py-24 text-center">
           <div className="absolute inset-0 z-0">
             <video autoPlay muted loop playsInline className="w-full h-full object-cover opacity-30 grayscale">
               <source src="/8293017-hd_1920_1080_30fps (online-video-cutter.com).mp4" type="video/mp4" />
