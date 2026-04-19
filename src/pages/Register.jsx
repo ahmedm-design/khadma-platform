@@ -1,6 +1,6 @@
 // pages/Register.jsx — khadma design applied, all logic unchanged
 import React, { useState } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useLang } from '../context/LangContext';
 import toast from 'react-hot-toast';
@@ -8,12 +8,17 @@ import clsx from 'clsx';
 import PasswordInput from '../components/common/PasswordInput';
 
 export default function Register() {
-  const { register, loginWithGoogle } = useAuth();
+  const { user, register, loginWithGoogle } = useAuth();
   const { t } = useLang();
   const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
   const initialRole = searchParams.get('role') === 'provider' ? 'provider' : 'seeker';
+
+  if (user) {
+    const dest = user.role === 'admin' ? '/admin' : user.role === 'provider' ? '/provider-dashboard' : '/';
+    return <Navigate to={dest} replace />;
+  }
 
   const [form, setForm] = useState({
     name: '', email: '', phone: '', password: '', confirmPassword: '', role: initialRole,

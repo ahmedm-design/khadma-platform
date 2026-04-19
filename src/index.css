@@ -46,18 +46,18 @@ input[type="password"]::-webkit-password-toggle-button {
     --kd-shadow-lg:   0 8px 24px rgba(0, 0, 0, 0.08);
   }
   .dark {
-    --color-bg:       #000000; /* OLED True Black */
-    --paper:          #050505; /* Barely elevated section background */
-    --ink:            #f8fafc;
-    --cream:          #000000;
-    --border:         #171717; /* Very subtle border */
-    --kd-white:       #0a0a0a; /* Slightly elevated card bg */
-    --card-bg:        #0a0a0a;
-    --muted:          #a1a1aa; /* Neutral-400 for clean contrast */
+    --color-bg:       #111827; /* Soft dark background */
+    --paper:          #1f2937; /* Elevated section background */
+    --ink:            #f9fafb;
+    --cream:          #111827;
+    --border:         #374151; /* Soft border */
+    --kd-white:       #1f2937; /* Elevated card bg */
+    --card-bg:        #1f2937;
+    --muted:          #9ca3af; /* Neutral text */
     --teal:           #3b82f6;
     --teal-dark:      #2563eb;
-    --kd-shadow:      0 10px 40px rgba(0,0,0,0.8);
-    --kd-shadow-lg:   0 20px 60px rgba(0,0,0,0.9);
+    --kd-shadow:      0 10px 40px rgba(0,0,0,0.5);
+    --kd-shadow-lg:   0 20px 60px rgba(0,0,0,0.6);
   }
 
   html {

@@ -239,7 +239,7 @@ export default function Navbar() {
                       <div className="h-px bg-slate-100 dark:bg-white/5 my-2 mx-2" />
 
                       <button 
-                        onClick={() => logout()} 
+                        onClick={() => { setDropOpen(false); logout(); navigate('/register'); }} 
                         className={clsx(
                           "w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-red-500 hover:bg-red-50 dark:hover:bg-red-500/5 rounded-2xl transition-all group",
                           isRTL && "flex-row-reverse text-right"
@@ -277,7 +277,8 @@ export default function Navbar() {
         <div 
           className={clsx(
             "absolute top-0 bottom-0 w-[85%] max-w-[400px] bg-white dark:bg-[#0c0d10] shadow-2xl transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col",
-            menuOpen ? "start-0 translate-x-0" : "start-0 ltr:-translate-x-full rtl:translate-x-full"
+            isRTL ? "right-0" : "left-0",
+            menuOpen ? "translate-x-0" : (isRTL ? "translate-x-full" : "-translate-x-full")
           )}
           onClick={e => e.stopPropagation()}
         >
@@ -346,7 +347,7 @@ export default function Navbar() {
                   {t('nav.dashboard')}
                 </Link>
                 <button 
-                  onClick={() => logout()} 
+                  onClick={() => { setMenuOpen(false); logout(); navigate('/register'); }} 
                   className="w-full h-14 flex items-center gap-4 px-6 rounded-2xl bg-red-50 dark:bg-red-500/5 text-red-500 font-bold"
                 >
                   <LogOut size={20} />

@@ -1,17 +1,22 @@
 // pages/Login.jsx — khadma design applied, all logic unchanged
 import React, { useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useLang } from '../context/LangContext';
 import toast from 'react-hot-toast';
 import PasswordInput from '../components/common/PasswordInput';
 
 export default function Login() {
-  const { login, loginWithGoogle } = useAuth();
+  const { user, login, loginWithGoogle } = useAuth();
   const { t } = useLang();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';
+
+  if (user) {
+    const dest = user.role === 'admin' ? '/admin' : user.role === 'provider' ? '/provider-dashboard' : from;
+    return <Navigate to={dest} replace />;
+  }
 
   const [form, setForm]         = useState({ email: '', password: '' });
   const [loading, setLoading]   = useState(false);

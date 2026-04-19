@@ -76,12 +76,12 @@ export default function Providers() {
       <div className="absolute bottom-1/4 left-0 w-[400px] h-[400px] bg-indigo-500 opacity-[0.02] rounded-full blur-[100px] pointer-events-none" />
 
       {/* Page Hero Strip */}
-      <div className="relative pb-12 px-10 border-b border-slate-200/50 dark:border-white/5">
+      <div className="relative pb-8 md:pb-12 px-6 md:px-10 border-b border-slate-200/50 dark:border-white/5">
         <div className="max-w-[1400px] mx-auto text-center md:text-left">
           <div className="flex flex-col md:flex-row items-center md:items-end justify-between gap-10">
             <div className="animate-fade-in flex-1">
               <span className="kd-section-label uppercase tracking-[0.3em] text-[var(--teal)] mb-4 inline-block font-black text-[10px]">{isAr ? 'المحترفون' : 'Verified Professionals'}</span>
-              <h1 className="kd-section-title text-5xl md:text-7xl mb-6 tracking-tighter">{t('providers.title')}</h1>
+              <h1 className="kd-section-title text-4xl sm:text-5xl md:text-7xl mb-4 md:mb-6 tracking-tighter leading-tight">{t('providers.title')}</h1>
               <p className="text-slate-500 font-medium max-w-2xl leading-relaxed text-sm md:text-lg">
                 {isAr 
                   ? 'اكتشف النخبة من مقدمي الخدمات في مصر. نضمن لك الجودة والاحترافية في كل مشروع.'
@@ -96,7 +96,7 @@ export default function Providers() {
             <button
               onClick={() => setShowFilters((o) => !o)}
               className={clsx(
-                "flex items-center gap-4 px-10 py-5 rounded-[24px] text-xs font-black transition-all duration-500 border uppercase tracking-widest",
+                "flex justify-center items-center gap-3 sm:gap-4 w-full md:w-auto px-6 sm:px-10 py-4 sm:py-5 rounded-2xl md:rounded-[24px] text-[10px] sm:text-xs font-black transition-all duration-500 border uppercase tracking-widest",
                 showFilters 
                   ? "bg-slate-900 dark:bg-white text-white dark:text-slate-900 border-slate-900" 
                   : "bg-white/40 dark:bg-white/5 text-slate-700 dark:text-white border-slate-200 dark:border-white/10 backdrop-blur-2xl hover:bg-white/60"
@@ -114,7 +114,7 @@ export default function Providers() {
         </div>
       </div>
 
-      <div className="max-w-[1400px] mx-auto px-10 py-8 relative z-10">
+      <div className="max-w-[1400px] mx-auto px-5 sm:px-6 lg:px-10 py-6 md:py-8 relative z-10">
         {/* Filter Panel - Glassmorphic */}
         {showFilters && (
           <div className="bg-white/60 dark:bg-white/5 border border-white/40 dark:border-white/10 backdrop-blur-3xl rounded-[32px] p-8 mb-12 shadow-2xl shadow-indigo-500/5 animate-fade-in">

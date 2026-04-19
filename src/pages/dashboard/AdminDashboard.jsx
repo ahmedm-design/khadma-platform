@@ -343,7 +343,7 @@ function AdminUsers() {
               onClick={() => setPage(p => p - 1)} 
               className="px-4 py-2 font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-white/5 rounded-xl disabled:opacity-30 transition-all hover:bg-slate-200 dark:hover:bg-white/10"
             >
-              {isRTL ? 'التالي' : 'Previous'}
+              {isRTL ? 'السابق' : 'Previous'}
             </button>
             <div className="text-slate-500 font-medium">
               Page <span className="font-bold text-slate-900 dark:text-white">{page}</span> of {totalPages}
@@ -353,7 +353,7 @@ function AdminUsers() {
               onClick={() => setPage(p => p + 1)} 
               className="px-4 py-2 font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-white/5 rounded-xl disabled:opacity-30 transition-all hover:bg-slate-200 dark:hover:bg-white/10"
             >
-              {isRTL ? 'السابق' : 'Next'}
+              {isRTL ? 'التالي' : 'Next'}
             </button>
           </div>
         )}
@@ -579,7 +579,7 @@ function AdminProviders() {
               onClick={() => { setPage(p => p - 1); window.scrollTo({top: 0, behavior: 'smooth'}); }} 
               className="px-5 py-2.5 font-bold text-slate-600 dark:text-slate-300 bg-white dark:bg-white/5 hover:text-[var(--teal)] rounded-xl disabled:opacity-30 transition-all hover:bg-slate-50 dark:hover:bg-white/10 shadow-sm border border-slate-200 dark:border-transparent flex items-center gap-2"
             >
-              {isRTL ? 'التالي' : 'Previous'}
+              {isRTL ? 'السابق' : 'Previous'}
             </button>
             <div className="text-slate-500 font-medium tracking-wide bg-slate-100 dark:bg-white/5 px-4 py-2 rounded-lg font-mono text-[11px] uppercase space-x-1">
               <span>Page</span>
@@ -592,7 +592,7 @@ function AdminProviders() {
               onClick={() => { setPage(p => p + 1); window.scrollTo({top: 0, behavior: 'smooth'}); }} 
               className="px-5 py-2.5 font-bold text-slate-600 dark:text-slate-300 bg-white dark:bg-white/5 hover:text-[var(--teal)] rounded-xl disabled:opacity-30 transition-all hover:bg-slate-50 dark:hover:bg-white/10 shadow-sm border border-slate-200 dark:border-transparent flex items-center gap-2"
             >
-              {isRTL ? 'السابق' : 'Next'}
+              {isRTL ? 'التالي' : 'Next'}
             </button>
           </div>
         )}
@@ -833,7 +833,7 @@ function AdminCategories() {
             onClick={() => { setPage(p => p - 1); window.scrollTo({top: 0, behavior: 'smooth'}); }} 
             className="px-5 py-2.5 font-bold text-slate-600 dark:text-slate-300 bg-white dark:bg-white/5 hover:text-[var(--teal)] rounded-xl disabled:opacity-30 transition-all hover:bg-slate-50 dark:hover:bg-white/10 shadow-sm border border-slate-200 dark:border-transparent flex items-center gap-2"
           >
-            {isRTL ? 'التالي' : 'Previous'}
+            {isRTL ? 'السابق' : 'Previous'}
           </button>
           <div className="text-slate-500 font-medium tracking-wide bg-slate-100 dark:bg-white/5 px-4 py-2 rounded-lg font-mono text-[11px] uppercase space-x-1">
             <span>Page</span>
@@ -846,7 +846,7 @@ function AdminCategories() {
             onClick={() => { setPage(p => p + 1); window.scrollTo({top: 0, behavior: 'smooth'}); }} 
             className="px-5 py-2.5 font-bold text-slate-600 dark:text-slate-300 bg-white dark:bg-white/5 hover:text-[var(--teal)] rounded-xl disabled:opacity-30 transition-all hover:bg-slate-50 dark:hover:bg-white/10 shadow-sm border border-slate-200 dark:border-transparent flex items-center gap-2"
           >
-            {isRTL ? 'السابق' : 'Next'}
+            {isRTL ? 'التالي' : 'Next'}
           </button>
         </div>
       )}

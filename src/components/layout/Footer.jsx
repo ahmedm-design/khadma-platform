@@ -11,43 +11,42 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative bg-[#050505] text-white overflow-hidden pt-40 pb-10 mt-32 border-t border-white/5">
+    <footer className="relative bg-transparent text-white pt-16 pb-10 border-t border-white/5">
        
        {/* Ambient Cinematic Backlight */}
-       <div className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-[var(--teal)] opacity-[0.03] rounded-full blur-[150px] pointer-events-none" />
-       <div className="absolute bottom-0 left-0 w-[800px] h-[400px] bg-indigo-500 opacity-[0.02] rounded-full blur-[150px] pointer-events-none" />
-       
-       {/* Massive Typography Background Watermark */}
-       <div className="absolute top-[30%] left-1/2 -translate-x-1/2 w-full text-center pointer-events-none opacity-[0.015] select-none flex justify-center overflow-hidden z-0">
-          <span className="text-[180px] md:text-[300px] lg:text-[400px] font-black leading-none tracking-tighter whitespace-nowrap" style={{fontFamily: "'Inter', sans-serif"}}>KHEDMA</span>
+       <div className="absolute inset-0 overflow-hidden pointer-events-none">
+         <div className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-[var(--teal)] opacity-[0.03] rounded-full blur-[150px]" />
+         <div className="absolute bottom-0 left-0 w-[800px] h-[400px] bg-indigo-500 opacity-[0.02] rounded-full blur-[150px]" />
+         
+         {/* Massive Typography Background Watermark */}
+         <div className="absolute top-[30%] left-1/2 -translate-x-1/2 w-full text-center opacity-[0.015] select-none flex justify-center z-0">
+            <span className="text-[180px] md:text-[300px] lg:text-[400px] font-black leading-none tracking-tighter whitespace-nowrap" style={{fontFamily: "'Inter', sans-serif"}}>KHEDMA</span>
+         </div>
        </div>
 
        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-20">
           
           {/* Top Floating CTA Box - Breaking out of the container gracefully */}
-          <div className="absolute -top-64 sm:-top-56 left-6 lg:left-12 right-6 lg:right-12 bg-gradient-to-br from-slate-900 to-[#0c0d11] border border-white/10 rounded-[40px] p-10 md:p-14 shadow-2xl overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-10 group">
+          <div className="relative w-full mt-0 mb-16 bg-gradient-to-br from-slate-900 to-[#0c0d11] border border-white/10 rounded-[40px] p-10 md:p-14 shadow-2xl overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-10 group">
               <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03] mix-blend-overlay pointer-events-none"/>
               <div className="absolute -right-32 -bottom-32 w-96 h-96 bg-[var(--teal)] opacity-20 blur-[120px] rounded-full pointer-events-none group-hover:scale-150 transition-transform duration-[2s] ease-out"/>
               
-              <div className="relative z-10 max-w-2xl text-center lg:text-start lg:rtl:text-right">
+              <div className="relative z-10 max-w-2xl text-center lg:text-start rtl:lg:text-right w-full">
                   <h3 className="text-3xl md:text-5xl font-black text-white mb-6 tracking-tight leading-[1.1]">
                     {isAr ? 'هل أنت مستعد للارتقاء بخدماتك؟' : 'Ready to elevate your service business?'}
                   </h3>
                   <p className="text-slate-400 font-medium text-lg leading-relaxed">
-                    {isAr ? 'انضم إلى آلاف المحترفين الرائدين والعملاء الراضين الذين يبنون مستقبل الخدمات في مصر.' : 'Join thousands of leading professionals and highly satisfied clients building the future of services in Egypt.'}
+                    {isAr ? 'آلاف المحترفين الرائدين والعملاء الراضين يبنون بالفعل مستقبل الخدمات في مصر معنا.' : 'Thousands of leading professionals and highly satisfied clients are already building the future of services in Egypt with us.'}
                   </p>
               </div>
               <div className="relative z-10 flex-shrink-0 w-full lg:w-auto flex flex-col sm:flex-row justify-center gap-4">
-                  <Link to="/register" className="h-[60px] px-10 bg-[var(--teal)] text-slate-900 font-black rounded-[20px] flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-95 transition-transform uppercase tracking-[0.2em] text-sm shadow-[0_0_40px_rgba(0,201,167,0.3)]">
-                     {isAr ? 'ابدأ الآن' : 'Get Started'}
-                  </Link>
-                  <Link to="/support#help" className="h-[60px] px-10 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-black rounded-[20px] flex items-center justify-center transition-all uppercase tracking-[0.2em] text-sm backdrop-blur-md">
-                     {isAr ? 'تواصل معنا' : 'Contact Us'}
+                  <Link to="/#about-us" className="h-[60px] px-10 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-black rounded-[20px] flex items-center justify-center transition-all uppercase tracking-[0.2em] text-sm backdrop-blur-md">
+                     {isAr ? 'استكشف المنصة' : 'Explore Platform'}
                   </Link>
               </div>
           </div>
 
-          <div className="pt-32 sm:pt-24 grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-20 border-b border-white/10 pb-20">
+          <div className="pt-10 grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-20 border-b border-white/10 pb-20">
              
              {/* Brand & Newsletter Column */}
              <div className="md:col-span-5 flex flex-col rtl:text-right">
@@ -58,17 +57,7 @@ export default function Footer() {
                   {t('common.footer_desc')} Setting the absolute gold standard for verified, high-quality professional services across every single governorate in Egypt.
                 </p>
 
-                <div className="mb-10 w-full max-w-md">
-                   <div className="text-white text-[10px] font-black uppercase tracking-[0.3em] mb-4 flex items-center gap-2">
-                       <Mail className="w-4 h-4 text-[var(--teal)]" /> {t('common.newsletter_title')}
-                   </div>
-                   <form className="flex bg-[#111216] border border-white/10 rounded-[20px] p-2 focus-within:border-[var(--teal)] focus-within:ring-1 focus-within:ring-[var(--teal)]/50 transition-all shadow-inner group">
-                     <input type="email" placeholder={t('common.newsletter_placeholder')} className={clsx("bg-transparent border-none outline-none py-3 px-5 text-sm w-full text-white placeholder-slate-600 font-medium", isAr ? "text-right" : "text-left")} />
-                     <button type="button" className="bg-white/5 hover:bg-[var(--teal)] text-white hover:text-slate-900 w-12 h-12 rounded-[14px] flex flex-shrink-0 items-center justify-center transition-all duration-300">
-                       <Send className={clsx("w-4 h-4", isAr ? "rotate-180" : "")} />
-                     </button>
-                   </form>
-                </div>
+
              </div>
 
              {/* Links Columns */}
