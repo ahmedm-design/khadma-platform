@@ -27,20 +27,20 @@ export default function Footer() {
        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-20">
           
           {/* Top Floating CTA Box - Breaking out of the container gracefully */}
-          <div className="relative w-full mt-0 mb-16 bg-gradient-to-br from-slate-900 to-[#0c0d11] border border-white/10 rounded-[40px] p-10 md:p-14 shadow-2xl overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-10 group">
+          <div className="relative w-full mt-0 mb-8 sm:mb-16 bg-gradient-to-br from-slate-900 to-[#0c0d11] border border-white/10 rounded-[32px] sm:rounded-[40px] p-6 sm:p-10 md:p-14 shadow-2xl overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-8 sm:gap-10 group">
               <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03] mix-blend-overlay pointer-events-none"/>
               <div className="absolute -right-32 -bottom-32 w-96 h-96 bg-[var(--teal)] opacity-20 blur-[120px] rounded-full pointer-events-none group-hover:scale-150 transition-transform duration-[2s] ease-out"/>
               
               <div className="relative z-10 max-w-2xl text-center lg:text-start rtl:lg:text-right w-full">
-                  <h3 className="text-3xl md:text-5xl font-black text-white mb-6 tracking-tight leading-[1.1]">
+                  <h3 className="text-2xl sm:text-3xl md:text-5xl font-black text-white mb-4 sm:mb-6 tracking-tight leading-[1.2] sm:leading-[1.1]">
                     {isAr ? 'هل أنت مستعد للارتقاء بخدماتك؟' : 'Ready to elevate your service business?'}
                   </h3>
-                  <p className="text-slate-400 font-medium text-lg leading-relaxed">
+                  <p className="text-slate-400 font-medium text-sm sm:text-lg leading-relaxed">
                     {isAr ? 'آلاف المحترفين الرائدين والعملاء الراضين يبنون بالفعل مستقبل الخدمات في مصر معنا.' : 'Thousands of leading professionals and highly satisfied clients are already building the future of services in Egypt with us.'}
                   </p>
               </div>
               <div className="relative z-10 flex-shrink-0 w-full lg:w-auto flex flex-col sm:flex-row justify-center gap-4">
-                  <Link to="/#about-us" className="h-[60px] px-10 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-black rounded-[20px] flex items-center justify-center transition-all uppercase tracking-[0.2em] text-sm backdrop-blur-md">
+                  <Link to="/#about-us" className="h-[50px] sm:h-[60px] px-8 sm:px-10 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-black rounded-xl sm:rounded-[20px] flex items-center justify-center transition-all uppercase tracking-[0.2em] text-[10px] sm:text-sm backdrop-blur-md text-center">
                      {isAr ? 'استكشف المنصة' : 'Explore Platform'}
                   </Link>
               </div>
