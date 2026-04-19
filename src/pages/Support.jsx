@@ -74,7 +74,24 @@ export default function Support() {
 
   const scrollToSection = useCallback((id) => {
     sectionRefs[id]?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Update active tab manually for immediate visual feedback
+    setActiveTab(id);
+    // Update URL hash without jumping
+    window.history.pushState(null, '', `#${id}`);
   }, []);
+
+  // Handle direct hash links on load or external route navigation
+  useEffect(() => {
+    if (location.hash) {
+      const targetId = location.hash.substring(1);
+      if (sectionRefs[targetId] && sectionRefs[targetId].current) {
+        // Small delay to ensure the DOM has fully painted the layout before scrolling
+        setTimeout(() => {
+          scrollToSection(targetId);
+        }, 150);
+      }
+    }
+  }, [location.hash, scrollToSection]);
 
   const helpData = useMemo(() => ({
     started: {

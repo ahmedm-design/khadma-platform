@@ -1,5 +1,5 @@
 // pages/dashboard/AdminDashboard.jsx
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
 import { useLang } from '../../context/LangContext';
 import api from '../../api/axios';
@@ -162,13 +162,13 @@ function AdminStats() {
           <div className="text-start sm:text-end">
              <div className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">{t('admin.total_period_growth')}</div>
              <div className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tighter">
-                {finalStats.monthlySignups.reduce((acc, curr) => acc + (curr.count || 0), 0).toLocaleString()} <span className="text-sm font-medium text-slate-400">{t('admin.users_count')}</span>
+                {useMemo(() => finalStats.monthlySignups.reduce((acc, curr) => acc + (curr.count || 0), 0).toLocaleString(), [finalStats.monthlySignups])} <span className="text-sm font-medium text-slate-400">{t('admin.users_count')}</span>
              </div>
           </div>
         </div>
 
         {(() => {
-          const maxVal = finalStats.monthlySignups.length ? Math.max(...finalStats.monthlySignups.map((x) => x.count || 0)) : 0;
+          const maxVal = useMemo(() => finalStats.monthlySignups.length ? Math.max(...finalStats.monthlySignups.map((x) => x.count || 0)) : 0, [finalStats.monthlySignups]);
           
           return (
             <div className="flex items-end gap-1 sm:gap-3 h-64 sm:h-80 relative px-2 ltr:ml-8 rtl:mr-8 group/all-bars mt-4">
@@ -234,19 +234,31 @@ function AdminStats() {
 
 // ── Users Panel ──────────────────────────────────────────────
 function AdminUsers() {
-  const { t } = useLang();
+  const { t, isRTL } = useLang();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const pageSize = 10;
 
   useEffect(() => {
     api.get('/admin/users').then(({ data }) => setUsers(data.data)).finally(() => setLoading(false));
   }, []);
 
-  const toggleActive = async (id) => {
-    const { data } = await api.put(`/admin/users/${id}/toggle`);
-    setUsers((prev) => prev.map((u) => u._id === id ? data.data : u));
-    toast.success('User status updated');
-  };
+  const totalPages = Math.ceil(users.length / pageSize);
+  const displayUsers = useMemo(() => {
+    const start = (page - 1) * pageSize;
+    return users.slice(start, start + pageSize);
+  }, [users, page, pageSize]);
+
+  const toggleActive = useCallback(async (id) => {
+    try {
+      const { data } = await api.put(`/admin/users/${id}/toggle`);
+      setUsers((prev) => prev.map((u) => u._id === id ? data.data : u));
+      toast.success('User status updated');
+    } catch (err) {
+      toast.error('Could not update user');
+    }
+  }, []);
 
   if (loading) return <div className="skeleton h-64 rounded-2xl" />;
 
@@ -264,8 +276,8 @@ function AdminUsers() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
-              {users.map((u) => (
-                <tr key={u._id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+              {displayUsers.map((u) => (
+                <tr key={u._id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
                   <td className="px-4 py-3 font-medium text-slate-800 dark:text-slate-200">{u.name}</td>
                   <td className="px-4 py-3 text-slate-500">{u.email}</td>
                   <td className="px-4 py-3">
@@ -283,7 +295,7 @@ function AdminUsers() {
                   </td>
                   <td className="px-4 py-3">
                     {u.role !== 'admin' && (
-                      <button onClick={() => toggleActive(u._id)} className="text-slate-400 hover:text-primary-500 transition-colors">
+                      <button onClick={() => toggleActive(u._id)} className="text-slate-400 hover:text-[var(--teal)] transition-colors p-1 rounded-full hover:bg-[var(--teal)]/10">
                         {u.isActive ? <ToggleRight className="w-5 h-5 text-emerald-500" /> : <ToggleLeft className="w-5 h-5" />}
                       </button>
                     )}
@@ -293,6 +305,29 @@ function AdminUsers() {
             </tbody>
           </table>
         </div>
+        
+        {/* Pagination UI */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-between px-4 py-3 bg-white dark:bg-slate-800/20 border-t border-slate-100 dark:border-slate-700 text-sm">
+            <button 
+              disabled={page === 1} 
+              onClick={() => setPage(p => p - 1)} 
+              className="px-4 py-2 font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-white/5 rounded-xl disabled:opacity-30 transition-all hover:bg-slate-200 dark:hover:bg-white/10"
+            >
+              {isRTL ? 'التالي' : 'Previous'}
+            </button>
+            <div className="text-slate-500 font-medium">
+              Page <span className="font-bold text-slate-900 dark:text-white">{page}</span> of {totalPages}
+            </div>
+            <button 
+              disabled={page === totalPages} 
+              onClick={() => setPage(p => p + 1)} 
+              className="px-4 py-2 font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-white/5 rounded-xl disabled:opacity-30 transition-all hover:bg-slate-200 dark:hover:bg-white/10"
+            >
+              {isRTL ? 'السابق' : 'Next'}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -300,36 +335,56 @@ function AdminUsers() {
 
 // ── Providers Panel ──────────────────────────────────────────
 function AdminProviders() {
-  const { t } = useLang();
+  const { t, isRTL } = useLang();
   const [providers, setProviders] = useState([]);
   const [loading, setLoading]     = useState(true);
   const [tab, setTab]             = useState('pending');
   const [rejectId, setRejectId]   = useState(null);
   const [reason, setReason]       = useState('');
+  
+  const [page, setPage] = useState(1);
+  const pageSize = 5; // Reduced page size because cards are heavy
 
-  const fetchProviders = (status) => {
+  const fetchProviders = useCallback((status) => {
     setLoading(true);
     api.get(`/admin/providers?status=${status}`)
-      .then(({ data }) => setProviders(data.data))
+      .then(({ data }) => {
+        setProviders(data.data);
+        setPage(1); // Reset to page 1 on tab change
+      })
       .finally(() => setLoading(false));
-  };
+  }, []);
 
-  useEffect(() => { fetchProviders(tab); }, [tab]);
+  useEffect(() => { fetchProviders(tab); }, [fetchProviders, tab]);
 
-  const approve = async (id) => {
-    await api.put(`/admin/providers/${id}/approve`);
-    toast.success('Provider approved!');
-    setProviders((prev) => prev.filter((p) => p._id !== id));
-  };
+  const totalPages = Math.ceil(providers.length / pageSize);
+  const displayProviders = useMemo(() => {
+    const start = (page - 1) * pageSize;
+    return providers.slice(start, start + pageSize);
+  }, [providers, page, pageSize]);
 
-  const reject = async () => {
+  const approve = useCallback(async (id) => {
+    try {
+      await api.put(`/admin/providers/${id}/approve`);
+      toast.success('Provider approved!');
+      setProviders((prev) => prev.filter((p) => p._id !== id));
+    } catch {
+      toast.error('Approval failed');
+    }
+  }, []);
+
+  const reject = useCallback(async () => {
     if (!reason) return toast.error('Please provide a reason');
-    await api.put(`/admin/providers/${rejectId}/reject`, { reason });
-    toast.success('Provider rejected');
-    setProviders((prev) => prev.filter((p) => p._id !== rejectId));
-    setRejectId(null);
-    setReason('');
-  };
+    try {
+      await api.put(`/admin/providers/${rejectId}/reject`, { reason });
+      toast.success('Provider rejected');
+      setProviders((prev) => prev.filter((p) => p._id !== rejectId));
+      setRejectId(null);
+      setReason('');
+    } catch {
+      toast.error('Rejection failed');
+    }
+  }, [reason, rejectId]);
 
   return (
     <div>
@@ -351,7 +406,7 @@ function AdminProviders() {
           {providers.length === 0 && (
             <div className="card p-10 text-center text-slate-400">No {tab} providers</div>
           )}
-          {providers.map((p) => (
+          {displayProviders.map((p) => (
             <div key={p._id} className="card p-5">
               <div className="flex items-start justify-between gap-4 flex-wrap">
                 <div className="flex items-center sm:items-start gap-5">
@@ -365,6 +420,7 @@ function AdminProviders() {
                           {avatarSrc && (
                             <img
                               src={avatarSrc}
+                              loading="lazy"
                               alt={p.businessName}
                               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                               onError={(e) => {
@@ -388,7 +444,7 @@ function AdminProviders() {
                     <p className="text-xs text-slate-400">{p.user?.email}</p>
                     {p.city && <p className="text-xs text-slate-400">{p.city}</p>}
                     {p.category && (
-                      <span className="badge bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 mt-1">
+                      <span className="badge bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 mt-1 shadow-sm">
                         {p.category.name}
                       </span>
                     )}
@@ -401,16 +457,16 @@ function AdminProviders() {
                   <div className="flex justify-end gap-2 w-full sm:w-auto">
                     {tab === 'pending' && (
                       <>
-                        <button onClick={() => approve(p._id)} className="btn-primary text-xs py-2 px-3 gap-1">
+                        <button onClick={() => approve(p._id)} className="btn-primary text-xs py-2 px-3 gap-1 shadow-md hover:shadow-lg">
                           <CheckCircle className="w-3.5 h-3.5" /> {t('admin.approve')}
                         </button>
-                        <button onClick={() => setRejectId(p._id)} className="btn-secondary text-xs py-2 px-3 gap-1 border-red-200 text-red-500 hover:bg-red-50">
+                        <button onClick={() => setRejectId(p._id)} className="btn-secondary text-xs py-2 px-3 gap-1 border-red-200 text-red-500 hover:bg-red-50 hover:border-red-300">
                           <XCircle className="w-3.5 h-3.5" /> {t('admin.reject')}
                         </button>
                       </>
                     )}
                     {tab === 'approved' && (
-                      <span className="badge bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
+                      <span className="badge bg-emerald-100/50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20 shadow-inner">
                         <CheckCircle className="w-3 h-3" /> Approved
                       </span>
                     )}
@@ -426,6 +482,29 @@ function AdminProviders() {
               {p.description && <p className="text-xs text-slate-500 mt-3 line-clamp-2">{p.description}</p>}
             </div>
           ))}
+          
+        {/* Pagination UI for Providers */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-between px-4 py-4 mt-4 bg-white/50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-700/50 backdrop-blur-md rounded-2xl text-sm shadow-sm">
+            <button 
+              disabled={page === 1} 
+              onClick={() => { setPage(p => p - 1); window.scrollTo({top: 0, behavior: 'smooth'}); }} 
+              className="px-4 py-2 font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-white/5 rounded-xl disabled:opacity-30 transition-all hover:bg-slate-200 dark:hover:bg-white/10"
+            >
+              {isRTL ? 'التالي' : 'Previous'}
+            </button>
+            <div className="text-slate-500 font-medium tracking-wide">
+              Page <span className="font-black text-slate-900 dark:text-white px-1">{page}</span> of {totalPages}
+            </div>
+            <button 
+              disabled={page === totalPages} 
+              onClick={() => { setPage(p => p + 1); window.scrollTo({top: 0, behavior: 'smooth'}); }} 
+              className="px-4 py-2 font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-white/5 rounded-xl disabled:opacity-30 transition-all hover:bg-slate-200 dark:hover:bg-white/10"
+            >
+              {isRTL ? 'السابق' : 'Next'}
+            </button>
+          </div>
+        )}
         </div>
       )}
 
@@ -454,18 +533,27 @@ function AdminProviders() {
 
 // ── Categories Panel ─────────────────────────────────────────
 function AdminCategories() {
-  const { t } = useLang();
+  const { t, isRTL } = useLang();
   const [categories, setCategories] = useState([]);
   const [loading, setLoading]       = useState(true);
   const [showForm, setShowForm]     = useState(false);
   const [editingCat, setEditingCat] = useState(null);
   const [form, setForm] = useState({ name: '', nameAr: '', description: '', descriptionAr: '', icon: '🔧', slug: '' });
 
+  const [page, setPage] = useState(1);
+  const pageSize = 10;
+
   useEffect(() => {
     api.get('/admin/categories').then(({ data }) => setCategories(data.data)).finally(() => setLoading(false));
   }, []);
 
-  const handleSubmit = async () => {
+  const totalPages = Math.ceil(categories.length / pageSize);
+  const displayCategories = useMemo(() => {
+    const start = (page - 1) * pageSize;
+    return categories.slice(start, start + pageSize);
+  }, [categories, page, pageSize]);
+
+  const handleSubmit = useCallback(async () => {
     try {
       if (editingCat) {
         const { data } = await api.put(`/admin/categories/${editingCat._id}`, form);
@@ -480,20 +568,24 @@ function AdminCategories() {
       setEditingCat(null);
       setForm({ name: '', nameAr: '', description: '', descriptionAr: '', icon: '🔧', slug: '' });
     } catch (err) { toast.error(err.message); }
-  };
+  }, [editingCat, form]);
 
-  const startEdit = (cat) => {
+  const startEdit = useCallback((cat) => {
     setEditingCat(cat);
     setForm({ name: cat.name, nameAr: cat.nameAr, description: cat.description || '', descriptionAr: cat.descriptionAr || '', icon: cat.icon, slug: cat.slug });
     setShowForm(true);
-  };
+  }, []);
 
-  const handleDelete = async (id) => {
-    if (!confirm('Delete this category?')) return;
-    await api.delete(`/admin/categories/${id}`);
-    setCategories((prev) => prev.filter((c) => c._id !== id));
-    toast.success('Deleted');
-  };
+  const handleDelete = useCallback(async (id) => {
+    if (!window.confirm('Delete this category?')) return;
+    try {
+      await api.delete(`/admin/categories/${id}`);
+      setCategories((prev) => prev.filter((c) => c._id !== id));
+      toast.success('Deleted');
+    } catch {
+      toast.error('Could not delete category');
+    }
+  }, []);
 
   if (loading) return <div className="skeleton h-64 rounded-2xl" />;
 
@@ -525,7 +617,7 @@ function AdminCategories() {
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {categories.map((cat) => (
+        {displayCategories.map((cat) => (
           <div key={cat._id} className="card p-4 flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
               <span className="text-3xl">{cat.icon}</span>
@@ -545,6 +637,29 @@ function AdminCategories() {
           </div>
         ))}
       </div>
+
+      {/* Pagination UI for Categories */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between px-4 py-4 mt-4 bg-white/50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-700/50 backdrop-blur-md rounded-2xl text-sm shadow-sm">
+          <button 
+            disabled={page === 1} 
+            onClick={() => { setPage(p => p - 1); window.scrollTo({top: 0, behavior: 'smooth'}); }} 
+            className="px-4 py-2 font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-white/5 rounded-xl disabled:opacity-30 transition-all hover:bg-slate-200 dark:hover:bg-white/10"
+          >
+            {isRTL ? 'التالي' : 'Previous'}
+          </button>
+          <div className="text-slate-500 font-medium tracking-wide">
+            Page <span className="font-black text-slate-900 dark:text-white px-1">{page}</span> of {totalPages}
+          </div>
+          <button 
+            disabled={page === totalPages} 
+            onClick={() => { setPage(p => p + 1); window.scrollTo({top: 0, behavior: 'smooth'}); }} 
+            className="px-4 py-2 font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-white/5 rounded-xl disabled:opacity-30 transition-all hover:bg-slate-200 dark:hover:bg-white/10"
+          >
+            {isRTL ? 'السابق' : 'Next'}
+          </button>
+        </div>
+      )}
     </div>
   );
 }
@@ -565,11 +680,11 @@ export default function AdminDashboard() {
           <h1 className="kd-section-title text-4xl md:text-5xl">{t('admin.title')}</h1>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-6 md:gap-10">
-          <div className="w-full md:w-56 flex-shrink-0">
+        <div className="flex flex-col lg:flex-row gap-10">
+          <div className="w-full lg:w-72 flex-shrink-0">
             <AdminSidebar />
           </div>
-          <div className="flex-1 min-w-0 bg-white/40 dark:bg-white/5 border border-white/20 dark:border-white/10 backdrop-blur-2xl rounded-[24px] md:rounded-[32px] p-4 sm:p-8 md:p-12 shadow-sm">
+          <div className="flex-1 min-w-0 bg-white/40 dark:bg-white/5 border border-white/20 dark:border-white/10 backdrop-blur-2xl rounded-[32px] p-8 md:p-12 shadow-sm">
             <Routes>
               <Route index element={<AdminStats />} />
               <Route path="users" element={<AdminUsers />} />

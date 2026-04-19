@@ -55,6 +55,16 @@ export default function Navbar() {
     setDropOpen(false);
   }, [location.pathname]);
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [menuOpen]);
+
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchVal.trim()) {
@@ -79,14 +89,14 @@ export default function Navbar() {
   return (
     <>
       <header className={clsx(
-        'fixed top-0 left-0 right-0 z-[100] transition-all duration-500 py-2 sm:py-3 px-2 sm:px-4 md:px-10',
-        scrolled ? 'mt-0 sm:mt-2' : 'mt-0'
+        'fixed top-0 left-0 right-0 z-[100] transition-all duration-500 py-3 px-4 md:px-10',
+        scrolled ? 'mt-2' : 'mt-0'
       )}>
         <div className={clsx(
           'mx-auto transition-all duration-700 relative overflow-visible',
           scrolled 
-            ? 'max-w-[1200px] bg-white/80 dark:bg-[#0b0c10]/80 backdrop-blur-2xl rounded-[30px] border border-white/20 shadow-2xl px-4 sm:px-6 py-2' 
-            : 'max-w-[1400px] bg-transparent backdrop-blur-none border-none py-2 px-2 sm:py-4 sm:px-6'
+            ? 'max-w-[1200px] bg-white/80 dark:bg-[#0b0c10]/80 backdrop-blur-2xl rounded-[30px] border border-white/20 shadow-2xl px-6 py-2' 
+            : 'max-w-[1400px] bg-transparent backdrop-blur-none border-none py-4 px-6'
         )}>
           {/* Subtle line glow inside capsule */}
           {scrolled && <div className="absolute top-0 left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-[var(--teal)]/30 to-transparent pointer-events-none" />}
@@ -267,16 +277,14 @@ export default function Navbar() {
         <div 
           className={clsx(
             "absolute top-0 bottom-0 w-[85%] max-w-[400px] bg-white dark:bg-[#0c0d10] shadow-2xl transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col",
-            isRTL 
-              ? (menuOpen ? "left-0 translate-x-0" : "left-0 -translate-x-full")
-              : (menuOpen ? "right-0 translate-x-0" : "right-0 translate-x-full")
+            menuOpen ? "start-0 translate-x-0" : "start-0 ltr:-translate-x-full rtl:translate-x-full"
           )}
           onClick={e => e.stopPropagation()}
         >
           {/* Header in Drawer */}
           <div className="p-8 pb-4 flex items-center justify-between">
             <Link to="/" className="text-2xl font-black tracking-tighter" onClick={() => setMenuOpen(false)}>
-              khedma<span className="text-[var(--teal)]">.</span>
+              {lang === 'ar' ? 'خدمة' : 'khedma'}<span className="text-[var(--teal)]">.</span>
             </Link>
             <button 
               onClick={() => setMenuOpen(false)}
