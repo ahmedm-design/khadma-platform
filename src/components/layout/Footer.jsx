@@ -11,7 +11,7 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative bg-transparent text-white pt-16 pb-10 border-t border-white/5">
+    <footer className="relative bg-transparent text-slate-900 dark:text-white pt-16 pb-10 border-t border-slate-200 dark:border-white/5">
        
        {/* Ambient Cinematic Backlight */}
        <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -46,14 +46,14 @@ export default function Footer() {
               </div>
           </div>
 
-          <div className="pt-10 grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-20 border-b border-white/10 pb-20">
+          <div className="pt-10 grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-20 border-b border-slate-200 dark:border-white/10 pb-20">
              
              {/* Brand & Newsletter Column */}
              <div className="md:col-span-5 flex flex-col rtl:text-right">
-                <Link to="/" className="text-white text-5xl mb-6 inline-block no-underline font-black tracking-tighter hover:scale-105 transition-transform origin-left rtl:origin-right w-fit">
+                <Link to="/" className="text-slate-900 dark:text-white text-5xl mb-6 inline-block no-underline font-black tracking-tighter hover:scale-105 transition-transform origin-left rtl:origin-right w-fit">
                   {isAr ? 'خدمة' : 'khedma'}<span className="text-[var(--teal)]">.</span>
                 </Link>
-                <p className="text-slate-400 mb-10 text-base leading-relaxed max-w-sm font-medium">
+                <p className="text-slate-500 dark:text-slate-400 mb-10 text-base leading-relaxed max-w-sm font-medium">
                   {t('common.footer_desc')} Setting the absolute gold standard for verified, high-quality professional services across every single governorate in Egypt.
                 </p>
 
@@ -65,52 +65,52 @@ export default function Footer() {
                  
                  {/* Discover */}
                  <div className="flex flex-col space-y-6">
-                    <h4 className="text-white/30 text-[10px] font-black uppercase tracking-[0.3em]">{t('common.discover')}</h4>
-                    <Link to="/#about-us" className="group text-slate-400 hover:text-white font-medium text-sm flex items-center justify-between w-full max-w-[160px] transition-colors">
+                    <h4 className="text-slate-400 dark:text-white/30 text-[10px] font-black uppercase tracking-[0.3em]">{t('common.discover')}</h4>
+                    <Link to="/#about-us" className="group text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white font-medium text-sm flex items-center justify-between w-full max-w-[160px] transition-colors">
                        {t('common.about_us')} <ArrowUpRight className={clsx("w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-all text-[var(--teal)]", isAr ? "group-hover:-translate-x-1 group-hover:-translate-y-1" : "group-hover:translate-x-1 group-hover:-translate-y-1")} />
                     </Link>
-                    <Link to="/categories" className="group text-slate-400 hover:text-white font-medium text-sm flex items-center justify-between w-full max-w-[160px] transition-colors">
+                    <Link to="/categories" className="group text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white font-medium text-sm flex items-center justify-between w-full max-w-[160px] transition-colors">
                        {t('common.browse_services')} <ArrowUpRight className={clsx("w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-all text-[var(--teal)]", isAr ? "group-hover:-translate-x-1 group-hover:-translate-y-1" : "group-hover:translate-x-1 group-hover:-translate-y-1")} />
                     </Link>
-                    <Link to="/providers" className="group text-slate-400 hover:text-white font-medium text-sm flex items-center justify-between w-full max-w-[160px] transition-colors">
+                    <Link to="/providers" className="group text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white font-medium text-sm flex items-center justify-between w-full max-w-[160px] transition-colors">
                        {t('common.top_providers')} <ArrowUpRight className={clsx("w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-all text-[var(--teal)]", isAr ? "group-hover:-translate-x-1 group-hover:-translate-y-1" : "group-hover:translate-x-1 group-hover:-translate-y-1")} />
                     </Link>
-                    <Link to="/register" className="group text-slate-400 hover:text-white font-medium text-sm flex items-center justify-between w-full max-w-[160px] transition-colors">
+                    <Link to="/register" className="group text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white font-medium text-sm flex items-center justify-between w-full max-w-[160px] transition-colors">
                        {t('common.become_partner')} <ArrowUpRight className={clsx("w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-all text-[var(--teal)]", isAr ? "group-hover:-translate-x-1 group-hover:-translate-y-1" : "group-hover:translate-x-1 group-hover:-translate-y-1")} />
                     </Link>
                  </div>
 
                  {/* Support */}
                  <div className="flex flex-col space-y-6">
-                    <h4 className="text-white/30 text-[10px] font-black uppercase tracking-[0.3em]">{t('common.resources')}</h4>
-                    <Link to="/support#help" className="group text-slate-400 hover:text-white font-medium text-sm flex items-center justify-between w-full max-w-[160px] transition-colors">
+                    <h4 className="text-slate-400 dark:text-white/30 text-[10px] font-black uppercase tracking-[0.3em]">{t('common.resources')}</h4>
+                    <Link to="/support#help" className="group text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white font-medium text-sm flex items-center justify-between w-full max-w-[160px] transition-colors">
                        {t('common.help_center')} <ArrowUpRight className={clsx("w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-all text-[var(--teal)]", isAr ? "group-hover:-translate-x-1 group-hover:-translate-y-1" : "group-hover:translate-x-1 group-hover:-translate-y-1")} />
                     </Link>
-                    <Link to="/support#safety" className="group text-slate-400 hover:text-white font-medium text-sm flex items-center justify-between w-full max-w-[160px] transition-colors">
+                    <Link to="/support#safety" className="group text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white font-medium text-sm flex items-center justify-between w-full max-w-[160px] transition-colors">
                        {t('common.trust_safety')} <ArrowUpRight className={clsx("w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-all text-[var(--teal)]", isAr ? "group-hover:-translate-x-1 group-hover:-translate-y-1" : "group-hover:translate-x-1 group-hover:-translate-y-1")} />
                     </Link>
-                    <Link to="/support#terms" className="group text-slate-400 hover:text-white font-medium text-sm flex items-center justify-between w-full max-w-[160px] transition-colors">
+                    <Link to="/support#terms" className="group text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white font-medium text-sm flex items-center justify-between w-full max-w-[160px] transition-colors">
                        {t('common.service_terms')} <ArrowUpRight className={clsx("w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-all text-[var(--teal)]", isAr ? "group-hover:-translate-x-1 group-hover:-translate-y-1" : "group-hover:translate-x-1 group-hover:-translate-y-1")} />
                     </Link>
-                    <Link to="/support#privacy" className="group text-slate-400 hover:text-white font-medium text-sm flex items-center justify-between w-full max-w-[160px] transition-colors">
+                    <Link to="/support#privacy" className="group text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white font-medium text-sm flex items-center justify-between w-full max-w-[160px] transition-colors">
                        {t('common.privacy_policy')} <ArrowUpRight className={clsx("w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-all text-[var(--teal)]", isAr ? "group-hover:-translate-x-1 group-hover:-translate-y-1" : "group-hover:translate-x-1 group-hover:-translate-y-1")} />
                     </Link>
                  </div>
 
                  {/* Socials / Community */}
                  <div className="flex flex-col space-y-6 col-span-2 lg:col-span-1 mt-4 lg:mt-0">
-                    <h4 className="text-white/30 text-[10px] font-black uppercase tracking-[0.3em]">Social</h4>
+                    <h4 className="text-slate-400 dark:text-white/30 text-[10px] font-black uppercase tracking-[0.3em]">Social</h4>
                     <div className="flex flex-wrap gap-4">
-                       <a href="#" className="w-[50px] h-[50px] rounded-[16px] bg-white/5 hover:bg-[var(--teal)] hover:text-slate-900 border border-white/5 hover:border-[var(--teal)] flex items-center justify-center transition-all duration-300 text-slate-300 hover:scale-110 shadow-lg group">
+                       <a href="#" className="w-[50px] h-[50px] rounded-[16px] bg-slate-100 dark:bg-white/5 hover:bg-[var(--teal)] hover:text-white dark:hover:text-slate-900 border border-slate-200 dark:border-white/5 hover:border-[var(--teal)] flex items-center justify-center transition-all duration-300 text-slate-400 dark:text-slate-300 hover:scale-110 shadow-lg group">
                           <Facebook className="w-5 h-5 group-hover:scale-110 transition-transform" />
                        </a>
-                       <a href="#" className="w-[50px] h-[50px] rounded-[16px] bg-white/5 hover:bg-[var(--teal)] hover:text-slate-900 border border-white/5 hover:border-[var(--teal)] flex items-center justify-center transition-all duration-300 text-slate-300 hover:scale-110 shadow-lg group">
+                       <a href="#" className="w-[50px] h-[50px] rounded-[16px] bg-slate-100 dark:bg-white/5 hover:bg-[var(--teal)] hover:text-white dark:hover:text-slate-900 border border-slate-200 dark:border-white/5 hover:border-[var(--teal)] flex items-center justify-center transition-all duration-300 text-slate-400 dark:text-slate-300 hover:scale-110 shadow-lg group">
                           <Twitter className="w-5 h-5 group-hover:scale-110 transition-transform" />
                        </a>
-                       <a href="#" className="w-[50px] h-[50px] rounded-[16px] bg-white/5 hover:bg-[var(--teal)] hover:text-slate-900 border border-white/5 hover:border-[var(--teal)] flex items-center justify-center transition-all duration-300 text-slate-300 hover:scale-110 shadow-lg group">
+                       <a href="#" className="w-[50px] h-[50px] rounded-[16px] bg-slate-100 dark:bg-white/5 hover:bg-[var(--teal)] hover:text-white dark:hover:text-slate-900 border border-slate-200 dark:border-white/5 hover:border-[var(--teal)] flex items-center justify-center transition-all duration-300 text-slate-400 dark:text-slate-300 hover:scale-110 shadow-lg group">
                           <Instagram className="w-5 h-5 group-hover:scale-110 transition-transform" />
                        </a>
-                       <a href="#" className="w-[50px] h-[50px] rounded-[16px] bg-white/5 hover:bg-[var(--teal)] hover:text-slate-900 border border-white/5 hover:border-[var(--teal)] flex items-center justify-center transition-all duration-300 text-slate-300 hover:scale-110 shadow-lg group">
+                       <a href="#" className="w-[50px] h-[50px] rounded-[16px] bg-slate-100 dark:bg-white/5 hover:bg-[var(--teal)] hover:text-white dark:hover:text-slate-900 border border-slate-200 dark:border-white/5 hover:border-[var(--teal)] flex items-center justify-center transition-all duration-300 text-slate-400 dark:text-slate-300 hover:scale-110 shadow-lg group">
                           <Linkedin className="w-5 h-5 group-hover:scale-110 transition-transform" />
                        </a>
                     </div>
@@ -125,9 +125,9 @@ export default function Footer() {
                © {year} Khedma Egypt. {t('common.crafted_egypt')}
              </div>
              
-             <div className="flex items-center gap-3 bg-white/[0.02] rounded-full p-1.5 border border-white/5 pl-4 px-2 hover:bg-white/5 transition-colors cursor-pointer group">
-                <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_12px_rgba(16,185,129,0.8)]" />
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 group-hover:text-white transition-colors">All systems operational</span>
+             <div className="flex items-center gap-3 bg-slate-100 dark:bg-white/[0.02] rounded-full p-1.5 border border-slate-200 dark:border-white/5 pl-4 px-2 hover:bg-slate-200 dark:hover:bg-white/5 transition-colors cursor-pointer group">
+                <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_12px_rgba(16,185,129,0.8)] dark:shadow-[0_0_12px_rgba(16,185,129,0.5)]" />
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">All systems operational</span>
              </div>
           </div>
        </div>
